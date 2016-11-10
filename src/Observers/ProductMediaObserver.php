@@ -1,0 +1,149 @@
+<?php
+
+/**
+ * TechDivision\Import\Product\Media\Observers\ProductMediaObserver
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * PHP version 5
+ *
+ * @author    Tim Wagner <tw@appserver.io>
+ * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://github.com/wagnert/csv-import
+ * @link      http://www.appserver.io
+ */
+
+namespace TechDivision\Import\Product\Media\Observers;
+
+use TechDivision\Import\Product\Media\Utils\ColumnKeys;
+use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+
+/**
+ * A SLSB that handles the process to import additional product images.
+ *
+ * @author    Tim Wagner <tw@appserver.io>
+ * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      https://github.com/wagnert/csv-import
+ * @link      http://www.appserver.io
+ */
+class ProductMediaObserver extends AbstractProductImportObserver
+{
+
+    /**
+     * The artefact type.
+     *
+     * @var string
+     */
+    const ARTEFACT_TYPE = 'media';
+
+    /**
+     * {@inheritDoc}
+     * @see \Importer\Csv\Actions\Listeners\Row\ListenerInterface::handle()
+     */
+    public function handle(array $row)
+    {
+
+        // load the header information
+        $headers = $this->getHeaders();
+
+        // initialize the array for the product media
+        $artefacts = array();
+
+        // load the store view code
+        $storeViewCode = $row[$headers[ColumnKeys::STORE_VIEW_CODE]];
+
+        // load the parent SKU from the row
+        $parentSku = $row[$headers[ColumnKeys::SKU]];
+
+        // query whether or not, we've a base image
+        if (isset($row[$headers[ColumnKeys::BASE_IMAGE]])) {
+            // load the base image data
+            $baseImage = $row[$headers[ColumnKeys::BASE_IMAGE]];
+
+            // prepare and append the base image to the artefacts
+            $artefacts[] = array(
+                ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                ColumnKeys::IMAGE_PATH       => $baseImage,
+                ColumnKeys::IMAGE_LABEL      => isset($row[$headers[ColumnKeys::BASE_IMAGE_LABEL]]) ? $row[$headers[ColumnKeys::BASE_IMAGE_LABEL]] : 'Image'
+            );
+        }
+
+        // query whether or not, we've a small image
+        if (isset($row[$headers[ColumnKeys::SMALL_IMAGE]])) {
+            // load the small image data
+            $baseImage = $row[$headers[ColumnKeys::SMALL_IMAGE]];
+
+            // prepare and append the small image to the artefacts
+            $artefacts[] = array(
+                ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                ColumnKeys::IMAGE_PATH       => $baseImage,
+                ColumnKeys::IMAGE_LABEL      => isset($row[$headers[ColumnKeys::SMALL_IMAGE_LABEL]]) ? $row[$headers[ColumnKeys::SMALL_IMAGE_LABEL]] : 'Image'
+            );
+        }
+
+        // query whether or not, we've a small thumbnail
+        if (isset($row[$headers[ColumnKeys::THUMBNAIL_IMAGE]])) {
+            // load the thumbnail image data
+            $baseImage = $row[$headers[ColumnKeys::THUMBNAIL_IMAGE]];
+
+            // prepare and append the thumbnail image to the artefacts
+            $artefacts[] = array(
+                ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                ColumnKeys::IMAGE_PATH       => $baseImage,
+                ColumnKeys::IMAGE_LABEL      => isset($row[$headers[ColumnKeys::THUMBNAIL_IMAGE_LABEL]]) ? $row[$headers[ColumnKeys::THUMBNAIL_IMAGE_LABEL]] : 'Image'
+            );
+        }
+
+        // query whether or not, we've additional images
+        if (isset($row[$headers[ColumnKeys::ADDITIONAL_IMAGES]])) {
+            // query whether or not, we've additional images
+            if ($additionalImages = $row[$headers[ColumnKeys::ADDITIONAL_IMAGES]]) {
+                // expand the additional image labels, if available
+                $additionalImageLabels = array();
+                if (isset($row[$headers[ColumnKeys::ADDITIONAL_IMAGE_LABELS]])) {
+                    $additionalImageLabels = explode(',', $row[$headers[ColumnKeys::ADDITIONAL_IMAGE_LABELS]]);
+                }
+
+                // initialize the images with the found values
+                foreach (explode(',', $additionalImages) as $key => $additionalImage) {
+                    // prepare and append the additional image to the artefacts
+                    $artefacts[] = array(
+                        ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                        ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                        ColumnKeys::IMAGE_PATH       => $additionalImage,
+                        ColumnKeys::IMAGE_LABEL      => isset($additionalImageLabels[$key]) ? $additionalImageLabels[$key] : 'Image'
+                    );
+                }
+            }
+        }
+
+        // append the images to the subject
+        $this->addArtefacts($artefacts);
+
+        // returns the row
+        return $row;
+    }
+
+    /**
+     * Add the passed product type artefacts to the product with the
+     * last entity ID.
+     *
+     * @param array $artefacts The product type artefacts
+     *
+     * @return void
+     * @uses \TechDivision\Import\Product\Media\Subjects\MediaSubject::getLastEntityId()
+     */
+    public function addArtefacts(array $artefacts)
+    {
+        $this->getSubject()->addArtefacts(ProductMediaObserver::ARTEFACT_TYPE, $artefacts);
+    }
+}

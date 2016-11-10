@@ -18,14 +18,13 @@
 		}
 	},
 	"repositories" : [{
-            "type" : "git",
-            "url" : "https://gitlab.tdintern.de/wagnert/techdivision-import.git",
-            "name" : "techdivision/import"
-        },
-        {
-            "type" : "git",
-            "url" : "https://gitlab.tdintern.de/wagnert/techdivision-import-product.git",
-            "name" : "techdivision/import-product"
-        }
+			"type" : "git",
+			"url" : "https://gitlab.tdintern.de/wagnert/techdivision-import.git",
+			"name" : "techdivision/import"
+		}, {
+			"type" : "git",
+			"url" : "https://gitlab.tdintern.de/wagnert/techdivision-import-product.git",
+			"name" : "techdivision/import-product"
+		}
 	]
 }

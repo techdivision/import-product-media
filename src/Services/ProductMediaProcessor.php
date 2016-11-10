@@ -103,4 +103,140 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     {
         return $this->connection->rollBack();
     }
+
+    /**
+     * Set's the action with the product media gallery CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery CRUD methods
+     *
+     * @return void
+     */
+    public function setProductMediaGalleryAction($productMediaGalleryAction)
+    {
+        $this->productMediaGalleryAction = $productMediaGalleryAction;
+    }
+
+    /**
+     * Return's the action with the product media gallery CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery CRUD methods
+     */
+    public function getProductMediaGalleryAction()
+    {
+        return $this->productMediaGalleryAction;
+    }
+
+    /**
+     * Set's the action with the product media gallery valueCRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value CRUD methods
+     *
+     * @return void
+     */
+    public function setProductMediaGalleryValueAction($productMediaGalleryValueAction)
+    {
+        $this->productMediaGalleryValueAction = $productMediaGalleryValueAction;
+    }
+
+    /**
+     * Return's the action with the product media gallery valueCRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery value CRUD methods
+     */
+    public function getProductMediaGalleryValueAction()
+    {
+        return $this->productMediaGalleryValueAction;
+    }
+
+    /**
+     * Set's the action with the product media gallery value to entity CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     *
+     * @return void
+     */
+    public function setProductMediaGalleryValueToEntityAction($productMediaGalleryValueToEntityAction)
+    {
+        $this->productMediaGalleryValueToEntityAction = $productMediaGalleryValueToEntityAction;
+    }
+
+    /**
+     * Return's the action with the product media gallery value to entity CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     */
+    public function getProductMediaGalleryValueToEntityAction()
+    {
+        return $this->productMediaGalleryValueToEntityAction;
+    }
+
+    /**
+     * Set's the action with the product media gallery value video CRUD methods.
+     *
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value video CRUD methods
+     *
+     * @return void
+     */
+    public function setProductMediaGalleryValueVideoAction($productMediaGalleryValueVideoAction)
+    {
+        $this->productMediaGalleryValueVideoAction = $productMediaGalleryValueVideoAction;
+    }
+
+    /**
+     * Return's the action with the product media gallery value video CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery value video CRUD methods
+     */
+    public function getProductMediaGalleryValueVideoAction()
+    {
+        return $this->productMediaGalleryValueVideoAction;
+    }
+
+    /**
+     * Persist's the passed product media gallery data and return's the ID.
+     *
+     * @param array $productMediaGallery The product media gallery data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductMediaGallery($productMediaGallery)
+    {
+        return $this->getProductMediaGalleryAction()->persist($productMediaGallery);
+    }
+
+    /**
+     * Persist's the passed product media gallery value data.
+     *
+     * @param array $productMediaGalleryValue The product media gallery value data to persist
+     *
+     * @return void
+     */
+    public function persistProductMediaGalleryValue($productMediaGalleryValue)
+    {
+        $this->getProductMediaGalleryValueAction()->persist($productMediaGalleryValue);
+    }
+
+    /**
+     * Persist's the passed product media gallery value to entity data.
+     *
+     * @param array $productMediaGalleryValuetoEntity The product media gallery value to entity data to persist
+     *
+     * @return void
+     */
+    public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity)
+    {
+        $this->getProductMediaGalleryValueToEntityAction()->persist($productMediaGalleryValuetoEntity);
+    }
+
+    /**
+     * Persist's the passed product media gallery value video data.
+     *
+     * @param array $productMediaGalleryValueVideo The product media gallery value video data to persist
+     *
+     * @return void
+     */
+    public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo)
+    {
+        $this->getProductMediaGalleryValueVideoAction()->persist($productMediaGalleryValueVideo);
+    }
 }

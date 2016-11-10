@@ -73,4 +73,68 @@ interface ProductMediaProcessorInterface
      * @link http://php.net/manual/en/pdo.rollback.php
      */
     public function rollBack();
+
+    /**
+     * Return's the action with the product media gallery CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery CRUD methods
+     */
+    public function getProductMediaGalleryAction();
+
+    /**
+     * Return's the action with the product media gallery valueCRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery value CRUD methods
+     */
+    public function getProductMediaGalleryValueAction();
+
+    /**
+     * Return's the action with the product media gallery value to entity CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     */
+    public function getProductMediaGalleryValueToEntityAction();
+
+    /**
+     * Return's the action with the product media gallery value video CRUD methods.
+     *
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery value video CRUD methods
+     */
+    public function getProductMediaGalleryValueVideoAction();
+
+    /**
+     * Persist's the passed product media gallery data and return's the ID.
+     *
+     * @param array $productMediaGallery The product media gallery data to persist
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function persistProductMediaGallery($productMediaGallery);
+
+    /**
+     * Persist's the passed product media gallery value data.
+     *
+     * @param array $productMediaGalleryValue The product media gallery value data to persist
+     *
+     * @return void
+     */
+    public function persistProductMediaGalleryValue($productMediaGalleryValue);
+
+    /**
+     * Persist's the passed product media gallery value to entity data.
+     *
+     * @param array $productMediaGalleryValuetoEntity The product media gallery value to entity data to persist
+     *
+     * @return void
+     */
+    public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity);
+
+    /**
+     * Persist's the passed product media gallery value video data.
+     *
+     * @param array $productMediaGalleryValueVideo The product media gallery value video data to persist
+     *
+     * @return void
+     */
+    public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo);
 }
