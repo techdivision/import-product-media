@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Media\Observers\MediaObserver
+ * TechDivision\Import\Product\Media\Observers\MediaGalleryObserver
  *
  * NOTICE OF LICENSE
  *
@@ -45,37 +45,62 @@ class MediaGalleryObserver extends AbstractProductImportObserver
         // load the header information
         $headers = $this->getHeaders();
 
+        // query whether or not, the image changed
+        if ($this->isParentImage($row[$headers[ColumnKeys::IMAGE_PATH]])) {
+            return $row;
+        }
+
         // load the product SKU
         $parentSku = $row[$headers[ColumnKeys::IMAGE_PARENT_SKU]];
 
         // load parent/option ID
         $parentId = $this->mapSkuToEntityId($parentSku);
 
-        // query whether or not, the parent ID have changed
-        if (!$this->isParentId($parentId)) {
-            // reset the position counter for the product media gallery value
-            $this->resetPositionCounter();
-            // preserve the parent ID
-            $this->setParentId($parentId);
+        // reset the position counter for the product media gallery value
+        $this->resetPositionCounter();
 
-            // initialize the gallery data
-            $attributeId = 90;
-            $value = $row[$headers[ColumnKeys::IMAGE_PATH]];
-            $mediaType = 'image';
-            $disabled = 0;
+        // preserve the parent ID
+        $this->setParentId($parentId);
 
-            // persist the product media gallery data
-            $valueId = $this->persistProductMediaGallery(array($attributeId, $value, $mediaType, $disabled));
+        // initialize the gallery data
+        $disabled = 0;
+        $attributeId = 90;
+        $mediaType = 'image';
+        $image = $row[$headers[ColumnKeys::IMAGE_PATH_NEW]];
 
-            // persist the product media gallery to entity data
-            $this->persistProductMediaGalleryValueToEntity(array($valueId, $parentId));
+        // persist the product media gallery data
+        $valueId = $this->persistProductMediaGallery(array($attributeId, $image, $mediaType, $disabled));
 
-            // temporarily persist the value ID
-            $this->setParentValueId($valueId);
-        }
+        // persist the product media gallery to entity data
+        $this->persistProductMediaGalleryValueToEntity(array($valueId, $parentId));
+
+        // temporarily persist the value ID
+        $this->setParentValueId($valueId);
 
         // returns the row
         return $row;
+    }
+
+    /**
+     * Return's the name of the created image.
+     *
+     * @return string The name of the created image
+     */
+    public function getParentImage()
+    {
+        return $this->getSubject()->getParentImage();
+    }
+
+    /**
+     * Return's TRUE if the passed image is the parent one.
+     *
+     * @param string $image The imageD to check
+     *
+     * @return boolean TRUE if the passed image is the parent one
+     */
+    public function isParentImage($image)
+    {
+        return $this->getParentImage() === $image;
     }
 
     /**
@@ -83,7 +108,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @param integer $parentValueId The ID of the created media gallery entry
      *
-     * @return
+     * @return void
      */
     public function setParentValueId($parentValueId)
     {
@@ -104,18 +129,6 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     }
 
     /**
-     * Return's TRUE if the passed ID is the parent one.
-     *
-     * @param integer $parentID The parent ID to check
-     *
-     * @return boolean TRUE if the passed ID is the parent one
-     */
-    public function isParentId($parentId)
-    {
-        return $this->getParentId() === $parentId;
-    }
-
-    /**
      * Set's the ID of the parent product to relate the variant with.
      *
      * @param integer $parentId The ID of the parent product
@@ -125,16 +138,6 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     public function setParentId($parentId)
     {
         $this->getSubject()->setParentId($parentId);
-    }
-
-    /**
-     * Return's the ID of the parent product to relate the variant with.
-     *
-     * @return integer The ID of the parent product
-     */
-    public function getParentId()
-    {
-        return $this->getSubject()->getParentId();
     }
 
     /**

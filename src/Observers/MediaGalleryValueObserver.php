@@ -47,6 +47,11 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
         // load the header information
         $headers = $this->getHeaders();
 
+        // query whether or not, the image changed
+        if ($this->isParentImage($image = $row[$headers[ColumnKeys::IMAGE_PATH]])) {
+            return $row;
+        }
+
         // load the product SKU
         $parentSku = $row[$headers[ColumnKeys::IMAGE_PARENT_SKU]];
 
@@ -83,6 +88,9 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
         // persist the product media gallery value
         $this->persistProductMediaGalleryValue($productMediaGalleryValue);
 
+        // temporarily persist the image name
+        $this->setParentImage($image);
+
         // returns the row
         return $row;
     }
@@ -98,6 +106,40 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     public function mapSkuToEntityId($sku)
     {
         return $this->getSubject()->mapSkuToEntityId($sku);
+    }
+
+    /**
+     * Set's the name of the created image.
+     *
+     * @param string $parentImage The name of the created image
+     *
+     * @return void
+     */
+    public function setParentImage($parentImage)
+    {
+        $this->getSubject()->setParentImage($parentImage);
+    }
+
+    /**
+     * Return's the name of the created image.
+     *
+     * @return string The name of the created image
+     */
+    public function getParentImage()
+    {
+        return $this->getSubject()->getParentImage();
+    }
+
+    /**
+     * Return's TRUE if the passed image is the parent one.
+     *
+     * @param string $image The imageD to check
+     *
+     * @return boolean TRUE if the passed image is the parent one
+     */
+    public function isParentImage($image)
+    {
+        return $this->getParentImage() === $image;
     }
 
     /**

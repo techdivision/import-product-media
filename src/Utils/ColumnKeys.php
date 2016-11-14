@@ -108,6 +108,13 @@ class ColumnKeys extends FallbackColumnKeys
     const IMAGE_PATH = 'image_path';
 
     /**
+     * Name for the column 'image_path_new'.
+     *
+     * @var string
+     */
+    const IMAGE_PATH_NEW = 'image_path_new';
+
+    /**
      * Name for the column 'image_label'.
      *
      * @var string

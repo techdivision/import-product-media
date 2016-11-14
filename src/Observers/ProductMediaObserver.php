@@ -62,7 +62,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
         $parentSku = $row[$headers[ColumnKeys::SKU]];
 
         // query whether or not, we've a base image
-        if (isset($row[$headers[ColumnKeys::BASE_IMAGE]])) {
+        if (!empty($row[$headers[ColumnKeys::BASE_IMAGE]])) {
             // load the base image data
             $baseImage = $row[$headers[ColumnKeys::BASE_IMAGE]];
 
@@ -71,40 +71,43 @@ class ProductMediaObserver extends AbstractProductImportObserver
                 ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
                 ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
                 ColumnKeys::IMAGE_PATH       => $baseImage,
+                ColumnKeys::IMAGE_PATH_NEW   => $baseImage,
                 ColumnKeys::IMAGE_LABEL      => isset($row[$headers[ColumnKeys::BASE_IMAGE_LABEL]]) ? $row[$headers[ColumnKeys::BASE_IMAGE_LABEL]] : 'Image'
             );
         }
 
         // query whether or not, we've a small image
-        if (isset($row[$headers[ColumnKeys::SMALL_IMAGE]])) {
+        if (!empty($row[$headers[ColumnKeys::SMALL_IMAGE]])) {
             // load the small image data
-            $baseImage = $row[$headers[ColumnKeys::SMALL_IMAGE]];
+            $smallImage = $row[$headers[ColumnKeys::SMALL_IMAGE]];
 
             // prepare and append the small image to the artefacts
             $artefacts[] = array(
                 ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
                 ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                ColumnKeys::IMAGE_PATH       => $baseImage,
+                ColumnKeys::IMAGE_PATH       => $smallImage,
+                ColumnKeys::IMAGE_PATH_NEW   => $smallImage,
                 ColumnKeys::IMAGE_LABEL      => isset($row[$headers[ColumnKeys::SMALL_IMAGE_LABEL]]) ? $row[$headers[ColumnKeys::SMALL_IMAGE_LABEL]] : 'Image'
             );
         }
 
         // query whether or not, we've a small thumbnail
-        if (isset($row[$headers[ColumnKeys::THUMBNAIL_IMAGE]])) {
+        if (!empty($row[$headers[ColumnKeys::THUMBNAIL_IMAGE]])) {
             // load the thumbnail image data
-            $baseImage = $row[$headers[ColumnKeys::THUMBNAIL_IMAGE]];
+            $thumbnailImage = $row[$headers[ColumnKeys::THUMBNAIL_IMAGE]];
 
             // prepare and append the thumbnail image to the artefacts
             $artefacts[] = array(
                 ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
                 ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                ColumnKeys::IMAGE_PATH       => $baseImage,
+                ColumnKeys::IMAGE_PATH       => $thumbnailImage,
+                ColumnKeys::IMAGE_PATH_NEW   => $thumbnailImage,
                 ColumnKeys::IMAGE_LABEL      => isset($row[$headers[ColumnKeys::THUMBNAIL_IMAGE_LABEL]]) ? $row[$headers[ColumnKeys::THUMBNAIL_IMAGE_LABEL]] : 'Image'
             );
         }
 
         // query whether or not, we've additional images
-        if (isset($row[$headers[ColumnKeys::ADDITIONAL_IMAGES]])) {
+        if (!empty($row[$headers[ColumnKeys::ADDITIONAL_IMAGES]])) {
             // query whether or not, we've additional images
             if ($additionalImages = $row[$headers[ColumnKeys::ADDITIONAL_IMAGES]]) {
                 // expand the additional image labels, if available
@@ -120,6 +123,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
                         ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
                         ColumnKeys::IMAGE_PATH       => $additionalImage,
+                        ColumnKeys::IMAGE_PATH_NEW   => $additionalImage,
                         ColumnKeys::IMAGE_LABEL      => isset($additionalImageLabels[$key]) ? $additionalImageLabels[$key] : 'Image'
                     );
                 }

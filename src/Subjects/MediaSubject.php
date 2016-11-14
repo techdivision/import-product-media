@@ -20,9 +20,13 @@
 
 namespace TechDivision\Import\Product\Media\Subjects;
 
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\AbstractSubject;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
+use League\Flysystem\FilesystemInterface;
 
 /**
  * A SLSB that handles the process to import product variants.
@@ -44,6 +48,13 @@ class MediaSubject extends AbstractSubject
     protected $productProcessor;
 
     /**
+     * The virtual filesystem instance.
+     *
+     * @var \League\Flysystem\FilesystemInterface
+     */
+    protected $filesystem;
+
+    /**
      * The ID of the parent product to relate the variant with.
      *
      * @var integer
@@ -56,6 +67,41 @@ class MediaSubject extends AbstractSubject
      * @var integer
      */
     protected $parentValueId;
+
+    /**
+     * The name of the craeted image.
+     *
+     * @var integer
+     */
+    protected $parentImage;
+
+    /**
+     * The Magento installation directory.
+     *
+     * @var string
+     */
+    protected $installationDir;
+
+    /**
+     * The root directory for the virtual filesystem.
+     *
+     * @var string
+     */
+    protected $rootDir;
+
+    /**
+     * The directory with the Magento media files => target directory for images (relative to the root directory).
+     *
+     * @var string
+     */
+    protected $mediaDir;
+
+    /**
+     * The directory with the images that have to be imported (relative to the root directory).
+     *
+     * @var string
+     */
+    protected $imagesFileDir;
 
     /**
      * The position counter, if no position for the product media gallery value has been specified.
@@ -124,8 +170,129 @@ class MediaSubject extends AbstractSubject
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status['skuEntityIdMapping'];
 
+        // load the Magento installation directory
+        $this->setInstallationDir($this->getConfiguration()->getConfiguration()->getInstallationDir());
+
+        // initialize the import directories
+        $this->setRootDir($this->getConfiguration()->getParam(ConfigurationKeys::ROOT_DIRECTORY));
+        $this->setMediaDir($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY));
+        $this->setImagesFileDir($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE__DIRECTORY));
+
+        // initialize the filesystem
+        $this->setFilesystem(new Filesystem(new Local($this->getRootDir())));
+
         // prepare the callbacks
         parent::setUp();
+    }
+
+    /**
+     * Set's the virtual filesystem instance.
+     *
+     * @param \League\Flysystem\FilesystemInterface $filesystem The filesystem instance
+     *
+     * @return void
+     */
+    public function setFilesystem(FilesystemInterface $filesystem)
+    {
+        $this->filesystem = $filesystem;
+    }
+
+    /**
+     * Return's the virtual filesystem instance.
+     *
+     * @return \League\Flysystem\FilesystemInterface The filesystem instance
+     */
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
+
+    /**
+     * Set's the Magento installation directory.
+     *
+     * @param string $installationDir The Magento installation directory
+     *
+     * @return void
+     */
+    public function setInstallationDir($installationDir)
+    {
+        $this->installationDir = $installationDir;
+    }
+
+    /**
+     * Return's the Magento installation directory.
+     *
+     * @return string The Magento installation directory
+     */
+    public function getInstallationDir()
+    {
+        return $this->installationDir;
+    }
+
+    /**
+     * Set's root directory for the virtual filesystem.
+     *
+     * @param string $rootDir The root directory for the virtual filesystem
+     *
+     * @return void
+     */
+    public function setRootDir($rootDir)
+    {
+        $this->rootDir = $rootDir;
+    }
+
+    /**
+     * Return's the root directory for the virtual filesystem.
+     *
+     * @return string The root directory for the virtual filesystem
+     */
+    public function getRootDir()
+    {
+        return $this->rootDir;
+    }
+
+    /**
+     * Set's directory with the Magento media files => target directory for images.
+     *
+     * @param string $mediaDir The directory with the Magento media files => target directory for images
+     *
+     * @return void
+     */
+    public function setMediaDir($mediaDir)
+    {
+        $this->mediaDir = $mediaDir;
+    }
+
+    /**
+     * Return's the directory with the Magento media files => target directory for images.
+     *
+     * @return string The directory with the Magento media files => target directory for images
+     */
+    public function getMediaDir()
+    {
+        return $this->mediaDir;
+    }
+
+    /**
+     * Set's directory with the images that have to be imported.
+     *
+     * @param string $imagesFileDir The directory with the images that have to be imported
+     *
+     * @return void
+     */
+    public function setImagesFileDir($imagesFileDir)
+    {
+        $this->imagesFileDir = $imagesFileDir;
+    }
+
+    /**
+     * Return's the directory with the images that have to be imported.
+     *
+     * @return string The directory with the images that have to be imported
+     */
+    public function getImagesFileDir()
+    {
+        return $this->imagesFileDir;
     }
 
     /**
@@ -170,6 +337,28 @@ class MediaSubject extends AbstractSubject
     public function getParentValueId()
     {
         return $this->parentValueId;
+    }
+
+    /**
+     * Set's the name of the created image.
+     *
+     * @param string $parentImage The name of the created image
+     *
+     * @return void
+     */
+    public function setParentImage($parentImage)
+    {
+        $this->parentImage = $parentImage;
+    }
+
+    /**
+     * Return's the name of the created image.
+     *
+     * @return string The name of the created image
+     */
+    public function getParentImage()
+    {
+        return $this->parentImage;
     }
 
     /**
@@ -230,6 +419,76 @@ class MediaSubject extends AbstractSubject
 
         // throw an exception, if not
         throw new \Exception(sprintf('Found invalid store code %s', $storeCode));
+    }
+
+    /**
+     * Upload's the file with the passed name to the Magento
+     * media directory. If the file already exists, the will
+     * be given a new name that will be returned.
+     *
+     * @param string $filename The name of the file to be uploaded
+     *
+     * @return string The name of the uploaded file
+     */
+    public function uploadFile($filename)
+    {
+
+        // prepare source/target filename
+        $sourceFilename = sprintf('%s%s', $this->getImagesFileDir(), $filename);
+        $targetFilename = sprintf('%s%s', $this->getMediaDir(), $filename);
+
+        // query whether or not the image file to be imported is available
+        if (!$this->getFilesystem()->has($sourceFilename)) {
+            $this->getSystemLogger()->info(sprintf('Media file %s not available', $sourceFilename));
+            return;
+        }
+
+        // prepare the target filename, if necessary
+        $newTargetFilename = $this->getNewFileName($targetFilename);
+        $targetFilename = str_replace(basename($targetFilename), $newTargetFilename, $targetFilename);
+
+        // copy the image to the target directory
+        $this->getFilesystem()->copy($sourceFilename, $targetFilename);
+
+        // return the new target filename
+        return str_replace($this->getMediaDir(), '', $targetFilename);
+    }
+
+    /**
+     * Get new file name if the same is already exists.
+     *
+     * @param string $targetFilename The name of the exisising files
+     *
+     * @return string The new filename
+     */
+    public function getNewFileName($targetFilename)
+    {
+
+        // load the file information
+        $fileInfo = pathinfo($targetFilename);
+
+        // query whether or not, the file exists
+        if ($this->getFilesystem()->has($targetFilename)) {
+            // initialize the incex and the basename
+            $index = 1;
+            $baseName = $fileInfo['filename'] . '.' . $fileInfo['extension'];
+
+            // prepare the new filename by raising the index
+            while ($this->getFilesystem()->has($fileInfo['dirname'] . '/' . $baseName)) {
+                $baseName = $fileInfo['filename'] . '_' . $index . '.' . $fileInfo['extension'];
+                $index++;
+            }
+
+            // set the new filename
+            $targetFilename = $baseName;
+
+        } else {
+            // if not, simply return the filename
+            return $fileInfo['basename'];
+        }
+
+        // return the new filename
+        return $targetFilename;
     }
 
     /**

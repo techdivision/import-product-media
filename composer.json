@@ -2,6 +2,7 @@
 	"name" : "techdivision/import-product-media",
 	"description" : "A library supporting generic Magento 2 import functionality",
 	"require" : {
+		"league/flysystem" : "~1.0",
 		"techdivision/import-product" : "0.1.*"
 	},
 	"authors" : [{
