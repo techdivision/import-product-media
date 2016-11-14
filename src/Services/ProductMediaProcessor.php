@@ -38,6 +38,35 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      * @var \PDO
      */
     protected $connection;
+
+    /**
+     * The action with the product media gallery CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction
+     */
+    protected $productMediaGalleryAction;
+
+    /**
+     * The action with the product media gallery value CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueAction
+     */
+    protected $productMediaGalleryValueAction;
+
+    /**
+     * The action with the product media gallery value to entity CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAction
+     */
+    protected $productMediaGalleryValueToEntityAction;
+
+    /**
+     * The action with the product media gallery video CRUD methods.
+     *
+     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryVideoAction
+     */
+    protected $productMediaGalleryVideoAction;
+
     /**
      * Set's the passed connection.
      *
