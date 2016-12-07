@@ -20,13 +20,10 @@
 
 namespace TechDivision\Import\Product\Media\Subjects;
 
-use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\AbstractSubject;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
-use League\Flysystem\FilesystemInterface;
 
 /**
  * A SLSB that handles the process to import product variants.
@@ -46,13 +43,6 @@ class MediaSubject extends AbstractSubject
      * @var \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface
      */
     protected $productProcessor;
-
-    /**
-     * The virtual filesystem instance.
-     *
-     * @var \League\Flysystem\FilesystemInterface
-     */
-    protected $filesystem;
 
     /**
      * The ID of the parent product to relate the variant with.
@@ -81,13 +71,6 @@ class MediaSubject extends AbstractSubject
      * @var string
      */
     protected $installationDir;
-
-    /**
-     * The root directory for the virtual filesystem.
-     *
-     * @var string
-     */
-    protected $rootDir;
 
     /**
      * The directory with the Magento media files => target directory for images (relative to the root directory).
@@ -155,6 +138,9 @@ class MediaSubject extends AbstractSubject
     public function setUp()
     {
 
+        // prepare the callbacks
+        parent::setUp();
+
         // load the entity manager and the registry processor
         $registryProcessor = $this->getRegistryProcessor();
 
@@ -173,38 +159,9 @@ class MediaSubject extends AbstractSubject
         // load the Magento installation directory
         $this->setInstallationDir($this->getConfiguration()->getConfiguration()->getInstallationDir());
 
-        // initialize the import directories
-        $this->setRootDir($this->getConfiguration()->getParam(ConfigurationKeys::ROOT_DIRECTORY));
-        $this->setMediaDir($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY));
-        $this->setImagesFileDir($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE__DIRECTORY));
-
-        // initialize the filesystem
-        $this->setFilesystem(new Filesystem(new Local($this->getRootDir())));
-
-        // prepare the callbacks
-        parent::setUp();
-    }
-
-    /**
-     * Set's the virtual filesystem instance.
-     *
-     * @param \League\Flysystem\FilesystemInterface $filesystem The filesystem instance
-     *
-     * @return void
-     */
-    public function setFilesystem(FilesystemInterface $filesystem)
-    {
-        $this->filesystem = $filesystem;
-    }
-
-    /**
-     * Return's the virtual filesystem instance.
-     *
-     * @return \League\Flysystem\FilesystemInterface The filesystem instance
-     */
-    public function getFilesystem()
-    {
-        return $this->filesystem;
+        // initialize media/and images directory => can be absolute or relative
+        $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)));
+        $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE__DIRECTORY)));
     }
 
     /**
@@ -227,28 +184,6 @@ class MediaSubject extends AbstractSubject
     public function getInstallationDir()
     {
         return $this->installationDir;
-    }
-
-    /**
-     * Set's root directory for the virtual filesystem.
-     *
-     * @param string $rootDir The root directory for the virtual filesystem
-     *
-     * @return void
-     */
-    public function setRootDir($rootDir)
-    {
-        $this->rootDir = $rootDir;
-    }
-
-    /**
-     * Return's the root directory for the virtual filesystem.
-     *
-     * @return string The root directory for the virtual filesystem
-     */
-    public function getRootDir()
-    {
-        return $this->rootDir;
     }
 
     /**

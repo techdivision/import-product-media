@@ -21,6 +21,7 @@
 namespace TechDivision\Import\Product\Media\Services;
 
 use TechDivision\Import\ConfigurationInterface;
+use TechDivision\Import\Services\AbstractProcessorFactory;
 use TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryPersistProcessor;
 use TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValuePersistProcessor;
 use TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueVideoPersistProcessor;
@@ -39,8 +40,18 @@ use TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAc
  * @link      https://github.com/wagnert/csv-import
  * @link      http://www.appserver.io
  */
-class ProductMediaProcessorFactory
+class ProductMediaProcessorFactory extends AbstractProcessorFactory
 {
+
+    /**
+     * Return's the processor class name.
+     *
+     * @return string The processor class name
+     */
+    protected static function getProcessorType()
+    {
+        return 'TechDivision\Import\Product\Media\Services\ProductMediaProcessor';
+    }
 
     /**
      * Factory method to create a new product media processor instance.
@@ -94,7 +105,8 @@ class ProductMediaProcessorFactory
         $productMediaGalleryValueVideoAction->setPersistProcessor($productMediaGalleryValueVideoPersistProcessor);
 
         // initialize the product media processor
-        $productMediaProcessor = new ProductMediaProcessor();
+        $processorType = ProductMediaProcessorFactory::getProcessorType();
+        $productMediaProcessor = new $processorType();
         $productMediaProcessor->setConnection($connection);
         $productMediaProcessor->setProductMediaGalleryAction($productMediaGalleryAction);
         $productMediaProcessor->setProductMediaGalleryValueAction($productMediaGalleryValueAction);

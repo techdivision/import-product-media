@@ -50,13 +50,6 @@ class ConfigurationKeys
     }
 
     /**
-     * Name for the column 'root-directory'.
-     *
-     * @var string
-     */
-    const ROOT_DIRECTORY = 'root-directory';
-
-    /**
      * Name for the column 'media-directory'.
      *
      * @var string
