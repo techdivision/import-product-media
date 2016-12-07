@@ -50,6 +50,7 @@ class ProductMediaGalleryValueToEntityPersistBatchProcessor extends AbstractPers
      */
     protected function getStatement()
     {
-        return SqlStatements::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY;
+        $utilityClassName = $this->getUtilityClassName();
+        return $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY;
     }
 }

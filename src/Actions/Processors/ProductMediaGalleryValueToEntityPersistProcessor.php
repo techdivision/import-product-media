@@ -20,6 +20,8 @@
 
 namespace TechDivision\Import\Product\Media\Actions\Processors;
 
+use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
+
 /**
  * The product media gallery value to entity persist processor implementation.
  *
@@ -29,7 +31,7 @@ namespace TechDivision\Import\Product\Media\Actions\Processors;
  * @link      https://github.com/wagnert/csv-import
  * @link      http://www.appserver.io
  */
-class ProductMediaGalleryValueToEntityPersistProcessor extends AbstractProductMediaPersistProcessor
+class ProductMediaGalleryValueToEntityPersistProcessor extends AbstractPersistProcessor
 {
 
     /**

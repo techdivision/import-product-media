@@ -20,8 +20,8 @@
 
 namespace TechDivision\Import\Product\Media\Services;
 
-use TechDivision\Import\ConfigurationInterface;
-use TechDivision\Import\Services\AbstractProcessorFactory;
+use TechDivision\Import\Configuration\SubjectInterface;
+use TechDivision\Import\Product\Services\AbstractProductProcessorFactory;
 use TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryPersistProcessor;
 use TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValuePersistProcessor;
 use TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueVideoPersistProcessor;
@@ -40,7 +40,7 @@ use TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAc
  * @link      https://github.com/wagnert/csv-import
  * @link      http://www.appserver.io
  */
-class ProductMediaProcessorFactory extends AbstractProcessorFactory
+class ProductMediaProcessorFactory extends AbstractProductProcessorFactory
 {
 
     /**
@@ -56,22 +56,20 @@ class ProductMediaProcessorFactory extends AbstractProcessorFactory
     /**
      * Factory method to create a new product media processor instance.
      *
-     * @param \PDO                                       $connection    The PDO connection to use
-     * @param TechDivision\Import\ConfigurationInterface $configuration The subject configuration
+     * @param \PDO                                               $connection    The PDO connection to use
+     * @param TechDivision\Import\Configuration\SubjectInterface $configuration The subject configuration
      *
      * @return \TechDivision\Import\Product\Media\Services\ProductMediaProcessor The processor instance
      */
-    public function factory(\PDO $connection, ConfigurationInterface $configuration)
+    public static function factory(\PDO $connection, SubjectInterface $configuration)
     {
 
-        // extract Magento edition/version
-        $magentoEdition = $configuration->getMagentoEdition();
-        $magentoVersion = $configuration->getMagentoVersion();
+        // load the utility class name
+        $utilityClassName = $configuration->getUtilityClassName();
 
         // initialize the action that provides product media gallery CRUD functionality
         $productMediaGalleryPersistProcessor = new ProductMediaGalleryPersistProcessor();
-        $productMediaGalleryPersistProcessor->setMagentoEdition($magentoEdition);
-        $productMediaGalleryPersistProcessor->setMagentoVersion($magentoVersion);
+        $productMediaGalleryPersistProcessor->setUtilityClassName($utilityClassName);
         $productMediaGalleryPersistProcessor->setConnection($connection);
         $productMediaGalleryPersistProcessor->init();
         $productMediaGalleryAction = new ProductMediaGalleryAction();
@@ -79,8 +77,7 @@ class ProductMediaProcessorFactory extends AbstractProcessorFactory
 
         // initialize the action that provides product media gallery value CRUD functionality
         $productMediaGalleryValuePersistProcessor = new ProductMediaGalleryValuePersistProcessor();
-        $productMediaGalleryValuePersistProcessor->setMagentoEdition($magentoEdition);
-        $productMediaGalleryValuePersistProcessor->setMagentoVersion($magentoVersion);
+        $productMediaGalleryValuePersistProcessor->setUtilityClassName($utilityClassName);
         $productMediaGalleryValuePersistProcessor->setConnection($connection);
         $productMediaGalleryValuePersistProcessor->init();
         $productMediaGalleryValueAction = new ProductMediaGalleryValueAction();
@@ -88,8 +85,7 @@ class ProductMediaProcessorFactory extends AbstractProcessorFactory
 
         // initialize the action that provides product media gallery value to entity CRUD functionality
         $productMediaGalleryValueToEntityPersistProcessor = new ProductMediaGalleryValueToEntityPersistProcessor();
-        $productMediaGalleryValueToEntityPersistProcessor->setMagentoEdition($magentoEdition);
-        $productMediaGalleryValueToEntityPersistProcessor->setMagentoVersion($magentoVersion);
+        $productMediaGalleryValueToEntityPersistProcessor->setUtilityClassName($utilityClassName);
         $productMediaGalleryValueToEntityPersistProcessor->setConnection($connection);
         $productMediaGalleryValueToEntityPersistProcessor->init();
         $productMediaGalleryValueToEntityAction = new ProductMediaGalleryValueToEntityAction();
@@ -97,8 +93,7 @@ class ProductMediaProcessorFactory extends AbstractProcessorFactory
 
         // initialize the action that provides product media gallery value video CRUD functionality
         $productMediaGalleryValueVideoPersistProcessor = new ProductMediaGalleryValueVideoPersistProcessor();
-        $productMediaGalleryValueVideoPersistProcessor->setMagentoEdition($magentoEdition);
-        $productMediaGalleryValueVideoPersistProcessor->setMagentoVersion($magentoVersion);
+        $productMediaGalleryValueVideoPersistProcessor->setUtilityClassName($utilityClassName);
         $productMediaGalleryValueVideoPersistProcessor->setConnection($connection);
         $productMediaGalleryValueVideoPersistProcessor->init();
         $productMediaGalleryValueVideoAction = new ProductMediaGalleryValueVideoAction();

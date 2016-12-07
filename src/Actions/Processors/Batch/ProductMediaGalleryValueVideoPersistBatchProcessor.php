@@ -50,6 +50,7 @@ class ProductMediaGalleryValueVideoPersistBatchProcessor extends AbstractPersist
      */
     protected function getStatement()
     {
-        return SqlStatements::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_VIDEO;
+        $utilityClassName = $this->getUtilityClassName();
+        return $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_VIDEO;
     }
 }

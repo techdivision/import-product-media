@@ -20,6 +20,8 @@
 
 namespace TechDivision\Import\Product\Media\Utils;
 
+use TechDivision\Import\Utils\SqlStatementsUtil;
+
 /**
  * A SSB providing process registry functionality.
  *
@@ -61,13 +63,17 @@ class SqlStatements
     public static function getUtilityClassName($magentoEdition, $magentoVersion)
     {
 
+        // format Magento edition/version to build a valid PHP namespace
+        $magentoEdition = SqlStatementsUtil::formatMagentoEdition($magentoEdition);
+        $magentoVersion = SqlStatementsUtil::formatMagentoVersion($magentoVersion);
+
         // prepare the Magento edition/version specific utility classname
-        $utilClassName = sprintf('TechDivision\Import\Product\Media\Utils\%s\V%s\SqlStatements', ucfirst($magentoEdition), $magentoVersion);
+        $utilClassName = sprintf('TechDivision\Import\Product\Media\Utils\%s\V%s\SqlStatements', $magentoEdition, $magentoVersion);
 
         // if NOT available, use the default utility class name
         if (!class_exists($utilClassName)) {
             // prepare the Magento edition/version specific utility classname
-            if (!class_exists($utilClassName = sprintf('TechDivision\Import\Product\Media\Utils\%s\SqlStatements', ucfirst($magentoEdition)))) {
+            if (!class_exists($utilClassName = sprintf('TechDivision\Import\Product\Media\Utils\%s\SqlStatements', $magentoEdition))) {
                 $utilClassName = __CLASS__;
             }
         }

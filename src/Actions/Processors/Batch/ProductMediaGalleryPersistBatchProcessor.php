@@ -50,7 +50,8 @@ class ProductMediaGalleryPersistBatchProcessor extends AbstractPersistBatchProce
      */
     protected function getStatement()
     {
-        return SqlStatements::CREATE_PRODUCT_MEDIA_GALLERY;
+        $utilityClassName = $this->getUtilityClassName();
+        return $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY;
     }
 
     /**
