@@ -148,13 +148,13 @@ class MediaSubject extends AbstractSubject
         $status = $registryProcessor->getAttribute($this->serial);
 
         // load the EAV attributes we've prepared initially
-        $this->eavAttributes = $status['globalData'][RegistryKeys::EAV_ATTRIBUTES];
+        $this->eavAttributes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::EAV_ATTRIBUTES];
 
         // load the stores we've initialized before
-        $this->stores = $status['globalData'][RegistryKeys::STORES];
+        $this->stores = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::STORES];
 
         // load the attribute set we've prepared intially
-        $this->skuEntityIdMapping = $status['skuEntityIdMapping'];
+        $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
 
         // load the Magento installation directory
         $this->setInstallationDir($this->getConfiguration()->getConfiguration()->getInstallationDir());
