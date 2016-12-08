@@ -11,11 +11,11 @@
  *
  * PHP version 5
  *
- * @author    Tim Wagner <tw@appserver.io>
- * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @author    Tim Wagner <t.wagner@techdivision.com>
+ * @copyright 2016 TechDivision GmbH <info@techdivision.com>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      https://github.com/wagnert/csv-import
- * @link      http://www.appserver.io
+ * @link      https://github.com/techdivision/import-product-media
+ * @link      http://www.techdivision.com
  */
 
 namespace TechDivision\Import\Product\Media\Observers;
@@ -28,11 +28,11 @@ use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 /**
  * A SLSB that handles the process to import product media.
  *
- * @author    Tim Wagner <tw@appserver.io>
- * @copyright 2015 TechDivision GmbH <info@appserver.io>
+ * @author    Tim Wagner <t.wagner@techdivision.com>
+ * @copyright 2016 TechDivision GmbH <info@techdivision.com>
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- * @link      https://github.com/wagnert/csv-import
- * @link      http://www.appserver.io
+ * @link      https://github.com/techdivision/import-product-media
+ * @link      http://www.techdivision.com
  */
 class MediaGalleryValueObserver extends AbstractProductImportObserver
 {
@@ -56,7 +56,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
         $parentSku = $row[$headers[ColumnKeys::IMAGE_PARENT_SKU]];
 
         // load parent/option ID
-        $parentId = $this->mapSkuToEntityId($parentSku);
+        $parentId = $this->mapParentSku($parentSku);
 
         // initialize the store view code
         $storeViewCode = $row[$headers[ColumnKeys::STORE_VIEW_CODE]] ?: StoreViewCodes::ADMIN;
@@ -93,6 +93,18 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
 
         // returns the row
         return $row;
+    }
+
+    /**
+     * Map's the passed SKU of the parent product to it's PK.
+     *
+     * @param string $parentSku The SKU of the parent product
+     *
+     * @return integer The primary key used to create relations
+     */
+    public function mapParentSku($parentSku)
+    {
+        return $this->mapSkuToEntityId($parentSku);
     }
 
     /**
