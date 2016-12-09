@@ -257,7 +257,7 @@ class MediaSubject extends AbstractSubject
      *
      * @param integer $parentValueId The ID of the created media gallery entry
      *
-     * @return
+     * @return void
      */
     public function setParentValueId($parentValueId)
     {

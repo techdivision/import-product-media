@@ -158,7 +158,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery valueCRUD methods.
      *
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value CRUD methods
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryValueAction The action with the product media gallery value CRUD methods
      *
      * @return void
      */
@@ -180,7 +180,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery value to entity CRUD methods.
      *
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryValueToEntityAction The action with the product media gallery value to entity CRUD methods
      *
      * @return void
      */
@@ -202,7 +202,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery value video CRUD methods.
      *
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value video CRUD methods
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryValueVideoAction The action with the product media gallery value video CRUD methods
      *
      * @return void
      */
