@@ -224,48 +224,52 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Persist's the passed product media gallery data and return's the ID.
      *
-     * @param array $productMediaGallery The product media gallery data to persist
+     * @param array       $productMediaGallery The product media gallery data to persist
+     * @param string|null $name                The name of the prepared statement that has to be executed
      *
      * @return string The ID of the persisted entity
      */
-    public function persistProductMediaGallery($productMediaGallery)
+    public function persistProductMediaGallery($productMediaGallery, $name = null)
     {
-        return $this->getProductMediaGalleryAction()->persist($productMediaGallery);
+        return $this->getProductMediaGalleryAction()->persist($productMediaGallery, $name);
     }
 
     /**
      * Persist's the passed product media gallery value data.
      *
-     * @param array $productMediaGalleryValue The product media gallery value data to persist
+     * @param array       $productMediaGalleryValue The product media gallery value data to persist
+     * @param string|null $name                     The name of the prepared statement that has to be executed
      *
      * @return void
      */
-    public function persistProductMediaGalleryValue($productMediaGalleryValue)
+    public function persistProductMediaGalleryValue($productMediaGalleryValue, $name = null)
     {
-        $this->getProductMediaGalleryValueAction()->persist($productMediaGalleryValue);
+        $this->getProductMediaGalleryValueAction()->persist($productMediaGalleryValue, $name);
     }
 
     /**
      * Persist's the passed product media gallery value to entity data.
      *
-     * @param array $productMediaGalleryValuetoEntity The product media gallery value to entity data to persist
+     * @param array       $productMediaGalleryValuetoEntity The product media gallery value to entity data to persist
+     * @param string|null $name                             The name of the prepared statement that has to be executed
      *
      * @return void
      */
-    public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity)
+    public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity, $name = null)
     {
-        $this->getProductMediaGalleryValueToEntityAction()->persist($productMediaGalleryValuetoEntity);
+        $this->getProductMediaGalleryValueToEntityAction()->persist($productMediaGalleryValuetoEntity, $name);
     }
 
     /**
      * Persist's the passed product media gallery value video data.
      *
-     * @param array $productMediaGalleryValueVideo The product media gallery value video data to persist
+     * @param array       $productMediaGalleryValueVideo The product media gallery value video data to persist
+     * @param string|null $name                          The name of the prepared statement that has to be executed
      *
      * @return void
      */
-    public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo)
+    public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo, $name = null)
     {
-        $this->getProductMediaGalleryValueVideoAction()->persist($productMediaGalleryValueVideo);
+        $this->getProductMediaGalleryValueVideoAction()->persist($productMediaGalleryValueVideo, $name);
     }
 }
