@@ -24,7 +24,7 @@ use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
- * A SLSB that handles the process to import additional product images.
+ * Observer that extracts theproduct's media data from a CSV file to be added to media specifi CSV file.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>

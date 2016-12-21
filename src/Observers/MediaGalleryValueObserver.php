@@ -26,7 +26,7 @@ use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
- * A SLSB that handles the process to import product media.
+ * Observer that creates/updates the product's media gallery value information.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>

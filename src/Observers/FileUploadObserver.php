@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Media\Observers\PreImport\FileUploadObserver
+ * TechDivision\Import\Product\Media\Observers\FileUploadObserver
  *
  * NOTICE OF LICENSE
  *
@@ -18,13 +18,14 @@
  * @link      http://www.techdivision.com
  */
 
-namespace TechDivision\Import\Product\Media\Observers\PreImport;
+namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
- * A SLSB that handles the process to import product media.
+ * Observer that uploads the file specified in a CSV file's column 'image_path' to a
+ * configurable directoy.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>

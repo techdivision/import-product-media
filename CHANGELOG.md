@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha3
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Fixed typos + move FileUploadObserver to Observers directory
+
 # Version 1.0.0-alpha2
 
 ## Bugfixes
