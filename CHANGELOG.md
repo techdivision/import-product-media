@@ -1,3 +1,15 @@
+# Version 1.0.0-alpha4
+
+## Bugfixes
+
+* None
+
+## Features
+
+* MediaSubject now extends AbstractProductSubject
+* Add Robo.li composer dependeny + task configuration
+* ProductMediaProcessorInterface now extends ProductProcessorInterface
+
 # Version 1.0.0-alpha3
 
 ## Bugfixes

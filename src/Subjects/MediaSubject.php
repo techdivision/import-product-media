@@ -21,9 +21,9 @@
 namespace TechDivision\Import\Product\Media\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Subjects\AbstractSubject;
-use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
+use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 
 /**
  * A SLSB that handles the process to import product variants.
@@ -34,15 +34,8 @@ use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class MediaSubject extends AbstractSubject
+class MediaSubject extends AbstractProductSubject
 {
-
-    /**
-     * The processor to write the necessary product media data.
-     *
-     * @var \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface
-     */
-    protected $productProcessor;
 
     /**
      * The ID of the parent product to relate the variant with.
@@ -108,28 +101,6 @@ class MediaSubject extends AbstractSubject
     protected $skuEntityIdMapping = array();
 
     /**
-     * Set's the product media processor instance.
-     *
-     * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productProcessor The product media processor instance
-     *
-     * @return void
-     */
-    public function setProductProcessor(ProductMediaProcessorInterface $productProcessor)
-    {
-        $this->productProcessor = $productProcessor;
-    }
-
-    /**
-     * Return's the product media processor instance.
-     *
-     * @return \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface The product media processor instance
-     */
-    public function getProductProcessor()
-    {
-        return $this->productProcessor;
-    }
-
-    /**
      * Intializes the previously loaded global data for exactly one variants.
      *
      * @return void
@@ -138,20 +109,14 @@ class MediaSubject extends AbstractSubject
     public function setUp()
     {
 
-        // prepare the callbacks
+        // invoke parent method
         parent::setUp();
 
         // load the entity manager and the registry processor
         $registryProcessor = $this->getRegistryProcessor();
 
         // load the status of the actual import process
-        $status = $registryProcessor->getAttribute($this->serial);
-
-        // load the EAV attributes we've prepared initially
-        $this->eavAttributes = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::EAV_ATTRIBUTES];
-
-        // load the stores we've initialized before
-        $this->stores = $status[RegistryKeys::GLOBAL_DATA][RegistryKeys::STORES];
+        $status = $registryProcessor->getAttribute($this->getSerial());
 
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
