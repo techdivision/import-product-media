@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha5
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to new create/delete naming convention
+
 # Version 1.0.0-alpha4
 
 ## Bugfixes

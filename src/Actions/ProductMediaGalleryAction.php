@@ -35,15 +35,15 @@ class ProductMediaGalleryAction extends AbstractAction
 {
 
     /**
-     * Persist's the passed row.
+     * Creates's the entity with the passed attributes.
      *
-     * @param array       $row  The row to persist
+     * @param array       $row  The attributes of the entity to create
      * @param string|null $name The name of the prepared statement that has to be executed
      *
      * @return string The last inserted ID
      */
-    public function persist($row, $name = null)
+    public function create($row, $name = null)
     {
-        return $this->getPersistProcessor()->execute($row, $name);
+        return $this->getCreateProcessor()->execute($row, $name);
     }
 }
