@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValuePersistProcessor
+ * TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryCreateProcessor
  *
  * NOTICE OF LICENSE
  *
@@ -20,10 +20,10 @@
 
 namespace TechDivision\Import\Product\Media\Actions\Processors;
 
-use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
+use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
 
 /**
- * The product media gallery value persist processor implementation.
+ * The product media gallery create processor implementation.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,7 +31,7 @@ use TechDivision\Import\Actions\Processors\AbstractPersistProcessor;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryValuePersistProcessor extends AbstractPersistProcessor
+class ProductMediaGalleryCreateProcessor extends AbstractCreateProcessor
 {
 
     /**
@@ -48,7 +48,21 @@ class ProductMediaGalleryValuePersistProcessor extends AbstractPersistProcessor
 
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY_VALUE => $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY_VALUE
+            $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY => $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY
         );
+    }
+
+    /**
+     * Persist's the passed row.
+     *
+     * @param array       $row  The row to persist
+     * @param string|null $name The name of the prepared statement that has to be executed
+     *
+     * @return string The last inserted ID
+     */
+    public function execute($row, $name = null)
+    {
+        $this->getPreparedStatement($name)->execute($row);
+        return $this->getConnection()->lastInsertId();
     }
 }

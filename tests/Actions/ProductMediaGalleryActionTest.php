@@ -33,31 +33,31 @@ class ProductMediaGalleryActionTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * Test's the persist() method successfull.
+     * Test's the create() method successfull.
      *
      * @return void
      */
-    public function testPersistWithSuccess()
+    public function testCreateWithSuccess()
     {
 
-        // create a persist processor mock instance
-        $mockPersistProcessor = $this->getMockBuilder($processorInterface = 'TechDivision\Import\Actions\Processors\ProcessorInterface')
-                                     ->setMethods(get_class_methods($processorInterface))
-                                     ->getMock();
-        $mockPersistProcessor->expects($this->once())
-                             ->method('execute')
-                             ->with($row = array())
-                             ->willReturn(null);
+        // create a create processor mock instance
+        $mockCreateProcessor = $this->getMockBuilder($processorInterface = 'TechDivision\Import\Actions\Processors\ProcessorInterface')
+                                    ->setMethods(get_class_methods($processorInterface))
+                                    ->getMock();
+        $mockCreateProcessor->expects($this->once())
+                            ->method('execute')
+                            ->with($row = array())
+                            ->willReturn(null);
 
         // create a mock for the product media gallery action
         $mockAction = $this->getMockBuilder('TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction')
-                           ->setMethods(array('getPersistProcessor'))
+                           ->setMethods(array('getCreateProcessor'))
                            ->getMock();
         $mockAction->expects($this->once())
-                   ->method('getPersistProcessor')
-                   ->willReturn($mockPersistProcessor);
+                   ->method('getCreateProcessor')
+                   ->willReturn($mockCreateProcessor);
 
-        // test the persist() method
-        $this->assertNull($mockAction->persist($row));
+        // test the create() method
+        $this->assertNull($mockAction->create($row));
     }
 }
