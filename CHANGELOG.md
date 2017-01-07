@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha6
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Implement add/update operation
+
 # Version 1.0.0-alpha5
 
 ## Bugfixes

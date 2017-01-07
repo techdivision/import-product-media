@@ -74,8 +74,9 @@ class MediaGalleryObserver extends AbstractProductImportObserver
         $this->valueId = $this->persistProductMediaGallery($productMediaGallery);
 
         // persist the product media gallery to entity data
-        $productMediaGalleryValueToEntity = $this->initializeProductMediaGalleryValueToEntity($this->prepareProductMediaGalleryValueToEntityAttributes());
-        $this->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
+        if ($productMediaGalleryValueToEntity = $this->initializeProductMediaGalleryValueToEntity($this->prepareProductMediaGalleryValueToEntityAttributes())) {
+            $this->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
+        }
 
         // temporarily persist parent/value ID
         $this->setParentId($this->parentId);
@@ -141,7 +142,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @param array $attr The product media gallery value to entity attributes
      *
-     * @return array The initialized product media gallery value to entity
+     * @return array|null The initialized product media gallery value to entity, or NULL if the product media gallery value to entity already exists
      */
     protected function initializeProductMediaGalleryValueToEntity(array $attr)
     {
