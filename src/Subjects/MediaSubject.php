@@ -21,9 +21,8 @@
 namespace TechDivision\Import\Product\Media\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
-use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 
 /**
  * A SLSB that handles the process to import product variants.
@@ -389,6 +388,46 @@ class MediaSubject extends AbstractProductSubject
 
         // return the new filename
         return $targetFilename;
+    }
+
+    /**
+     * Load's the product media gallery with the passed attribute ID + value.
+     *
+     * @param integer $attributeId The attribute ID of the product media gallery to load
+     * @param string  $value       The value of the product media gallery to load
+     *
+     * @return array The product media gallery
+     */
+    public function loadProductMediaGallery($attributeId, $value)
+    {
+        return $this->getProductProcessor()->loadProductMediaGallery($attributeId, $value);
+    }
+
+    /**
+     * Load's the product media gallery with the passed value/entity ID.
+     *
+     * @param integer $valueId  The value ID of the product media gallery value to entity to load
+     * @param integer $entityId The entity ID of the product media gallery value to entity to load
+     *
+     * @return array The product media gallery
+     */
+    public function loadProductMediaGalleryValueToEntity($valueId, $entityId)
+    {
+        return $this->getProductProcessor()->loadProductMediaGalleryValueToEntity($valueId, $entityId);
+    }
+
+    /**
+     * Load's the product media gallery value with the passed value/store/parent ID.
+     *
+     * @param integer $valueId  The value ID of the product media gallery value to load
+     * @param string  $storeId  The store ID of the product media gallery value to load
+     * @param string  $entityId The entity ID of the parent product of the product media gallery value to load
+     *
+     * @return array The product media gallery value
+     */
+    public function loadProductMediaGalleryValue($valueId, $storeId, $entityId)
+    {
+        $this->getProductProcessor()->loadProductMediaGalleryValue($valueId, $storeId, $entityId);
     }
 
     /**

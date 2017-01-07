@@ -35,6 +35,27 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
 {
 
     /**
+     * Return's the repository to load product media gallery data.
+     *
+     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository The repository instance
+     */
+    public function getProductMediaGalleryRepository();
+
+    /**
+     * Return's the repository to load product media gallery value to entity data.
+     *
+     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepository The repository instance
+     */
+    public function getProductMediaGalleryValueToEntityRepository();
+
+    /**
+     * Return's the repository to load product media gallery value data.
+     *
+     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepository The repository instance
+     */
+    public function getProductMediaGalleryValueRepository();
+
+    /**
      * Return's the action with the product media gallery CRUD methods.
      *
      * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery CRUD methods
@@ -61,6 +82,37 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
      * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery value video CRUD methods
      */
     public function getProductMediaGalleryValueVideoAction();
+
+    /**
+     * Load's the product media gallery with the passed attribute ID + value.
+     *
+     * @param integer $attributeId The attribute ID of the product media gallery to load
+     * @param string  $value       The value of the product media gallery to load
+     *
+     * @return array The product media gallery
+     */
+    public function loadProductMediaGallery($attributeId, $value);
+
+    /**
+     * Load's the product media gallery with the passed value/entity ID.
+     *
+     * @param integer $valueId  The value ID of the product media gallery value to entity to load
+     * @param integer $entityId The entity ID of the product media gallery value to entity to load
+     *
+     * @return array The product media gallery
+     */
+    public function loadProductMediaGalleryValueToEntity($valueId, $entityId);
+
+    /**
+     * Load's the product media gallery value with the passed value/store/parent ID.
+     *
+     * @param integer $valueId  The value ID of the product media gallery value to load
+     * @param string  $storeId  The store ID of the product media gallery value to load
+     * @param string  $entityId The entity ID of the parent product of the product media gallery value to load
+     *
+     * @return array The product media gallery value
+     */
+    public function loadProductMediaGalleryValue($valueId, $storeId, $entityId);
 
     /**
      * Persist's the passed product media gallery data and return's the ID.

@@ -50,6 +50,37 @@ class SqlStatements
     }
 
     /**
+     * The SQL statement to load an existing product media gallery by attribute ID + value.
+     *
+     * @var string
+     */
+    const PRODUCT_MEDIA_GALLERY = 'SELECT *
+                                     FROM catalog_product_entity_media_gallery
+                                    WHERE attribute_id = :attribute_id
+                                      AND value = :value';
+
+    /**
+     * The SQL statement to load an existing product media gallery by value/store/entity ID.
+     *
+     * @var string
+     */
+    const PRODUCT_MEDIA_GALLERY_VALUE = 'SELECT *
+                                           FROM catalog_product_entity_media_gallery_value
+                                          WHERE value_id = :value_id
+                                            AND store_id = :store_id
+                                            AND entity_id = :entity_id';
+
+    /**
+     * The SQL statement to load an existing product media gallery value to entity by value/entity ID.
+     *
+     * @var string
+     */
+    const PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY = 'SELECT *
+                                                     FROM catalog_product_entity_media_gallery_value_to_entity
+                                                    WHERE value_id = :value_id
+                                                      AND entity_id = :entity_id';
+
+    /**
      * The SQL statement to create a new product media gallery entry.
      *
      * @var string
@@ -61,7 +92,22 @@ class SqlStatements
                                                      media_type,
                                                      disabled
                                                    )
-                                            VALUES (?, ?, ?, ?)';
+                                            VALUES (:attribute_id,
+                                                    :value,
+                                                    :media_type,
+                                                    :disabled)';
+
+    /**
+     * The SQL statement to update an existing product media gallery entry.
+     *
+     * @var string
+     */
+    const UPDATE_PRODUCT_MEDIA_GALLERY = 'UPDATE catalog_product_entity_media_gallery
+                                             SET attribute_id = :attribute_id,
+                                                 value = :value,
+                                                 media_type = :media_type,
+                                                 disabled = :disabled
+                                           WHERE value_id = :value_id';
 
     /**
      * The SQL statement to create a new product media gallery value entry.
@@ -77,7 +123,26 @@ class SqlStatements
                                                            position,
                                                            disabled
                                                        )
-                                                VALUES (?, ?, ?, ?, ?, ?)';
+                                                VALUES (:value_id,
+                                                        :store_id,
+                                                        :entity_id,
+                                                        :label,
+                                                        :position,
+                                                        :disabled)';
+
+    /**
+     * The SQL statement to update an existing product media gallery value entry.
+     *
+     * @var string
+     */
+    const UPDATE_PRODUCT_MEDIA_GALLERY_VALUE = 'UPDATE catalog_product_entity_media_gallery_value
+                                                   SET value_id = :value_id,
+                                                       store_id = :store_id,
+                                                       entity_id = :entity_id,
+                                                       label = :label,
+                                                       position = :position,
+                                                       disabled = :disabled
+                                                 WHERE record_id = :record_id';
 
     /**
      * The SQL statement to create a new product media gallery value to entity entry.
@@ -89,7 +154,8 @@ class SqlStatements
                                                                    value_id,
                                                                    entity_id
                                                                  )
-                                                          VALUES (?, ?)';
+                                                          VALUES (:value_id,
+                                                                  :entity_id)';
 
     /**
      * The SQL statement to create a new product media gallery value vidoe entry.
@@ -106,5 +172,11 @@ class SqlStatements
                                                                  description,
                                                                  metadata
                                                              )
-                                                      VALUES (?, ?, ?, ?, ?, ?, ?)';
+                                                      VALUES (:value_id,
+                                                              :store_id,
+                                                              :provider,
+                                                              :url,
+                                                              :title,
+                                                              :description,
+                                                              :metadata)';
 }

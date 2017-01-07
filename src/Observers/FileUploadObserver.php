@@ -37,29 +37,20 @@ class FileUploadObserver extends AbstractProductImportObserver
 {
 
     /**
-     * Will be invoked by the action on the events the listener has been registered for.
+     * Process the observer's business logic.
      *
-     * @param array $row The row to handle
-     *
-     * @return array The modified row
-     * @see \TechDivision\Import\Product\Observers\ImportObserverInterface::handle()
+     * @return array The processed row
      */
-    public function handle(array $row)
+    protected function process()
     {
 
-        // load the header information
-        $headers = $this->getHeaders();
-
         // query whether or not, the image changed
-        if ($this->isParentImage($image = $row[$headers[ColumnKeys::IMAGE_PATH]])) {
-            return $row;
+        if ($this->isParentImage($image = $this->getValue(ColumnKeys::IMAGE_PATH))) {
+            return;
         }
 
         // upload the image file and set the new filename
-        $row[$headers[ColumnKeys::IMAGE_PATH_NEW]] = $this->uploadFile($image);
-
-        // returns the row
-        return $row;
+        $this->setValue(ColumnKeys::IMAGE_PATH_NEW, $this->uploadFile($image));
     }
 
     /**
@@ -71,7 +62,7 @@ class FileUploadObserver extends AbstractProductImportObserver
      *
      * @return string The name of the uploaded file
      */
-    public function uploadFile($filename)
+    protected function uploadFile($filename)
     {
         return $this->getSubject()->uploadFile($filename);
     }
@@ -81,7 +72,7 @@ class FileUploadObserver extends AbstractProductImportObserver
      *
      * @return string The name of the created image
      */
-    public function getParentImage()
+    protected function getParentImage()
     {
         return $this->getSubject()->getParentImage();
     }
@@ -93,7 +84,7 @@ class FileUploadObserver extends AbstractProductImportObserver
      *
      * @return boolean TRUE if the passed image is the parent one
      */
-    public function isParentImage($image)
+    protected function isParentImage($image)
     {
         return $this->getParentImage() === $image;
     }

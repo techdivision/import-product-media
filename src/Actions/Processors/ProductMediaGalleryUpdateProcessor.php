@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryCreateProcessor
+ * TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryUpdateProcessor
  *
  * NOTICE OF LICENSE
  *
@@ -20,10 +20,11 @@
 
 namespace TechDivision\Import\Product\Media\Actions\Processors;
 
+use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
 
 /**
- * The product media gallery create processor implementation.
+ * The product media gallery update processor implementation.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,7 +32,7 @@ use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryCreateProcessor extends AbstractCreateProcessor
+class ProductMediaGalleryUpdateProcessor extends AbstractCreateProcessor
 {
 
     /**
@@ -48,7 +49,7 @@ class ProductMediaGalleryCreateProcessor extends AbstractCreateProcessor
 
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY => $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY
+            $utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY => $utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY
         );
     }
 
@@ -63,6 +64,6 @@ class ProductMediaGalleryCreateProcessor extends AbstractCreateProcessor
     public function execute($row, $name = null)
     {
         parent::execute($row, $name);
-        return $this->getConnection()->lastInsertId();
+        return $row[MemberNames::VALUE_ID];
     }
 }
