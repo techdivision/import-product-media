@@ -61,7 +61,10 @@ class SqlStatements
                                                      media_type,
                                                      disabled
                                                    )
-                                            VALUES (?, ?, ?, ?)';
+                                            VALUES (:attribute_id,
+                                                    :value,
+                                                    :media_type,
+                                                    :disabled)';
 
     /**
      * The SQL statement to create a new product media gallery value entry.
@@ -77,7 +80,12 @@ class SqlStatements
                                                            position,
                                                            disabled
                                                        )
-                                                VALUES (?, ?, ?, ?, ?, ?)';
+                                                VALUES (:value_id,
+                                                        :store_id,
+                                                        :entity_id,
+                                                        :label,
+                                                        :position,
+                                                        :disabled)';
 
     /**
      * The SQL statement to create a new product media gallery value to entity entry.
@@ -89,7 +97,8 @@ class SqlStatements
                                                                    value_id,
                                                                    entity_id
                                                                  )
-                                                          VALUES (?, ?)';
+                                                          VALUES (:value_id,
+                                                                  :entity_id)';
 
     /**
      * The SQL statement to create a new product media gallery value vidoe entry.
@@ -106,5 +115,11 @@ class SqlStatements
                                                                  description,
                                                                  metadata
                                                              )
-                                                      VALUES (?, ?, ?, ?, ?, ?, ?)';
+                                                      VALUES (:value_id,
+                                                              :store_id,
+                                                              :provider,
+                                                              :url,
+                                                              :title,
+                                                              :description,
+                                                              :metadata)';
 }

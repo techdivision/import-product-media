@@ -231,7 +231,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      */
     public function persistProductMediaGallery($productMediaGallery, $name = null)
     {
-        return $this->getProductMediaGalleryAction()->create($productMediaGallery, $name);
+        return $this->getProductMediaGalleryAction()->persist($productMediaGallery, $name);
     }
 
     /**
@@ -244,7 +244,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      */
     public function persistProductMediaGalleryValue($productMediaGalleryValue, $name = null)
     {
-        $this->getProductMediaGalleryValueAction()->create($productMediaGalleryValue, $name);
+        $this->getProductMediaGalleryValueAction()->persist($productMediaGalleryValue, $name);
     }
 
     /**
@@ -257,7 +257,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      */
     public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity, $name = null)
     {
-        $this->getProductMediaGalleryValueToEntityAction()->create($productMediaGalleryValuetoEntity, $name);
+        $this->getProductMediaGalleryValueToEntityAction()->persist($productMediaGalleryValuetoEntity, $name);
     }
 
     /**
@@ -270,6 +270,6 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      */
     public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo, $name = null)
     {
-        $this->getProductMediaGalleryValueVideoAction()->create($productMediaGalleryValueVideo, $name);
+        $this->getProductMediaGalleryValueVideoAction()->persist($productMediaGalleryValueVideo, $name);
     }
 }

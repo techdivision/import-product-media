@@ -21,8 +21,8 @@
 namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Utils\StoreViewCodes;
-use TechDivision\Import\Product\Utils\MemberNames;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
+use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
@@ -38,65 +38,84 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
 {
 
     /**
-     * Will be invoked by the action on the events the listener has been registered for.
+     * Process the observer's business logic.
      *
-     * @param array $row The row to handle
-     *
-     * @return array The modified row
-     * @see \TechDivision\Import\Product\Observers\ImportObserverInterface::handle()
+     * @return array The processed row
      */
-    public function handle(array $row)
+    protected function process()
     {
 
-        // load the header information
-        $headers = $this->getHeaders();
-
         // query whether or not, the image changed
-        if ($this->isParentImage($image = $row[$headers[ColumnKeys::IMAGE_PATH]])) {
-            return $row;
+        if ($this->isParentImage($imagePath = $this->getValue(ColumnKeys::IMAGE_PATH))) {
+            return;
         }
 
-        // load the product SKU
-        $parentSku = $row[$headers[ColumnKeys::IMAGE_PARENT_SKU]];
+        // initialize and persist the product media gallery value
+        $productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareAttributes());
+        $this->persistProductMediaGalleryValue($productMediaGalleryValue);
 
-        // load parent/option ID
-        $parentId = $this->mapParentSku($parentSku);
+        // temporarily persist the image name
+        $this->setParentImage($imagePath);
+    }
 
-        // initialize the store view code
-        $storeViewCode = $row[$headers[ColumnKeys::STORE_VIEW_CODE]] ?: StoreViewCodes::ADMIN;
+    /**
+     * Prepare the product media gallery value that has to be persisted.
+     *
+     * @return array The prepared product media gallery value attributes
+     */
+    protected function prepareAttributes()
+    {
+
+        // load the product SKU and map it the entity ID
+        $parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
 
         // load the store ID
-        $store = $this->getStoreByStoreCode($storeViewCode);
-        $storeId = $store[MemberNames::STORE_ID];
+        $storeId = $this->getRowStoreId(StoreViewCodes::ADMIN);
 
         // load the value ID and the position counter
         $valueId = $this->getParentValueId();
         $position = $this->raisePositionCounter();
 
         // load the image label
-        $imageLabel = $row[$headers[ColumnKeys::IMAGE_LABEL]];
-
-        // initialize the disabled flag
-        $disabled = 0;
+        $imageLabel = $this->getValue(ColumnKeys::IMAGE_LABEL);
 
         // prepare the media gallery value
-        $productMediaGalleryValue = array(
-            $valueId,
-            $storeId,
-            $parentId,
-            $imageLabel,
-            $position,
-            $disabled
+        return $this->initializeEntity(
+            array(
+                MemberNames::VALUE_ID    => $valueId,
+                MemberNames::STORE_ID    => $storeId,
+                MemberNames::ENTITY_ID   => $parentId,
+                MemberNames::LABEL       => $imageLabel,
+                MemberNames::POSITION    => $position,
+                MemberNames::DISABLED    => 0
+            )
         );
+    }
 
-        // persist the product media gallery value
-        $this->persistProductMediaGalleryValue($productMediaGalleryValue);
+    /**
+     * Initialize the product media gallery value with the passed attributes and returns an instance.
+     *
+     * @param array $attr The product media gallery value attributes
+     *
+     * @return array The initialized product media gallery value
+     */
+    protected function initializeProductMediaGalleryValue(array $attr)
+    {
+        return $attr;
+    }
 
-        // temporarily persist the image name
-        $this->setParentImage($image);
-
-        // returns the row
-        return $row;
+    /**
+     * Return's the store ID of the actual row, or of the default store
+     * if no store view code is set in the CSV file.
+     *
+     * @param string|null $default The default store view code to use, if no store view code is set in the CSV file
+     *
+     * @return integer The ID of the actual store
+     * @throws \Exception Is thrown, if the store with the actual code is not available
+     */
+    protected function getRowStoreId($default = null)
+    {
+        return $this->getSubject()->getRowStoreId($default);
     }
 
     /**
@@ -106,7 +125,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      *
      * @return integer The primary key used to create relations
      */
-    public function mapParentSku($parentSku)
+    protected function mapParentSku($parentSku)
     {
         return $this->mapSkuToEntityId($parentSku);
     }
@@ -119,7 +138,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      * @return integer The mapped entity ID
      * @throws \Exception Is thrown if the SKU is not mapped yet
      */
-    public function mapSkuToEntityId($sku)
+    protected function mapSkuToEntityId($sku)
     {
         return $this->getSubject()->mapSkuToEntityId($sku);
     }
@@ -131,7 +150,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      *
      * @return void
      */
-    public function setParentImage($parentImage)
+    protected function setParentImage($parentImage)
     {
         $this->getSubject()->setParentImage($parentImage);
     }
@@ -141,7 +160,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      *
      * @return string The name of the created image
      */
-    public function getParentImage()
+    protected function getParentImage()
     {
         return $this->getSubject()->getParentImage();
     }
@@ -153,7 +172,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      *
      * @return boolean TRUE if the passed image is the parent one
      */
-    public function isParentImage($image)
+    protected function isParentImage($image)
     {
         return $this->getParentImage() === $image;
     }
@@ -163,7 +182,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      *
      * @return integer The ID of the created media gallery entry
      */
-    public function getParentValueId()
+    protected function getParentValueId()
     {
         return $this->getSubject()->getParentValueId();
     }
@@ -176,7 +195,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      * @return array The requested store
      * @throws \Exception Is thrown, if the requested store is not available
      */
-    public function getStoreByStoreCode($storeCode)
+    protected function getStoreByStoreCode($storeCode)
     {
         return $this->getSubject()->getStoreByStoreCode($storeCode);
     }
@@ -186,7 +205,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      *
      * @return integer The actual value of the position counter
      */
-    public function raisePositionCounter()
+    protected function raisePositionCounter()
     {
         return $this->getSubject()->raisePositionCounter();
     }
@@ -198,7 +217,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      *
      * @return void
      */
-    public function persistProductMediaGalleryValue($productMediaGalleryValue)
+    protected function persistProductMediaGalleryValue($productMediaGalleryValue)
     {
         $this->getSubject()->persistProductMediaGalleryValue($productMediaGalleryValue);
     }

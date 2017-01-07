@@ -21,9 +21,8 @@
 namespace TechDivision\Import\Product\Media\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
-use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
-use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 
 /**
  * A SLSB that handles the process to import product variants.

@@ -21,6 +21,7 @@
 namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
+use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 
 /**
@@ -36,53 +37,115 @@ class MediaGalleryObserver extends AbstractProductImportObserver
 {
 
     /**
-     * Will be invoked by the action on the events the listener has been registered for.
+     * The ID of the parent product the media is related to.
      *
-     * @param array $row The row to handle
-     *
-     * @return array The modified row
-     * @see \TechDivision\Import\Product\Observers\ImportObserverInterface::handle()
+     * @var integer
      */
-    public function handle(array $row)
+    protected $parentId;
+
+    /**
+     * The ID of the persisted media gallery entity.
+     *
+     * @var integer
+     */
+    protected $valueId;
+
+    /**
+     * Process the observer's business logic.
+     *
+     * @return array The processed row
+     */
+    protected function process()
     {
 
-        // load the header information
-        $headers = $this->getHeaders();
-
         // query whether or not, the image changed
-        if ($this->isParentImage($row[$headers[ColumnKeys::IMAGE_PATH]])) {
-            return $row;
+        if ($this->isParentImage($this->getValue(ColumnKeys::IMAGE_PATH))) {
+            return;
         }
 
-        // load the product SKU
-        $parentSku = $row[$headers[ColumnKeys::IMAGE_PARENT_SKU]];
-
-        // load parent/option ID
-        $parentId = $this->mapParentSku($parentSku);
+        // load the product SKU and map it the entity ID
+        $this->parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
 
         // reset the position counter for the product media gallery value
         $this->resetPositionCounter();
 
-        // preserve the parent ID
-        $this->setParentId($parentId);
+        // initialize and persist the product media gallery
+        $productMediaGallery = $this->initializeProductMediaGallery($this->prepareProductMediaGalleryAttributes());
+        $this->valueId = $this->persistProductMediaGallery($productMediaGallery);
+
+        // persist the product media gallery to entity data
+        $productMediaGalleryValueToEntity = $this->initializeProductMediaGalleryValueToEntity($this->prepareProductMediaGalleryValueToEntityAttributes());
+        $this->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
+
+        // temporarily persist parent/value ID
+        $this->setParentId($this->parentId);
+        $this->setParentValueId($this->valueId);
+    }
+
+    /**
+     * Prepare the product media gallery that has to be persisted.
+     *
+     * @return array The prepared product media gallery attributes
+     */
+    protected function prepareProductMediaGalleryAttributes()
+    {
 
         // initialize the gallery data
         $disabled = 0;
         $attributeId = 90;
         $mediaType = 'image';
-        $image = $row[$headers[ColumnKeys::IMAGE_PATH_NEW]];
+        $image = $this->getValue(ColumnKeys::IMAGE_PATH_NEW);
 
-        // persist the product media gallery data
-        $valueId = $this->persistProductMediaGallery(array($attributeId, $image, $mediaType, $disabled));
+        // initialize and return the entity
+        return $this->initializeEntity(
+            array(
+                MemberNames::ATTRIBUTE_ID => $attributeId,
+                MemberNames::VALUE        => $image,
+                MemberNames::MEDIA_TYPE   => $mediaType,
+                MemberNames::DISABLED     => $disabled
+            )
+        );
+    }
 
-        // persist the product media gallery to entity data
-        $this->persistProductMediaGalleryValueToEntity(array($valueId, $parentId));
+    /**
+     * Prepare the product media gallery value to entity that has to be persisted.
+     *
+     * @return array The prepared product media gallery value to entity attributes
+     */
+    protected function prepareProductMediaGalleryValueToEntityAttributes()
+    {
 
-        // temporarily persist the value ID
-        $this->setParentValueId($valueId);
+        // initialize and return the entity
+        return $this->initializeEntity(
+            array(
+                MemberNames::VALUE_ID  => $this->valueId,
+                MemberNames::ENTITY_ID => $this->parentId
+            )
+        );
+    }
 
-        // returns the row
-        return $row;
+    /**
+     * Initialize the product media gallery with the passed attributes and returns an instance.
+     *
+     * @param array $attr The product media gallery attributes
+     *
+     * @return array The initialized product media gallery
+     */
+    protected function initializeProductMediaGallery(array $attr)
+    {
+        return $attr;
+    }
+
+    /**
+     * Initialize the product media gallery value to entity with the passed attributes and returns an instance.
+     *
+     * @param array $attr The product media gallery value to entity attributes
+     *
+     * @return array The initialized product media gallery value to entity
+     */
+    protected function initializeProductMediaGalleryValueToEntity(array $attr)
+    {
+        return $attr;
     }
 
     /**
@@ -92,7 +155,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return integer The primary key used to create relations
      */
-    public function mapParentSku($parentSku)
+    protected function mapParentSku($parentSku)
     {
         return $this->mapSkuToEntityId($parentSku);
     }
@@ -102,7 +165,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return string The name of the created image
      */
-    public function getParentImage()
+    protected function getParentImage()
     {
         return $this->getSubject()->getParentImage();
     }
@@ -114,7 +177,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return boolean TRUE if the passed image is the parent one
      */
-    public function isParentImage($image)
+    protected function isParentImage($image)
     {
         return $this->getParentImage() === $image;
     }
@@ -126,7 +189,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return void
      */
-    public function setParentValueId($parentValueId)
+    protected function setParentValueId($parentValueId)
     {
         $this->getSubject()->setParentValueId($parentValueId);
     }
@@ -139,7 +202,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      * @return integer The mapped entity ID
      * @throws \Exception Is thrown if the SKU is not mapped yet
      */
-    public function mapSkuToEntityId($sku)
+    protected function mapSkuToEntityId($sku)
     {
         return $this->getSubject()->mapSkuToEntityId($sku);
     }
@@ -151,7 +214,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return void
      */
-    public function setParentId($parentId)
+    protected function setParentId($parentId)
     {
         $this->getSubject()->setParentId($parentId);
     }
@@ -161,7 +224,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return void
      */
-    public function resetPositionCounter()
+    protected function resetPositionCounter()
     {
         $this->getSubject()->resetPositionCounter();
     }
@@ -173,7 +236,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return string The ID of the persisted entity
      */
-    public function persistProductMediaGallery($productMediaGallery)
+    protected function persistProductMediaGallery($productMediaGallery)
     {
         return $this->getSubject()->persistProductMediaGallery($productMediaGallery);
     }
@@ -185,7 +248,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      *
      * @return void
      */
-    public function persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity)
+    protected function persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity)
     {
         $this->getSubject()->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
     }
