@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha7
+
+## Bugfixes
+
+* None
+
+## Features
+
+* ConfigurationKeys now extends from techdivision/import ConfigurationKeys
+
 # Version 1.0.0-alpha6
 
 ## Bugfixes

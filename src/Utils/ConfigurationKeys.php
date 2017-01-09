@@ -29,25 +29,8 @@ namespace TechDivision\Import\Product\Media\Utils;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ConfigurationKeys
+class ConfigurationKeys extends \TechDivision\Import\Utils\ConfigurationKeys
 {
-
-    /**
-     * This is a utility class, so protect it against direct
-     * instantiation.
-     */
-    private function __construct()
-    {
-    }
-
-    /**
-     * This is a utility class, so protect it against cloning.
-     *
-     * @return void
-     */
-    private function __clone()
-    {
-    }
 
     /**
      * Name for the column 'media-directory'.
