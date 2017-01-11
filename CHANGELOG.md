@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha8
+
+## Bugfixes
+
+* Fixed concatenation of image filenames to also support relative paths
+
+## Features
+
+* None
+
 # Version 1.0.0-alpha7
 
 ## Bugfixes
