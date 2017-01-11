@@ -332,9 +332,12 @@ class MediaSubject extends AbstractProductSubject
     public function uploadFile($filename)
     {
 
+        // trim the leading /, if available
+        $trimmedFilename = ltrim($filename, '/');
+
         // prepare source/target filename
-        $sourceFilename = sprintf('%s%s', $this->getImagesFileDir(), $filename);
-        $targetFilename = sprintf('%s%s', $this->getMediaDir(), $filename);
+        $sourceFilename = sprintf('%s/%s', $this->getImagesFileDir(), $trimmedFilename);
+        $targetFilename = sprintf('%s/%s', $this->getMediaDir(), $trimmedFilename);
 
         // query whether or not the image file to be imported is available
         if (!$this->getFilesystem()->has($sourceFilename)) {
