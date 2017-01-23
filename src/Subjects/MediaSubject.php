@@ -123,9 +123,12 @@ class MediaSubject extends AbstractProductSubject
         // load the Magento installation directory
         $this->setInstallationDir($this->getConfiguration()->getConfiguration()->getInstallationDir());
 
+        // initialize the flag to decide copy images or not
+        $this->setCopyImages($this->getConfiguration()->getParam(ConfigurationKeys::COPY_IMAGES));
+
         // initialize media/and images directory => can be absolute or relative
         $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)));
-        $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE__DIRECTORY)));
+        $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)));
     }
 
     /**
@@ -192,6 +195,28 @@ class MediaSubject extends AbstractProductSubject
     public function getImagesFileDir()
     {
         return $this->imagesFileDir;
+    }
+
+    /**
+     * Set's the flag to copy the images or not.
+     *
+     * @param boolean $copyImages The flag
+     *
+     * @return void
+     */
+    public function setCopyImages($copyImages)
+    {
+        $this->copyImages = $copyImages;
+    }
+
+    /**
+     * Return's the flag to copy images or not.
+     *
+     * @return boolean The flag
+     */
+    public function hasCopyImages()
+    {
+        return $this->copyImages;
     }
 
     /**
