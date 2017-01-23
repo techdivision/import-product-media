@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha9
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Make file upload functionality configurable
+
 # Version 1.0.0-alpha8
 
 ## Bugfixes

@@ -49,8 +49,17 @@ class FileUploadObserver extends AbstractProductImportObserver
             return;
         }
 
-        // upload the image file and set the new filename
-        $this->setValue(ColumnKeys::IMAGE_PATH_NEW, $this->uploadFile($image));
+        // initialize the image path
+        $imagePath = $this->getValue(ColumnKeys::IMAGE_PATH);
+
+        // query whether or not we've to upload the image files
+        if ($this->hasCopyImages()) {
+            // upload the file and set the new image path
+            $imagePath = $this->uploadFile($image);
+        }
+
+        // temoprarily persist the image path
+        $this->setValue(ColumnKeys::IMAGE_PATH_NEW, $imagePath);
     }
 
     /**
@@ -87,5 +96,15 @@ class FileUploadObserver extends AbstractProductImportObserver
     protected function isParentImage($image)
     {
         return $this->getParentImage() === $image;
+    }
+
+    /**
+     * Return's the flag to copy images or not.
+     *
+     * @return booleas The flag
+     */
+    protected function hasCopyImages()
+    {
+        return $this->getSubject()->hasCopyImages();
     }
 }
