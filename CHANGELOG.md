@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha10
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Initialize media-directory and images-file-directory only if set to avoid unnecessary exceptions
+
 # Version 1.0.0-alpha9
 
 ## Bugfixes

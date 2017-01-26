@@ -126,9 +126,15 @@ class MediaSubject extends AbstractProductSubject
         // initialize the flag to decide copy images or not
         $this->setCopyImages($this->getConfiguration()->getParam(ConfigurationKeys::COPY_IMAGES));
 
-        // initialize media/and images directory => can be absolute or relative
-        $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)));
-        $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)));
+        // initialize media directory => can be absolute or relative
+        if ($mediaDirectory = $this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)) {
+            $this->setMediaDir($this->resolvePath($mediaDirectory));
+        }
+
+        // initialize images directory => can be absolute or relative
+        if ($imagesFileDir = $this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)) {
+            $this->setImagesFileDir($this->resolvePath($imagesFileDir));
+        }
     }
 
     /**
