@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha11
+
+## Bugfixes
+
+* Fixed invald access on not configured params
+
+## Features
+
+* None
+
 # Version 1.0.0-alpha10
 
 ## Bugfixes
