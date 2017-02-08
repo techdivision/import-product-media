@@ -101,7 +101,7 @@ necessary to manually add a missing index.
 
 To do that, open a MySQL command line and enter the following SQL statement
 
-```sh
+```sql
 mysql$ ALTER TABLE `catalog_product_entity_media_gallery` ADD INDEX `CATALOG_PRODUCT_ENTITY_MEDIA_GALLERY_VALUE` (`value`);
 ```
 
