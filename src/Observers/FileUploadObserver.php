@@ -21,7 +21,7 @@
 namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
-use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Observers\AbstractFileUploadObserver;
 
 /**
  * Observer that uploads the file specified in a CSV file's column 'image_path' to a
@@ -33,78 +33,26 @@ use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class FileUploadObserver extends AbstractProductImportObserver
+class FileUploadObserver extends AbstractFileUploadObserver
 {
 
     /**
-     * Process the observer's business logic.
+     * Return's the name of the source column with the image path.
      *
-     * @return array The processed row
+     * @return string The image path
      */
-    protected function process()
+    protected function getSourceColumn()
     {
-
-        // query whether or not, the image changed
-        if ($this->isParentImage($image = $this->getValue(ColumnKeys::IMAGE_PATH))) {
-            return;
-        }
-
-        // initialize the image path
-        $imagePath = $this->getValue(ColumnKeys::IMAGE_PATH);
-
-        // query whether or not we've to upload the image files
-        if ($this->hasCopyImages()) {
-            // upload the file and set the new image path
-            $imagePath = $this->uploadFile($image);
-        }
-
-        // temoprarily persist the image path
-        $this->setValue(ColumnKeys::IMAGE_PATH_NEW, $imagePath);
+        return ColumnKeys::IMAGE_PATH;
     }
 
     /**
-     * Upload's the file with the passed name to the Magento
-     * media directory. If the file already exists, the will
-     * be given a new name that will be returned.
+     * Return's the target column with the path of the copied image.
      *
-     * @param string $filename The name of the file to be uploaded
-     *
-     * @return string The name of the uploaded file
+     * @return string The path to the copied image
      */
-    protected function uploadFile($filename)
+    protected function getTargetColumn()
     {
-        return $this->getSubject()->uploadFile($filename);
-    }
-
-    /**
-     * Return's the name of the created image.
-     *
-     * @return string The name of the created image
-     */
-    protected function getParentImage()
-    {
-        return $this->getSubject()->getParentImage();
-    }
-
-    /**
-     * Return's TRUE if the passed image is the parent one.
-     *
-     * @param string $image The imageD to check
-     *
-     * @return boolean TRUE if the passed image is the parent one
-     */
-    protected function isParentImage($image)
-    {
-        return $this->getParentImage() === $image;
-    }
-
-    /**
-     * Return's the flag to copy images or not.
-     *
-     * @return booleas The flag
-     */
-    protected function hasCopyImages()
-    {
-        return $this->getSubject()->hasCopyImages();
+        return ColumnKeys::IMAGE_PATH_NEW;
     }
 }
