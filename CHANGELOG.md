@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha12
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to AbstractFileUploadObserver class to make component more generic
+
 # Version 1.0.0-alpha11
 
 ## Bugfixes
