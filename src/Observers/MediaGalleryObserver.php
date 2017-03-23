@@ -63,8 +63,12 @@ class MediaGalleryObserver extends AbstractProductImportObserver
             return;
         }
 
-        // load the product SKU and map it the entity ID
-        $this->parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
+        try {
+            // try to load the product SKU and map it the entity ID
+            $this->parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
+        } catch (\Exception $e) {
+            throw $this->wrapException(array(ColumnKeys::IMAGE_PARENT_SKU), $e);
+        }
 
         // reset the position counter for the product media gallery value
         $this->resetPositionCounter();

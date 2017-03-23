@@ -68,44 +68,80 @@ class ProductMediaObserver extends AbstractProductImportObserver
 
         // query whether or not, we've a base image
         if ($baseImage = $this->getValue(ColumnKeys::BASE_IMAGE)) {
-            // prepare and append the base image to the artefacts
-            $artefacts[] = array(
-                ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                ColumnKeys::IMAGE_PATH       => $baseImage,
-                ColumnKeys::IMAGE_PATH_NEW   => $baseImage,
-                ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::BASE_IMAGE_LABEL) ?
-                                                $this->getValue(ColumnKeys::BASE_IMAGE_LABEL) :
-                                                $this->getDefaultImageLabel()
+            // prepare the new base image
+            $artefact = $this->newArtefact(
+                array(
+                    ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                    ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                    ColumnKeys::IMAGE_PATH       => $baseImage,
+                    ColumnKeys::IMAGE_PATH_NEW   => $baseImage,
+                    ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::BASE_IMAGE_LABEL) ?
+                                                    $this->getValue(ColumnKeys::BASE_IMAGE_LABEL) :
+                                                    $this->getDefaultImageLabel()
+                ),
+                array(
+                    ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
+                    ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
+                    ColumnKeys::IMAGE_PATH       => ColumnKeys::BASE_IMAGE,
+                    ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::BASE_IMAGE,
+                    ColumnKeys::IMAGE_LABEL      => ColumnKeys::BASE_IMAGE_LABEL
+                )
             );
+
+            // append the base image to the artefacts
+            $artefacts[] = $artefact;
         }
 
         // query whether or not, we've a small image
         if ($smallImage = $this->getValue(ColumnKeys::SMALL_IMAGE)) {
-            // prepare and append the small image to the artefacts
-            $artefacts[] = array(
-                ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                ColumnKeys::IMAGE_PATH       => $smallImage,
-                ColumnKeys::IMAGE_PATH_NEW   => $smallImage,
-                ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::SMALL_IMAGE_LABEL) ?
-                                                $this->getValue(ColumnKeys::SMALL_IMAGE_LABEL) :
-                                                $this->getDefaultImageLabel()
+            // prepare the small image
+            $artefact = $this->newArtefact(
+                array(
+                    ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                    ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                    ColumnKeys::IMAGE_PATH       => $smallImage,
+                    ColumnKeys::IMAGE_PATH_NEW   => $smallImage,
+                    ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::SMALL_IMAGE_LABEL) ?
+                    $this->getValue(ColumnKeys::SMALL_IMAGE_LABEL) :
+                    $this->getDefaultImageLabel()
+                ),
+                array(
+                    ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
+                    ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
+                    ColumnKeys::IMAGE_PATH       => ColumnKeys::SMALL_IMAGE,
+                    ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::SMALL_IMAGE,
+                    ColumnKeys::IMAGE_LABEL      => ColumnKeys::SMALL_IMAGE_LABEL
+                )
             );
+
+            // append the small image to the artefacts
+            $artefacts[] = $artefact;
         }
 
         // query whether or not, we've a small thumbnail
         if ($thumbnailImage = $this->getValue(ColumnKeys::THUMBNAIL_IMAGE)) {
-            // prepare and append the thumbnail image to the artefacts
-            $artefacts[] = array(
-                ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                ColumnKeys::IMAGE_PATH       => $thumbnailImage,
-                ColumnKeys::IMAGE_PATH_NEW   => $thumbnailImage,
-                ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) ?
-                                                $this->getValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) :
-                                                $this->getDefaultImageLabel()
+            // prepare the thumbnail image
+            $artefact = $this->newArtefact(
+                array(
+                    ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                    ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                    ColumnKeys::IMAGE_PATH       => $thumbnailImage,
+                    ColumnKeys::IMAGE_PATH_NEW   => $thumbnailImage,
+                    ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) ?
+                                                    $this->getValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) :
+                                                    $this->getDefaultImageLabel()
+                ),
+                array(
+                    ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
+                    ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
+                    ColumnKeys::IMAGE_PATH       => ColumnKeys::THUMBNAIL_IMAGE,
+                    ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::THUMBNAIL_IMAGE,
+                    ColumnKeys::IMAGE_LABEL      => ColumnKeys::THUMBNAIL_IMAGE_LABEL
+                )
             );
+
+            // append the thumbnail image to the artefacts
+            $artefacts[] = $artefact;
         }
 
         // query whether or not, we've additional images
@@ -115,16 +151,28 @@ class ProductMediaObserver extends AbstractProductImportObserver
 
             // initialize the images with the found values
             foreach ($additionalImages as $key => $additionalImage) {
-                // prepare and append the additional image to the artefacts
-                $artefacts[] = array(
-                    ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                    ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                    ColumnKeys::IMAGE_PATH       => $additionalImage,
-                    ColumnKeys::IMAGE_PATH_NEW   => $additionalImage,
-                    ColumnKeys::IMAGE_LABEL      => isset($additionalImageLabels[$key]) ?
-                                                    $additionalImageLabels[$key] :
-                                                    $this->getDefaultImageLabel()
+                // prepare the additional image
+                $artefact = $this->newArtefact(
+                    array(
+                        ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
+                        ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
+                        ColumnKeys::IMAGE_PATH       => $additionalImage,
+                        ColumnKeys::IMAGE_PATH_NEW   => $additionalImage,
+                        ColumnKeys::IMAGE_LABEL      => isset($additionalImageLabels[$key]) ?
+                                                        $additionalImageLabels[$key] :
+                                                        $this->getDefaultImageLabel()
+                    ),
+                    array(
+                        ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
+                        ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
+                        ColumnKeys::IMAGE_PATH       => ColumnKeys::ADDITIONAL_IMAGES,
+                        ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::ADDITIONAL_IMAGES,
+                        ColumnKeys::IMAGE_LABEL      => ColumnKeys::ADDITIONAL_IMAGE_LABELS
+                    )
                 );
+
+                // append the additional image to the artefacts
+                $artefacts[] = $artefact;
             }
         }
 
@@ -140,6 +188,19 @@ class ProductMediaObserver extends AbstractProductImportObserver
     protected function getDefaultImageLabel()
     {
         return ProductMediaObserver::DEFAULT_IMAGE_LABEL;
+    }
+
+    /**
+     * Create's and return's a new empty artefact entity.
+     *
+     * @param array $columns             The array with the column data
+     * @param array $originalColumnNames The array with a mapping from the old to the new column names
+     *
+     * @return array The new artefact entity
+     */
+    protected function newArtefact(array $columns, array $originalColumnNames)
+    {
+        return $this->getSubject()->newArtefact($columns, $originalColumnNames);
     }
 
     /**

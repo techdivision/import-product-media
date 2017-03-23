@@ -27,6 +27,7 @@ use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
+use TechDivision\Import\Product\Media\Observers\MapSkuToEntityIdException;
 
 /**
  * The subject implementation for the product media handling.
@@ -208,7 +209,7 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \Exception Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Media\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     public function mapSkuToEntityId($sku)
     {
@@ -219,7 +220,11 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         }
 
         // throw an exception if the SKU has not been mapped yet
-        throw new \Exception(sprintf('Found not mapped SKU %s', $sku));
+        throw new MapSkuToEntityIdException(
+            $this->appendExceptionSuffix(
+                sprintf('Found not mapped entity ID for SKU %s', $sku)
+            )
+        );
     }
 
     /**
@@ -239,7 +244,11 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         }
 
         // throw an exception, if not
-        throw new \Exception(sprintf('Found invalid store code %s', $storeCode));
+        throw new \Exception(
+            $this->appendExceptionSuffix(
+                sprintf('Found invalid store code %s', $storeCode)
+            )
+        );
     }
 
     /**
