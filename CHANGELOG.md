@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha13
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Optimise error messages
+
 # Version 1.0.0-alpha12
 
 ## Bugfixes

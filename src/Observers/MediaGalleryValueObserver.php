@@ -66,8 +66,12 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     protected function prepareAttributes()
     {
 
-        // load the product SKU and map it the entity ID
-        $parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
+        try {
+            // try to load the product SKU and map it the entity ID
+            $parentId= $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
+        } catch (\Exception $e) {
+            throw $this->wrapException(array(ColumnKeys::IMAGE_PARENT_SKU), $e);
+        }
 
         // load the store ID
         $storeId = $this->getRowStoreId(StoreViewCodes::ADMIN);

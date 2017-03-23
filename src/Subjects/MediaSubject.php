@@ -219,7 +219,11 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         }
 
         // throw an exception if the SKU has not been mapped yet
-        throw new \Exception(sprintf('Found not mapped SKU %s', $sku));
+        throw new MapSkuToEntityIdException(
+            $this->appendExceptionSuffix(
+                sprintf('Found not mapped entity ID for SKU %s', $sku)
+            )
+        );
     }
 
     /**
@@ -239,7 +243,11 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         }
 
         // throw an exception, if not
-        throw new \Exception(sprintf('Found invalid store code %s', $storeCode));
+        throw new \Exception(
+            $this->appendExceptionSuffix(
+                sprintf('Found invalid store code %s', $storeCode)
+            )
+        );
     }
 
     /**
