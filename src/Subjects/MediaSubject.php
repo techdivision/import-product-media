@@ -27,6 +27,7 @@ use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
+use TechDivision\Import\Product\Media\Observers\MapSkuToEntityIdException;
 
 /**
  * The subject implementation for the product media handling.
@@ -208,7 +209,7 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
      * @param string $sku The SKU to return the entity ID for
      *
      * @return integer The mapped entity ID
-     * @throws \Exception Is thrown if the SKU is not mapped yet
+     * @throws \TechDivision\Import\Product\Media\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
      */
     public function mapSkuToEntityId($sku)
     {
