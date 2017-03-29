@@ -1,3 +1,13 @@
+# Version 1.0.0-alpha16
+
+## Bugfixes
+
+* Remove FilesytemTrait use statement from MediaSubject to avoid PHP 5.6 PHPUnit error
+
+## Features
+
+* None
+
 # Version 1.0.0-alpha15
 
 ## Bugfixes
