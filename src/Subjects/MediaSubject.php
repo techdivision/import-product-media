@@ -23,6 +23,7 @@ namespace TechDivision\Import\Product\Media\Subjects;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
 use TechDivision\Import\Utils\RegistryKeys;
+use TechDivision\Import\Subjects\FilesystemTrait;
 use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
@@ -40,6 +41,13 @@ use TechDivision\Import\Product\Media\Observers\MapSkuToEntityIdException;
  */
 class MediaSubject extends AbstractProductSubject implements FileUploadSubjectInterface
 {
+
+    /**
+     * The trait that provides basic filesystem handling functionality.
+     *
+     * @var TechDivision\Import\Subjects\FilesystemTrait
+     */
+    use FilesystemTrait;
 
     /**
      * The trait that provides file upload functionality.
