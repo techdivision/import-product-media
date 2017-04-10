@@ -93,20 +93,22 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     /**
      * Intializes the previously loaded global data for exactly one variants.
      *
+     * @param string $serial The serial of the actual import
+     *
      * @return void
      * @see \Importer\Csv\Actions\ProductImportAction::prepare()
      */
-    public function setUp()
+    public function setUp($serial)
     {
 
         // invoke parent method
-        parent::setUp();
+        parent::setUp($serial);
 
         // load the entity manager and the registry processor
         $registryProcessor = $this->getRegistryProcessor();
 
         // load the status of the actual import process
-        $status = $registryProcessor->getAttribute($this->getSerial());
+        $status = $registryProcessor->getAttribute($serial);
 
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
