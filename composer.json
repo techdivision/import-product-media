@@ -25,7 +25,8 @@
 		"psr-4" : {
 			"TechDivision\\Import\\Product\\Media\\" : [
 				"src/",
-				"tests/"
+				"tests/",
+				"symfony/"
 			]
 		}
 	}
