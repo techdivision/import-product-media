@@ -1,3 +1,13 @@
+# Version 1.0.0-beta2
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Dynamically load media image EAV attribute instead of using hardcoded ID
+
 # Version 1.0.0-beta1
 
 ## Bugfixes

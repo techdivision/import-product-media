@@ -37,6 +37,13 @@ class MediaGalleryObserver extends AbstractProductImportObserver
 {
 
     /**
+     * The media gallery attribute code.
+     *
+     * @var string
+     */
+    const ATTRIBUTE_CODE = 'media_gallery';
+
+    /**
      * The ID of the parent product the media is related to.
      *
      * @var integer
@@ -95,9 +102,12 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     protected function prepareProductMediaGalleryAttributes()
     {
 
+        // load the attribute ID of the media gallery EAV attribute
+        $mediaGalleryAttribute = $this->getEavAttributeByAttributeCode(MediaGalleryObserver::ATTRIBUTE_CODE);
+        $attributeId = $mediaGalleryAttribute[MemberNames::ATTRIBUTE_ID];
+
         // initialize the gallery data
         $disabled = 0;
-        $attributeId = 90;
         $mediaType = 'image';
         $image = $this->getValue(ColumnKeys::IMAGE_PATH_NEW);
 
@@ -232,6 +242,19 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     protected function resetPositionCounter()
     {
         $this->getSubject()->resetPositionCounter();
+    }
+
+    /**
+     * Return's the EAV attribute with the passed attribute code.
+     *
+     * @param string $attributeCode The attribute code
+     *
+     * @return array The array with the EAV attribute
+     * @throws \Exception Is thrown if the attribute with the passed code is not available
+     */
+    protected function getEavAttributeByAttributeCode($attributeCode)
+    {
+        return $this->getSubject()->getEavAttributeByAttributeCode($attributeCode);
     }
 
     /**
