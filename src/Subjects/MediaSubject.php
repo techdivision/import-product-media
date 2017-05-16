@@ -25,8 +25,8 @@ use League\Flysystem\Adapter\Local;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
-use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
+use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
 use TechDivision\Import\Product\Media\Observers\MapSkuToEntityIdException;
 
 /**

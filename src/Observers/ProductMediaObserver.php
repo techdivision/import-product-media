@@ -62,6 +62,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
 
         // load the store view code
         $storeViewCode = $this->getValue(ColumnKeys::STORE_VIEW_CODE);
+        $attributeSetCode = $this->getValue(ColumnKeys::ATTRIBUTE_SET_CODE);
 
         // load the parent SKU from the row
         $parentSku = $this->getValue(ColumnKeys::SKU);
@@ -71,20 +72,22 @@ class ProductMediaObserver extends AbstractProductImportObserver
             // prepare the new base image
             $artefact = $this->newArtefact(
                 array(
-                    ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                    ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                    ColumnKeys::IMAGE_PATH       => $baseImage,
-                    ColumnKeys::IMAGE_PATH_NEW   => $baseImage,
-                    ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::BASE_IMAGE_LABEL) ?
-                                                    $this->getValue(ColumnKeys::BASE_IMAGE_LABEL) :
-                                                    $this->getDefaultImageLabel()
+                    ColumnKeys::STORE_VIEW_CODE    => $storeViewCode,
+                    ColumnKeys::ATTRIBUTE_SET_CODE => $attributeSetCode,
+                    ColumnKeys::IMAGE_PARENT_SKU   => $parentSku,
+                    ColumnKeys::IMAGE_PATH         => $baseImage,
+                    ColumnKeys::IMAGE_PATH_NEW     => $baseImage,
+                    ColumnKeys::IMAGE_LABEL        => $this->hasValue(ColumnKeys::BASE_IMAGE_LABEL) ?
+                                                      $this->getValue(ColumnKeys::BASE_IMAGE_LABEL) :
+                                                      $this->getDefaultImageLabel()
                 ),
                 array(
-                    ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
-                    ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
-                    ColumnKeys::IMAGE_PATH       => ColumnKeys::BASE_IMAGE,
-                    ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::BASE_IMAGE,
-                    ColumnKeys::IMAGE_LABEL      => ColumnKeys::BASE_IMAGE_LABEL
+                    ColumnKeys::STORE_VIEW_CODE    => ColumnKeys::STORE_VIEW_CODE,
+                    ColumnKeys::ATTRIBUTE_SET_CODE => ColumnKeys::ATTRIBUTE_SET_CODE,
+                    ColumnKeys::IMAGE_PARENT_SKU   => ColumnKeys::SKU,
+                    ColumnKeys::IMAGE_PATH         => ColumnKeys::BASE_IMAGE,
+                    ColumnKeys::IMAGE_PATH_NEW     => ColumnKeys::BASE_IMAGE,
+                    ColumnKeys::IMAGE_LABEL        => ColumnKeys::BASE_IMAGE_LABEL
                 )
             );
 
@@ -97,20 +100,22 @@ class ProductMediaObserver extends AbstractProductImportObserver
             // prepare the small image
             $artefact = $this->newArtefact(
                 array(
-                    ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                    ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                    ColumnKeys::IMAGE_PATH       => $smallImage,
-                    ColumnKeys::IMAGE_PATH_NEW   => $smallImage,
-                    ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::SMALL_IMAGE_LABEL) ?
-                    $this->getValue(ColumnKeys::SMALL_IMAGE_LABEL) :
-                    $this->getDefaultImageLabel()
+                    ColumnKeys::STORE_VIEW_CODE    => $storeViewCode,
+                    ColumnKeys::ATTRIBUTE_SET_CODE => $attributeSetCode,
+                    ColumnKeys::IMAGE_PARENT_SKU   => $parentSku,
+                    ColumnKeys::IMAGE_PATH         => $smallImage,
+                    ColumnKeys::IMAGE_PATH_NEW     => $smallImage,
+                    ColumnKeys::IMAGE_LABEL        => $this->hasValue(ColumnKeys::SMALL_IMAGE_LABEL) ?
+                                                      $this->getValue(ColumnKeys::SMALL_IMAGE_LABEL) :
+                                                      $this->getDefaultImageLabel()
                 ),
                 array(
-                    ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
-                    ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
-                    ColumnKeys::IMAGE_PATH       => ColumnKeys::SMALL_IMAGE,
-                    ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::SMALL_IMAGE,
-                    ColumnKeys::IMAGE_LABEL      => ColumnKeys::SMALL_IMAGE_LABEL
+                    ColumnKeys::STORE_VIEW_CODE    => ColumnKeys::STORE_VIEW_CODE,
+                    ColumnKeys::ATTRIBUTE_SET_CODE => ColumnKeys::ATTRIBUTE_SET_CODE,
+                    ColumnKeys::IMAGE_PARENT_SKU   => ColumnKeys::SKU,
+                    ColumnKeys::IMAGE_PATH         => ColumnKeys::SMALL_IMAGE,
+                    ColumnKeys::IMAGE_PATH_NEW     => ColumnKeys::SMALL_IMAGE,
+                    ColumnKeys::IMAGE_LABEL        => ColumnKeys::SMALL_IMAGE_LABEL
                 )
             );
 
@@ -123,20 +128,22 @@ class ProductMediaObserver extends AbstractProductImportObserver
             // prepare the thumbnail image
             $artefact = $this->newArtefact(
                 array(
-                    ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                    ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                    ColumnKeys::IMAGE_PATH       => $thumbnailImage,
-                    ColumnKeys::IMAGE_PATH_NEW   => $thumbnailImage,
-                    ColumnKeys::IMAGE_LABEL      => $this->hasValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) ?
-                                                    $this->getValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) :
-                                                    $this->getDefaultImageLabel()
+                    ColumnKeys::STORE_VIEW_CODE    => $storeViewCode,
+                    ColumnKeys::ATTRIBUTE_SET_CODE => $attributeSetCode,
+                    ColumnKeys::IMAGE_PARENT_SKU   => $parentSku,
+                    ColumnKeys::IMAGE_PATH         => $thumbnailImage,
+                    ColumnKeys::IMAGE_PATH_NEW     => $thumbnailImage,
+                    ColumnKeys::IMAGE_LABEL        => $this->hasValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) ?
+                                                      $this->getValue(ColumnKeys::THUMBNAIL_IMAGE_LABEL) :
+                                                      $this->getDefaultImageLabel()
                 ),
                 array(
-                    ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
-                    ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
-                    ColumnKeys::IMAGE_PATH       => ColumnKeys::THUMBNAIL_IMAGE,
-                    ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::THUMBNAIL_IMAGE,
-                    ColumnKeys::IMAGE_LABEL      => ColumnKeys::THUMBNAIL_IMAGE_LABEL
+                    ColumnKeys::STORE_VIEW_CODE    => ColumnKeys::STORE_VIEW_CODE,
+                    ColumnKeys::ATTRIBUTE_SET_CODE => ColumnKeys::ATTRIBUTE_SET_CODE,
+                    ColumnKeys::IMAGE_PARENT_SKU   => ColumnKeys::SKU,
+                    ColumnKeys::IMAGE_PATH         => ColumnKeys::THUMBNAIL_IMAGE,
+                    ColumnKeys::IMAGE_PATH_NEW     => ColumnKeys::THUMBNAIL_IMAGE,
+                    ColumnKeys::IMAGE_LABEL        => ColumnKeys::THUMBNAIL_IMAGE_LABEL
                 )
             );
 
@@ -154,20 +161,22 @@ class ProductMediaObserver extends AbstractProductImportObserver
                 // prepare the additional image
                 $artefact = $this->newArtefact(
                     array(
-                        ColumnKeys::STORE_VIEW_CODE  => $storeViewCode,
-                        ColumnKeys::IMAGE_PARENT_SKU => $parentSku,
-                        ColumnKeys::IMAGE_PATH       => $additionalImage,
-                        ColumnKeys::IMAGE_PATH_NEW   => $additionalImage,
-                        ColumnKeys::IMAGE_LABEL      => isset($additionalImageLabels[$key]) ?
-                                                        $additionalImageLabels[$key] :
-                                                        $this->getDefaultImageLabel()
+                        ColumnKeys::STORE_VIEW_CODE    => $storeViewCode,
+                        ColumnKeys::ATTRIBUTE_SET_CODE => $attributeSetCode,
+                        ColumnKeys::IMAGE_PARENT_SKU   => $parentSku,
+                        ColumnKeys::IMAGE_PATH         => $additionalImage,
+                        ColumnKeys::IMAGE_PATH_NEW     => $additionalImage,
+                        ColumnKeys::IMAGE_LABEL        => isset($additionalImageLabels[$key]) ?
+                                                          $additionalImageLabels[$key] :
+                                                          $this->getDefaultImageLabel()
                     ),
                     array(
-                        ColumnKeys::STORE_VIEW_CODE  => ColumnKeys::STORE_VIEW_CODE,
-                        ColumnKeys::IMAGE_PARENT_SKU => ColumnKeys::SKU,
-                        ColumnKeys::IMAGE_PATH       => ColumnKeys::ADDITIONAL_IMAGES,
-                        ColumnKeys::IMAGE_PATH_NEW   => ColumnKeys::ADDITIONAL_IMAGES,
-                        ColumnKeys::IMAGE_LABEL      => ColumnKeys::ADDITIONAL_IMAGE_LABELS
+                        ColumnKeys::STORE_VIEW_CODE    => ColumnKeys::STORE_VIEW_CODE,
+                        ColumnKeys::ATTRIBUTE_SET_CODE => ColumnKeys::ATTRIBUTE_SET_CODE,
+                        ColumnKeys::IMAGE_PARENT_SKU   => ColumnKeys::SKU,
+                        ColumnKeys::IMAGE_PATH         => ColumnKeys::ADDITIONAL_IMAGES,
+                        ColumnKeys::IMAGE_PATH_NEW     => ColumnKeys::ADDITIONAL_IMAGES,
+                        ColumnKeys::IMAGE_LABEL        => ColumnKeys::ADDITIONAL_IMAGE_LABELS
                     )
                 );
 
