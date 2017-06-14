@@ -48,7 +48,7 @@ class ProductMediaGalleryCreateProcessor extends AbstractCreateProcessor
 
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY => $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY
+            $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY => $this->getUtilityClass()->find($utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY)
         );
     }
 

@@ -3,48 +3,46 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="import_product_media.utility.class.name">TechDivision\Import\Product\Media\Utils\SqlStatements</parameter>
-    </parameters>
-
     <services>
+
+        <service id="import_product_media.utility.class.name" class="TechDivision\Import\Product\Media\Utils\SqlStatements"/>
 
         <service id="import_product_media.repository.product.media.gallery" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
         <service id="import_product_media.repository.product.media.gallery.value" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepository">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
         <service id="import_product_media.repository.product.media.gallery.value.to.entity" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepository">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
 
         <service id="import_product_media.action.processor.product.media.gallery.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryCreateProcessor">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.update" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryUpdateProcessor">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.value.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueCreateProcessor">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.value.update" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueUpdateProcessor">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.value.to.entity.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueToEntityCreateProcessor">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.value.video.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueVideoCreateProcessor">
             <argument type="service" id="connection"/>
-            <argument>%import_product_media.utility.class.name%</argument>
+            <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
 
         <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction">

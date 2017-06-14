@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Services;
 
+use TechDivision\Import\Connection\ConnectionInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepository;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepository;
@@ -43,7 +44,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * A PDO connection initialized with the values from the Doctrine EntityManager.
      *
-     * @var \PDO
+     * @var \TechDivision\Import\Connection\ConnectionInterface
      */
     protected $connection;
 
@@ -99,7 +100,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Initialize the processor with the necessary assembler and repository instances.
      *
-     * @param \PDO                                                                                       $connection                                 The PDO connection to use
+     * @param \TechDivision\Import\Connection\ConnectionInterface                                        $connection                                 The connection to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository              $productMediaGalleryRepository              The product media gallery repository to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepository         $productMediaGalleryValueRepository         The product media gallery value repository to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepository $productMediaGalleryValueToEntityRepository The product media gallery value to entity repository to use
@@ -109,7 +110,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryVideoAction                  $productMediaGalleryValueVideoAction        The product media gallery value video action to use
      */
     public function __construct(
-        \PDO $connection,
+        ConnectionInterface $connection,
         ProductMediaGalleryRepository $productMediaGalleryRepository,
         ProductMediaGalleryValueRepository $productMediaGalleryValueRepository,
         ProductMediaGalleryValueToEntityRepository $productMediaGalleryValueToEntityRepository,
@@ -131,11 +132,11 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the passed connection.
      *
-     * @param \PDO $connection The connection to set
+     * @param \TechDivision\Import\Connection\ConnectionInterface $connection The connection to set
      *
      * @return void
      */
-    public function setConnection(\PDO $connection)
+    public function setConnection(ConnectionInterface $connection)
     {
         $this->connection = $connection;
     }
@@ -143,7 +144,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the connection.
      *
-     * @return \PDO The connection instance
+     * @return \TechDivision\Import\Connection\ConnectionInterface The connection instance
      */
     public function getConnection()
     {

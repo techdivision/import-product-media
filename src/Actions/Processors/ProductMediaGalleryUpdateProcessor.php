@@ -49,7 +49,7 @@ class ProductMediaGalleryUpdateProcessor extends AbstractCreateProcessor
 
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY => $utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY
+            $utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY => $this->getUtilityClass()->find($utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY)
         );
     }
 

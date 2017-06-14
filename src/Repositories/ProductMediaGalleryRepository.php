@@ -54,7 +54,8 @@ class ProductMediaGalleryRepository extends AbstractRepository
         $utilityClassName = $this->getUtilityClassName();
 
         // initialize the prepared statements
-        $this->productMediaGalleryStmt = $this->getConnection()->prepare($utilityClassName::PRODUCT_MEDIA_GALLERY);
+        $this->productMediaGalleryStmt =
+            $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_MEDIA_GALLERY));
     }
 
     /**
