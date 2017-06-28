@@ -78,10 +78,7 @@
         <service id="import_product_media.observer.media.gallery.value.update" class="TechDivision\Import\Product\Media\Observers\MediaGalleryValueUpdateObserver"/>
         <service id="import_product_media.observer.product.media" class="TechDivision\Import\Product\Media\Observers\ProductMediaObserver"/>
 
-        <service id="configuration.import_product_media.subject.media" synthetic="true" />
-
         <service id="import_product_media.subject.media" class="TechDivision\Import\Product\Media\Subjects\MediaSubject" shared="false">
-            <argument type="service" id="configuration.import_product_media.subject.media"/>
             <argument type="service" id="import.processor.registry"/>
             <argument type="service" id="import.generator.core.config.data.uid"/>
             <argument type="service" id="loggers"/>
