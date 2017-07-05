@@ -90,7 +90,7 @@ class MediaGalleryUpdateObserver extends MediaGalleryObserver
      */
     protected function loadProductMediaGallery($attributeId, $value)
     {
-        return $this->getSubject()->loadProductMediaGallery($attributeId, $value);
+        return $this->getProductMediaProcessor()->loadProductMediaGallery($attributeId, $value);
     }
 
     /**
@@ -103,6 +103,6 @@ class MediaGalleryUpdateObserver extends MediaGalleryObserver
      */
     protected function loadProductMediaGalleryValueToEntity($valueId, $entityId)
     {
-        return $this->getSubject()->loadProductMediaGalleryValueToEntity($valueId, $entityId);
+        return $this->getProductMediaProcessor()->loadProductMediaGalleryValueToEntity($valueId, $entityId);
     }
 }

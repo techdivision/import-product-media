@@ -23,6 +23,7 @@ namespace TechDivision\Import\Product\Media\Observers;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 
 /**
  * Observer that creates/updates the product's media gallery information.
@@ -56,6 +57,33 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      * @var integer
      */
     protected $valueId;
+
+    /**
+     * The product media processor instance.
+     *
+     * @var \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface
+     */
+    protected $productMediaProcessor;
+
+    /**
+     * Initialize the observer with the passed product media processor instance.
+     *
+     * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
+     */
+    public function __construct(ProductMediaProcessorInterface $productMediaProcessor)
+    {
+        $this->productMediaProcessor = $productMediaProcessor;
+    }
+
+    /**
+     * Return's the product media processor instance.
+     *
+     * @return \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface The product media processor instance
+     */
+    protected function getProductMediaProcessor()
+    {
+        return $this->productMediaProcessor;
+    }
 
     /**
      * Process the observer's business logic.
@@ -266,7 +294,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      */
     protected function persistProductMediaGallery($productMediaGallery)
     {
-        return $this->getSubject()->persistProductMediaGallery($productMediaGallery);
+        return $this->getProductMediaProcessor()->persistProductMediaGallery($productMediaGallery);
     }
 
     /**
@@ -278,6 +306,6 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      */
     protected function persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity)
     {
-        $this->getSubject()->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
+        $this->getProductMediaProcessor()->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
     }
 }
