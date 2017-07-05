@@ -24,6 +24,7 @@ use TechDivision\Import\Utils\StoreViewCodes;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 
 /**
  * Observer that creates/updates the product's media gallery value information.
@@ -36,6 +37,33 @@ use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
  */
 class MediaGalleryValueObserver extends AbstractProductImportObserver
 {
+
+    /**
+     * The product media processor instance.
+     *
+     * @var \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface
+     */
+    protected $productMediaProcessor;
+
+    /**
+     * Initialize the observer with the passed product media processor instance.
+     *
+     * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
+     */
+    public function __construct(ProductMediaProcessorInterface $productMediaProcessor)
+    {
+        $this->productMediaProcessor = $productMediaProcessor;
+    }
+
+    /**
+     * Return's the product media processor instance.
+     *
+     * @return \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface The product media processor instance
+     */
+    protected function getProductMediaProcessor()
+    {
+        return $this->productMediaProcessor;
+    }
 
     /**
      * Process the observer's business logic.
@@ -223,6 +251,6 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      */
     protected function persistProductMediaGalleryValue($productMediaGalleryValue)
     {
-        $this->getSubject()->persistProductMediaGalleryValue($productMediaGalleryValue);
+        $this->getProductMediaProcessor()->persistProductMediaGalleryValue($productMediaGalleryValue);
     }
 }

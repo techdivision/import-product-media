@@ -69,6 +69,6 @@ class MediaGalleryValueUpdateObserver extends MediaGalleryValueObserver
      */
     protected function loadProductMediaGalleryValue($valueId, $storeId, $entityId)
     {
-        return $this->getSubject()->loadProductMediaGalleryValue($valueId, $storeId, $entityId);
+        return $this->getProductMediaProcessor()->loadProductMediaGalleryValue($valueId, $storeId, $entityId);
     }
 }
