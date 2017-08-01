@@ -31,27 +31,30 @@ file
       "subjects": [
         { ... },
         {
-          "class-name": "TechDivision\\Import\\Product\\Media\\Subjects\\MediaSubject",
-          "processor-factory" : "TechDivision\\Import\\Cli\\Services\\ProductMediaProcessorFactory",
-          "utility-class-name" : "TechDivision\\Import\\Product\\Media\\Utils\\SqlStatements",
+          "id": "import_product_media.subject.media",
           "prefix": "media",
-          "source-dir": "projects/sample-data/tmp",
-          "target-dir": "projects/sample-data/tmp",
+          "filesystem-adapter" : {
+            "id" : "import.adapter.filesystem.factory.league",
+            "adapter" : {
+              "type" : "League\\Flysystem\\Adapter\\Local"
+            }
+          },
           "params" : [
             {
-              "root-directory" : "/",
-              "media-directory" : "/opt/appserver/webapps/magento2_ce212/pub/media/catalog/product",
-              "images-file-directory" : "projects/sample-data/magento2-sample-data/pub/media/catalog/product"
+              "copy-images" : true,
+              "media-directory" : "magento2_ce212/pub/media/catalog/product",
+              "images-file-directory" : "import/pub/media/catalog/product"
             }
           ],
           "observers": [
             {
               "pre-import" : [
-                "TechDivision\\Import\\Product\\Media\\Observers\\FileUploadObserver"
+                "import.observer.attribute.set",
+                "import_product_media.observer.file.upload"
               ],
               "import": [
-                "TechDivision\\Import\\Product\\Media\\Observers\\MediaGalleryObserver",
-                "TechDivision\\Import\\Product\\Media\\Observers\\MediaGalleryValueObserver"
+                "import_product_media.observer.media.gallery.update",
+                "import_product_media.observer.media.gallery.value.update"
               ]
             }
           ]
@@ -63,15 +66,17 @@ file
       "subjects": [
         { ... },
         {
-          "class-name": "TechDivision\\Import\\Product\\Media\\Subjects\\MediaSubject",
-          "processor-factory" : "TechDivision\\Import\\Cli\\Services\\ProductMediaProcessorFactory",
-          "utility-class-name" : "TechDivision\\Import\\Product\\Media\\Utils\\SqlStatements",
+          "id": "import_product_media.subject.media",
           "prefix": "media",
-          "source-dir": "projects/sample-data/tmp",
-          "target-dir": "projects/sample-data/tmp",
+          "filesystem-adapter" : {
+            "id" : "import.adapter.filesystem.factory.league",
+            "adapter" : {
+              "type" : "League\\Flysystem\\Adapter\\Local"
+            }
+          },
           "params" : [
             {
-              "root-directory" : "/",
+              "copy-images" : true,
               "media-directory" : "/opt/appserver/webapps/magento2_ce212/pub/media/catalog/product",
               "images-file-directory" : "projects/sample-data/magento2-sample-data/pub/media/catalog/product"
             }
@@ -79,11 +84,12 @@ file
           "observers": [
             {
               "pre-import" : [
-                "TechDivision\\Import\\Product\\Media\\Observers\\FileUploadObserver"
+                "import.observer.attribute.set",
+                "import_product_media.observer.file.upload"
               ],
               "import": [
-                "TechDivision\\Import\\Product\\Media\\Observers\\MediaGalleryUpdateObserver",
-                "TechDivision\\Import\\Product\\Media\\Observers\\MediaGalleryValueUpdateObserver"
+                "import_product_media.observer.media.gallery.update",
+                "import_product_media.observer.media.gallery.value.update"
               ]
             }
           ]
