@@ -20,14 +20,12 @@
 
 namespace TechDivision\Import\Product\Media\Subjects;
 
-use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
-use TechDivision\Import\Product\Media\Observers\MapSkuToEntityIdException;
+use TechDivision\Import\Product\Media\Exceptions\MapSkuToEntityIdException;
 
 /**
  * The subject implementation for the product media handling.
@@ -96,7 +94,6 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
      * @param string $serial The serial of the actual import
      *
      * @return void
-     * @see \Importer\Csv\Actions\ProductImportAction::prepare()
      */
     public function setUp($serial)
     {
@@ -115,12 +112,6 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
 
         // initialize the flag to decide copy images or not
         $this->setCopyImages($this->getConfiguration()->getParam(ConfigurationKeys::COPY_IMAGES));
-
-        // initialize the filesystems root directory
-        $this->setRootDir($this->getConfiguration()->getParam(ConfigurationKeys::ROOT_DIRECTORY, getcwd()));
-
-        // initialize the filesystem
-        $this->setFilesystem(new Filesystem(new Local($this->getRootDir())));
 
         // initialize media directory => can be absolute or relative
         if ($this->getConfiguration()->hasParam(ConfigurationKeys::MEDIA_DIRECTORY)) {

@@ -18,7 +18,7 @@
  * @link      http://www.techdivision.com
  */
 
-namespace TechDivision\Import\Product\Media\Observers;
+namespace TechDivision\Import\Product\Media\Exceptions;
 
 /**
  * Is thrown, if a SKU can't be mapped to a entity ID.

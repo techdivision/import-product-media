@@ -93,7 +93,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * The action with the product media gallery video CRUD methods.
      *
-     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryVideoAction
+     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoAction
      */
     protected $productMediaGalleryVideoAction;
 
@@ -107,7 +107,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction                       $productMediaGalleryAction                  The product media gallery action to use
      * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueAction                  $productMediaGalleryValueAction             The product media gallery value action to use
      * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAction          $productMediaGalleryValueToEntityAction     The product media gallery value to entity action to use
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryVideoAction                  $productMediaGalleryValueVideoAction        The product media gallery value video action to use
+     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoAction             $productMediaGalleryValueVideoAction        The product media gallery value video action to use
      */
     public function __construct(
         ConnectionInterface $connection,
