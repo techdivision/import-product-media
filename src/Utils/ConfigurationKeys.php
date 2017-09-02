@@ -31,4 +31,11 @@ namespace TechDivision\Import\Product\Media\Utils;
  */
 class ConfigurationKeys extends \TechDivision\Import\Product\Utils\ConfigurationKeys
 {
+
+    /**
+     * Name for the configuration key 'clean-up-media-gallery'.
+     *
+     * @var string
+     */
+    const CLEAN_UP_MEDIA_GALLERY = 'clean-up-media-gallery';
 }

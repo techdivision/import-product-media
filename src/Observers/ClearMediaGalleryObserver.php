@@ -24,6 +24,7 @@ use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
 
 /**
  * Observer that cleaned up a product's media gallery information.
@@ -72,66 +73,71 @@ class ClearMediaGalleryObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // initialize the array for the actual images
-        $actualImageNames = array();
+        // query whether or not the media gallery has to be cleaned up
+        if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY)) {
+            if ($this->getSubject()->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY)) {
+                // initialize the array for the actual images
+                $actualImageNames = array();
 
-        // iterate over the available image fields
-        foreach (array_keys($this->getImageTypes()) as $imageColumnName) {
-            if ($this->hasValue($imageColumnName) && !in_array($imageName = $this->getValue($imageColumnName), $actualImageNames)) {
-                $actualImageNames[] = $imageName;
-            }
-        }
-
-        // query whether or not, we've additional images
-        if ($additionalImages = $this->getValue(ColumnKeys::ADDITIONAL_IMAGES, null, array($this, 'explode'))) {
-            foreach ($additionalImages as $additionalImageName) {
-                // do nothing if the image has already been added, e. g. it is the base image
-                if (in_array($additionalImageName, $actualImageNames)) {
-                    continue;
+                // iterate over the available image fields
+                foreach (array_keys($this->getImageTypes()) as $imageColumnName) {
+                    if ($this->hasValue($imageColumnName) && !in_array($imageName = $this->getValue($imageColumnName), $actualImageNames)) {
+                        $actualImageNames[] = $imageName;
+                    }
                 }
 
-                // else, add the image to the array
-                $actualImageNames[] = $additionalImageName;
-            }
-        }
+                // query whether or not, we've additional images
+                if ($additionalImages = $this->getValue(ColumnKeys::ADDITIONAL_IMAGES, null, array($this, 'explode'))) {
+                    foreach ($additionalImages as $additionalImageName) {
+                        // do nothing if the image has already been added, e. g. it is the base image
+                        if (in_array($additionalImageName, $actualImageNames)) {
+                            continue;
+                        }
 
-        // load the existing media gallery entities for the produdct with the given SKU
-        $existingProductMediaGalleries = $this->getProductMediaProcessor()
-                                              ->getProductMediaGalleriesBySku($sku = $this->getValue(ColumnKeys::SKU));
+                        // else, add the image to the array
+                        $actualImageNames[] = $additionalImageName;
+                    }
+                }
 
-        // remove the images that are NOT longer available in the CSV file
-        foreach ($existingProductMediaGalleries as $existingProductMediaGallery) {
-            // do nothing if the file still exists
-            if (in_array($existingImageName = $existingProductMediaGallery[MemberNames::VALUE], $actualImageNames)) {
-                continue;
-            }
+                // load the existing media gallery entities for the produdct with the given SKU
+                $existingProductMediaGalleries = $this->getProductMediaProcessor()
+                                                      ->getProductMediaGalleriesBySku($sku = $this->getValue(ColumnKeys::SKU));
 
-            try {
-                // remove the old image from the database
-                $this->getProductMediaProcessor()
-                     ->deleteProductMediaGallery(array(MemberNames::VALUE_ID => $existingProductMediaGallery[MemberNames::VALUE_ID]));
+                // remove the images that are NOT longer available in the CSV file
+                foreach ($existingProductMediaGalleries as $existingProductMediaGallery) {
+                    // do nothing if the file still exists
+                    if (in_array($existingImageName = $existingProductMediaGallery[MemberNames::VALUE], $actualImageNames)) {
+                        continue;
+                    }
 
-                // log a debug message that the image has been removed
+                    try {
+                        // remove the old image from the database
+                        $this->getProductMediaProcessor()
+                             ->deleteProductMediaGallery(array(MemberNames::VALUE_ID => $existingProductMediaGallery[MemberNames::VALUE_ID]));
+
+                        // log a debug message that the image has been removed
+                        $this->getSubject()
+                             ->getSystemLogger()
+                             ->debug(sprintf('Successfully removed image "%s" from media gallery for product with SKU "%s"', $existingImageName, $sku));
+
+                    } catch (\Exception $e) {
+                        // log a warning if debug mode has been enabled and the file is NOT available
+                        if ($this->getSubject()->isDebugMode()) {
+                            $this->getSubject()
+                                 ->getSystemLogger()
+                                 ->warning($this->getSubject()->appendExceptionSuffix($e->getMessage()));
+                        } else {
+                            throw $e;
+                        }
+                    }
+                }
+
+                // log a message that the images has been cleaned-up
                 $this->getSubject()
                      ->getSystemLogger()
-                     ->debug(sprintf('Successfully removed image "%s" from media gallery for product with SKU "%s"', $existingImageName, $sku));
-
-            } catch (\Exception $e) {
-                // log a warning if debug mode has been enabled and the file is NOT available
-                if ($this->getSubject()->isDebugMode()) {
-                    $this->getSubject()
-                         ->getSystemLogger()
-                         ->warning($this->getSubject()->appendExceptionSuffix($e->getMessage()));
-                } else {
-                    throw $e;
-                }
+                     ->debug(sprintf('Successfully cleaned-up media gallery for product with SKU "%s"', $sku));
             }
         }
-
-        // log a message that the images has been cleaned-up
-        $this->getSubject()
-             ->getSystemLogger()
-             ->debug(sprintf('Successfully cleaned-up media gallery for product with SKU "%s"', $sku));
     }
 
     /**
