@@ -1,3 +1,13 @@
+# Version 1.0.0-beta10
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Refactor check if the flag to clean-up the media gallery has been set
+
 # Version 1.0.0-beta9
 
 ## Bugfixes
