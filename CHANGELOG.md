@@ -1,3 +1,13 @@
+# Version 1.0.0-beta9
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Make functionality to clean-up media gallery when images has been removed configurable
+
 # Version 1.0.0-beta8
 
 ## Bugfixes
