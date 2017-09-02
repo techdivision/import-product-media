@@ -390,6 +390,18 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     }
 
     /**
+     * Load's the product media gallery entities with the passed SKU.
+     *
+     * @param string $sku The SKU to load the media gallery entities for
+     *
+     * @return array The product media gallery entities
+     */
+    public function getProductMediaGalleriesBySku($sku)
+    {
+        return $this->getProductMediaGalleryRepository()->findAllBySku($sku);
+    }
+
+    /**
      * Persist's the passed product media gallery data and return's the ID.
      *
      * @param array       $productMediaGallery The product media gallery data to persist
@@ -439,5 +451,18 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo, $name = null)
     {
         $this->getProductMediaGalleryValueVideoAction()->persist($productMediaGalleryValueVideo, $name);
+    }
+
+    /**
+     * Delete's the passed product media gallery data.
+     *
+     * @param array       $row  The product media gallery data to be deleted
+     * @param string|null $name The name of the prepared statement that has to be executed
+     *
+     * @return string The ID of the persisted entity
+     */
+    public function deleteProductMediaGallery(array $row, $name = null)
+    {
+        return $this->getProductMediaGalleryAction()->delete($row, $name);
     }
 }

@@ -29,27 +29,6 @@ namespace TechDivision\Import\Product\Media\Utils;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ConfigurationKeys extends \TechDivision\Import\Utils\ConfigurationKeys
+class ConfigurationKeys extends \TechDivision\Import\Product\Utils\ConfigurationKeys
 {
-
-    /**
-     * Name for the column 'media-directory'.
-     *
-     * @var string
-     */
-    const MEDIA_DIRECTORY = 'media-directory';
-
-    /**
-     * Name for the column 'images-file-directory'.
-     *
-     * @var string
-     */
-    const IMAGES_FILE_DIRECTORY = 'images-file-directory';
-
-    /**
-     * Name for the column 'copy-images'.
-     *
-     * @var string
-     */
-    const COPY_IMAGES = 'copy-images';
 }

@@ -43,6 +43,13 @@ class ProductMediaGalleryRepository extends AbstractRepository
     protected $productMediaGalleryStmt;
 
     /**
+     * The prepared statement to load the existing product media gallery entities by the given SKU.
+     *
+     * @var \PDOStatement
+     */
+    protected $productMediaGalleriesBySkuStmt;
+
+    /**
      * Initializes the repository's prepared statements.
      *
      * @return void
@@ -56,6 +63,8 @@ class ProductMediaGalleryRepository extends AbstractRepository
         // initialize the prepared statements
         $this->productMediaGalleryStmt =
             $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_MEDIA_GALLERY));
+        $this->productMediaGalleriesBySkuStmt =
+            $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_MEDIA_GALLERIES_BY_SKU));
     }
 
     /**
@@ -78,5 +87,23 @@ class ProductMediaGalleryRepository extends AbstractRepository
         // load and return the prodcut media gallery with the passed attribute ID + value
         $this->productMediaGalleryStmt->execute($params);
         return $this->productMediaGalleryStmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Load's the product media gallery entities with the passed SKU.
+     *
+     * @param string $sku The SKU to load the media gallery entities for
+     *
+     * @return array The product media gallery entities
+     */
+    public function findAllBySku($sku)
+    {
+
+        // initialize the params
+        $params = array(MemberNames::SKU => $sku);
+
+        // load and return the prodcut media gallery entities with the passed SKU
+        $this->productMediaGalleriesBySkuStmt->execute($params);
+        return $this->productMediaGalleriesBySkuStmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

@@ -42,6 +42,13 @@ class SqlStatements extends AbstractSqlStatements
     const PRODUCT_MEDIA_GALLERY = 'product_media_gallery';
 
     /**
+     * The SQL statement to load an existing product media gallery entities by their SKU.
+     *
+     * @var string
+     */
+    const PRODUCT_MEDIA_GALLERIES_BY_SKU = 'product_media_galleries.by.sku';
+
+    /**
      * The SQL statement to load an existing product media gallery by value/store/entity ID.
      *
      * @var string
@@ -68,6 +75,13 @@ class SqlStatements extends AbstractSqlStatements
      * @var string
      */
     const UPDATE_PRODUCT_MEDIA_GALLERY = 'update.product_media_gallery';
+
+    /**
+     * The SQL statement to delete an existing product media gallery entry.
+     *
+     * @var string
+     */
+    const DELETE_PRODUCT_MEDIA_GALLERY = 'delete.product_media_gallery';
 
     /**
      * The SQL statement to create a new product media gallery value entry.
@@ -137,6 +151,10 @@ class SqlStatements extends AbstractSqlStatements
                     media_type = :media_type,
                     disabled = :disabled
               WHERE value_id = :value_id',
+        SqlStatements::DELETE_PRODUCT_MEDIA_GALLERY =>
+            'DELETE
+               FROM catalog_product_entity_media_gallery
+              WHERE value_id = :value_id',
         SqlStatements::CREATE_PRODUCT_MEDIA_GALLERY_VALUE =>
             'INSERT
                INTO catalog_product_entity_media_gallery_value
@@ -170,21 +188,29 @@ class SqlStatements extends AbstractSqlStatements
                      :entity_id)',
         SqlStatements::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_VIDEO =>
             'INSERT
-                INTO catalog_product_entity_media_gallery_value_video
-                     (value_id,
-                      store_id,
-                      provider,
-                      url,
-                      title,
-                      description,
-                      metadata)
-              VALUES (:value_id,
-                      :store_id,
-                      :provider,
-                      :url,
-                      :title,
-                      :description,
-                      :metadata)'
+               INTO catalog_product_entity_media_gallery_value_video
+                    (value_id,
+                     store_id,
+                     provider,
+                     url,
+                     title,
+                     description,
+                     metadata)
+             VALUES (:value_id,
+                     :store_id,
+                     :provider,
+                     :url,
+                     :title,
+                     :description,
+                     :metadata)',
+        SqlStatements::PRODUCT_MEDIA_GALLERIES_BY_SKU =>
+            'SELECT t3.*
+               FROM catalog_product_entity t1,
+                    catalog_product_entity_media_gallery_value_to_entity t2,
+                    catalog_product_entity_media_gallery t3
+              WHERE t1.sku = :sku
+                AND t2.entity_id = t1.entity_id
+                AND t3.value_id = t2.value_id'
     );
 
     /**
