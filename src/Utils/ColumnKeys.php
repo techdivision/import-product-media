@@ -20,8 +20,6 @@
 
 namespace TechDivision\Import\Product\Media\Utils;
 
-use TechDivision\Import\Product\Utils\ColumnKeys as FallbackColumnKeys;
-
 /**
  * Utility class containing the CSV column names.
  *
@@ -31,25 +29,8 @@ use TechDivision\Import\Product\Utils\ColumnKeys as FallbackColumnKeys;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ColumnKeys extends FallbackColumnKeys
+class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
 {
-
-    /**
-     * This is a utility class, so protect it against direct
-     * instantiation.
-     */
-    private function __construct()
-    {
-    }
-
-    /**
-     * This is a utility class, so protect it against cloning.
-     *
-     * @return void
-     */
-    private function __clone()
-    {
-    }
 
     /**
      * Name for the column 'base_image'.
@@ -120,13 +101,6 @@ class ColumnKeys extends FallbackColumnKeys
      * @var string
      */
     const IMAGE_LABEL = 'image_label';
-
-    /**
-     * Name for the column 'additional_images'.
-     *
-     * @var string
-     */
-    const ADDITIONAL_IMAGES = 'additional_images';
 
     /**
      * Name for the column 'additional_image_labels'.

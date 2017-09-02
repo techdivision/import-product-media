@@ -1,3 +1,14 @@
+# Version 1.0.0-beta8
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Add functionality to clean-up media gallery when images has been removed
+* Remove observer with file upload functionality (now in techdivision/import-product) library
+
 # Version 1.0.0-beta7
 
 ## Bugfixes

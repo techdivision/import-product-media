@@ -47,6 +47,13 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     use FileUploadTrait;
 
     /**
+     * The name of the craeted image.
+     *
+     * @var integer
+     */
+    protected $parentImage;
+
+    /**
      * The ID of the parent product to relate the variant with.
      *
      * @var integer
@@ -110,9 +117,6 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         // load the attribute set we've prepared intially
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
 
-        // initialize the flag to decide copy images or not
-        $this->setCopyImages($this->getConfiguration()->getParam(ConfigurationKeys::COPY_IMAGES));
-
         // initialize media directory => can be absolute or relative
         if ($this->getConfiguration()->hasParam(ConfigurationKeys::MEDIA_DIRECTORY)) {
             $this->setMediaDir(
@@ -130,6 +134,28 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
                 )
             );
         }
+    }
+
+    /**
+     * Set's the name of the created image.
+     *
+     * @param string $parentImage The name of the created image
+     *
+     * @return void
+     */
+    public function setParentImage($parentImage)
+    {
+        $this->parentImage = $parentImage;
+    }
+
+    /**
+     * Return's the name of the created image.
+     *
+     * @return string The name of the created image
+     */
+    public function getParentImage()
+    {
+        return $this->parentImage;
     }
 
     /**
@@ -213,11 +239,7 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         }
 
         // throw an exception if the SKU has not been mapped yet
-        throw new MapSkuToEntityIdException(
-            $this->appendExceptionSuffix(
-                sprintf('Found not mapped entity ID for SKU %s', $sku)
-            )
-        );
+        throw new MapSkuToEntityIdException(sprintf('Found not mapped entity ID for SKU %s', $sku));
     }
 
     /**
@@ -237,10 +259,6 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         }
 
         // throw an exception, if not
-        throw new \Exception(
-            $this->appendExceptionSuffix(
-                sprintf('Found invalid store code %s', $storeCode)
-            )
-        );
+        throw new \Exception(sprintf('Found invalid store code %s', $storeCode));
     }
 }

@@ -28,6 +28,10 @@
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.utility.class.name"/>
         </service>
+        <service id="import_product_media.action.processor.product.media.gallery.delete" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryDeleteProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_media.utility.class.name"/>
+        </service>
         <service id="import_product_media.action.processor.product.media.gallery.value.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueCreateProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.utility.class.name"/>
@@ -48,6 +52,7 @@
         <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.update"/>
+            <argument type="service" id="import_product_media.action.processor.product.media.gallery.delete"/>
         </service>
         <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.create"/>
@@ -72,7 +77,6 @@
         </service>
 
         <service id="import_product_media.observer.product.media" class="TechDivision\Import\Product\Media\Observers\ProductMediaObserver"/>
-        <service id="import_product_media.observer.file.upload" class="TechDivision\Import\Product\Media\Observers\FileUploadObserver"/>
         <service id="import_product_media.observer.media.gallery" class="TechDivision\Import\Product\Media\Observers\MediaGalleryObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
         </service>
@@ -83,6 +87,9 @@
             <argument type="service" id="import_product_media.processor.product.media"/>
         </service>
         <service id="import_product_media.observer.media.gallery.value.update" class="TechDivision\Import\Product\Media\Observers\MediaGalleryValueUpdateObserver">
+            <argument type="service" id="import_product_media.processor.product.media"/>
+        </service>
+        <service id="import_product_media.observer.clear.media.gallery" class="TechDivision\Import\Product\Media\Observers\ClearMediaGalleryObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
         </service>
 
