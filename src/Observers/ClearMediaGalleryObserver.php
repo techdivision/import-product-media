@@ -119,7 +119,15 @@ class ClearMediaGalleryObserver extends AbstractProductImportObserver
                     // log a debug message that the image has been removed
                     $this->getSubject()
                          ->getSystemLogger()
-                         ->debug(sprintf('Successfully removed image "%s" from media gallery for product with SKU "%s"', $existingImageName, $sku));
+                         ->warning(
+                             $this->getSubject()->appendExceptionSuffix(
+                                 sprintf(
+                                     'Successfully removed image "%s" from media gallery for product with SKU "%s"',
+                                     $existingImageName,
+                                     $sku
+                                 )
+                             )
+                         );
 
                 } catch (\Exception $e) {
                     // log a warning if debug mode has been enabled and the file is NOT available
@@ -136,7 +144,14 @@ class ClearMediaGalleryObserver extends AbstractProductImportObserver
             // log a message that the images has been cleaned-up
             $this->getSubject()
                  ->getSystemLogger()
-                 ->debug(sprintf('Successfully cleaned-up media gallery for product with SKU "%s"', $sku));
+                 ->debug(
+                     $this->getSubject()->appendExceptionSuffix(
+                         sprintf(
+                             'Successfully cleaned-up media gallery for product with SKU "%s"',
+                             $sku
+                         )
+                     )
+                 );
         }
     }
 

@@ -1,3 +1,14 @@
+# Version 1.0.0-beta11
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch log level from debug to warning when images are removed from media gallery
+* Append filename + linenumber for log message when a image will be remove from the media gallery
+
 # Version 1.0.0-beta10
 
 ## Bugfixes
