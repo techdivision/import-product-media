@@ -21,6 +21,7 @@
 namespace TechDivision\Import\Product\Media\Repositories;
 
 use TechDivision\Import\Product\Media\Utils\MemberNames;
+use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
 use TechDivision\Import\Repositories\AbstractRepository;
 
 /**
@@ -57,14 +58,11 @@ class ProductMediaGalleryRepository extends AbstractRepository
     public function init()
     {
 
-        // load the utility class name
-        $utilityClassName = $this->getUtilityClassName();
-
         // initialize the prepared statements
         $this->productMediaGalleryStmt =
-            $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_MEDIA_GALLERY));
+            $this->getConnection()->prepare($this->loadStatement(SqlStatementKeys::PRODUCT_MEDIA_GALLERY));
         $this->productMediaGalleriesBySkuStmt =
-            $this->getConnection()->prepare($this->getUtilityClass()->find($utilityClassName::PRODUCT_MEDIA_GALLERIES_BY_SKU));
+            $this->getConnection()->prepare($this->loadStatement(SqlStatementKeys::PRODUCT_MEDIA_GALLERIES_BY_SKU));
     }
 
     /**
