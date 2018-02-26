@@ -5,7 +5,7 @@
 
     <services>
 
-        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Utils\SqlStatements"/>
+        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository"/>
 
         <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository"/>
         <service id="import_product_media.repository.product.media.gallery" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository">
