@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Actions\Processors;
 
+use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
 use TechDivision\Import\Actions\Processors\AbstractUpdateProcessor;
 
 /**
@@ -43,12 +44,9 @@ class ProductMediaGalleryValueUpdateProcessor extends AbstractUpdateProcessor
     protected function getStatements()
     {
 
-        // load the utility class name
-        $utilityClassName = $this->getUtilityClassName();
-
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY_VALUE => $this->getUtilityClass()->find($utilityClassName::UPDATE_PRODUCT_MEDIA_GALLERY_VALUE)
+            SqlStatementKeys::UPDATE_PRODUCT_MEDIA_GALLERY_VALUE => $this->loadStatement(SqlStatementKeys::UPDATE_PRODUCT_MEDIA_GALLERY_VALUE)
         );
     }
 }

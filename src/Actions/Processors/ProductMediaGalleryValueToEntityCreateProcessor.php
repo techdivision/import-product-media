@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Actions\Processors;
 
+use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
 use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
 
 /**
@@ -43,12 +44,9 @@ class ProductMediaGalleryValueToEntityCreateProcessor extends AbstractCreateProc
     protected function getStatements()
     {
 
-        // load the utility class name
-        $utilityClassName = $this->getUtilityClassName();
-
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY => $this->getUtilityClass()->find($utilityClassName::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY)
+            SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY => $this->loadStatement(SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY)
         );
     }
 }

@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Actions\Processors;
 
+use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
 use TechDivision\Import\Actions\Processors\AbstractDeleteProcessor;
 
 /**
@@ -43,12 +44,9 @@ class ProductMediaGalleryDeleteProcessor extends AbstractDeleteProcessor
     protected function getStatements()
     {
 
-        // load the utility class name
-        $utilityClassName = $this->getUtilityClassName();
-
         // return the array with the SQL statements that has to be prepared
         return array(
-            $utilityClassName::DELETE_PRODUCT_MEDIA_GALLERY => $this->getUtilityClass()->find($utilityClassName::DELETE_PRODUCT_MEDIA_GALLERY)
+            SqlStatementKeys::DELETE_PRODUCT_MEDIA_GALLERY => $this->loadStatement(SqlStatementKeys::DELETE_PRODUCT_MEDIA_GALLERY)
         );
     }
 }
