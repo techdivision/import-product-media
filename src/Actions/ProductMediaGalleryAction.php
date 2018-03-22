@@ -24,7 +24,7 @@ use TechDivision\Import\Utils\EntityStatus;
 use TechDivision\Import\Actions\AbstractAction;
 
 /**
- * A SLSB providing repository functionality for product media gallery CRUD actions.
+ * An action implementation that provides CRUD functionality for product media gallery handling.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -32,7 +32,7 @@ use TechDivision\Import\Actions\AbstractAction;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryAction extends AbstractAction
+class ProductMediaGalleryAction extends AbstractAction implements ProductMediaGalleryActionInterface
 {
 
     /**

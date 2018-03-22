@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepository
+ * TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepositoryInterface
  *
  * NOTICE OF LICENSE
  *
@@ -20,9 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Repositories;
 
-use TechDivision\Import\Product\Media\Utils\MemberNames;
-use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
-use TechDivision\Import\Repositories\AbstractRepository;
+use TechDivision\Import\Repositories\RepositoryInterface;
 
 /**
  * Repository implementation to load product media gallery value data.
@@ -33,28 +31,8 @@ use TechDivision\Import\Repositories\AbstractRepository;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryValueRepository extends AbstractRepository implements ProductMediaGalleryValueRepositoryInterface
+interface ProductMediaGalleryValueRepositoryInterface extends RepositoryInterface
 {
-
-    /**
-     * The prepared statement to load an existing product media gallery value entity.
-     *
-     * @var \PDOStatement
-     */
-    protected $productMediaGalleryStmt;
-
-    /**
-     * Initializes the repository's prepared statements.
-     *
-     * @return void
-     */
-    public function init()
-    {
-
-        // initialize the prepared statements
-        $this->productMediaGalleryValueStmt =
-            $this->getConnection()->prepare($this->loadStatement(SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUE));
-    }
 
     /**
      * Load's the product media gallery value with the passed value/store/parent ID.
@@ -65,18 +43,5 @@ class ProductMediaGalleryValueRepository extends AbstractRepository implements P
      *
      * @return array The product media gallery value
      */
-    public function findOneByValueIdAndStoreIdAndEntityId($valueId, $storeId, $entityId)
-    {
-
-        // initialize the params
-        $params = array(
-            MemberNames::VALUE_ID  => $valueId,
-            MemberNames::STORE_ID  => $storeId,
-            MemberNames::ENTITY_ID => $entityId
-        );
-
-        // load and return the prodcut media gallery value with the passed value/store/parent ID
-        $this->productMediaGalleryValueStmt->execute($params);
-        return $this->productMediaGalleryValueStmt->fetch(\PDO::FETCH_ASSOC);
-    }
+    public function findOneByValueIdAndStoreIdAndEntityId($valueId, $storeId, $entityId);
 }

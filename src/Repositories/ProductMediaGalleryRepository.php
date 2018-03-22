@@ -20,9 +20,9 @@
 
 namespace TechDivision\Import\Product\Media\Repositories;
 
+use TechDivision\Import\Repositories\AbstractRepository;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
-use TechDivision\Import\Repositories\AbstractRepository;
 
 /**
  * Repository implementation to load product media gallery data.
@@ -33,7 +33,7 @@ use TechDivision\Import\Repositories\AbstractRepository;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryRepository extends AbstractRepository
+class ProductMediaGalleryRepository extends AbstractRepository implements ProductMediaGalleryRepositoryInterface
 {
 
     /**

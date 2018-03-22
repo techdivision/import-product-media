@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAction
+ * TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueActionInterface
  *
  * NOTICE OF LICENSE
  *
@@ -20,10 +20,10 @@
 
 namespace TechDivision\Import\Product\Media\Actions;
 
-use TechDivision\Import\Actions\AbstractAction;
+use TechDivision\Import\Actions\ActionInterface;
 
 /**
- * An action implementation that provides CRUD functionality for product media gallery value to entity handling.
+ * Interface for action implementations that provides CRUD functionality for product media gallery value handling.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,6 +31,6 @@ use TechDivision\Import\Actions\AbstractAction;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryValueToEntityAction extends AbstractAction implements ProductMediaGalleryValueToEntityActionInterface
+interface ProductMediaGalleryValueActionInterface extends ActionInterface
 {
 }
