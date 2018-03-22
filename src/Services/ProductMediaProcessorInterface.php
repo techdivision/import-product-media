@@ -23,7 +23,7 @@ namespace TechDivision\Import\Product\Media\Services;
 use TechDivision\Import\Product\Services\ProductProcessorInterface;
 
 /**
- * A SLSB providing methods to load product data using a PDO connection.
+ * Interface for product media processor implementations.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -37,49 +37,49 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
     /**
      * Return's the repository to load product media gallery data.
      *
-     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository The repository instance
+     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepositoryInterface The repository instance
      */
     public function getProductMediaGalleryRepository();
 
     /**
      * Return's the repository to load product media gallery value to entity data.
      *
-     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepository The repository instance
+     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepositoryInterface The repository instance
      */
     public function getProductMediaGalleryValueToEntityRepository();
 
     /**
      * Return's the repository to load product media gallery value data.
      *
-     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepository The repository instance
+     * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepositoryInterface The repository instance
      */
     public function getProductMediaGalleryValueRepository();
 
     /**
      * Return's the action with the product media gallery CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery CRUD methods
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface The action with the product media gallery CRUD methods
      */
     public function getProductMediaGalleryAction();
 
     /**
      * Return's the action with the product media gallery valueCRUD methods.
      *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery value CRUD methods
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface The action with the product media gallery value CRUD methods
      */
     public function getProductMediaGalleryValueAction();
 
     /**
      * Return's the action with the product media gallery value to entity CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
      */
     public function getProductMediaGalleryValueToEntityAction();
 
     /**
      * Return's the action with the product media gallery value video CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction The action with the product media gallery value video CRUD methods
+     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface The action with the product media gallery value video CRUD methods
      */
     public function getProductMediaGalleryValueVideoAction();
 

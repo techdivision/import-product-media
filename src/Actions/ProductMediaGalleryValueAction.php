@@ -23,7 +23,7 @@ namespace TechDivision\Import\Product\Media\Actions;
 use TechDivision\Import\Actions\AbstractAction;
 
 /**
- * A SLSB providing repository functionality for product media gallery value CRUD actions.
+ * An action implementation that provides CRUD functionality for product media gallery value handling.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,6 +31,6 @@ use TechDivision\Import\Actions\AbstractAction;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryValueAction extends AbstractAction
+class ProductMediaGalleryValueAction extends AbstractAction implements ProductMediaGalleryValueActionInterface
 {
 }

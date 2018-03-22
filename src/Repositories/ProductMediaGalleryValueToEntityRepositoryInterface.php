@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAction
+ * TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepositoryInterface
  *
  * NOTICE OF LICENSE
  *
@@ -18,12 +18,12 @@
  * @link      http://www.techdivision.com
  */
 
-namespace TechDivision\Import\Product\Media\Actions;
+namespace TechDivision\Import\Product\Media\Repositories;
 
-use TechDivision\Import\Actions\AbstractAction;
+use TechDivision\Import\Repositories\RepositoryInterface;
 
 /**
- * An action implementation that provides CRUD functionality for product media gallery value to entity handling.
+ * Interface for repository implementations to load product media gallery value to entity data.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2016 TechDivision GmbH <info@techdivision.com>
@@ -31,6 +31,16 @@ use TechDivision\Import\Actions\AbstractAction;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryValueToEntityAction extends AbstractAction implements ProductMediaGalleryValueToEntityActionInterface
+interface ProductMediaGalleryValueToEntityRepositoryInterface extends RepositoryInterface
 {
+
+    /**
+     * Load's the product media gallery with the passed value/entity ID.
+     *
+     * @param integer $valueId  The value ID of the product media gallery value to entity to load
+     * @param integer $entityId The entity ID of the product media gallery value to entity to load
+     *
+     * @return array The product media gallery
+     */
+    public function findOneByValueIdAndEntityId($valueId, $entityId);
 }
