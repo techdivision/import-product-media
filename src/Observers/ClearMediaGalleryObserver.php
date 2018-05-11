@@ -117,17 +117,19 @@ class ClearMediaGalleryObserver extends AbstractProductImportObserver
                          ->deleteProductMediaGallery(array(MemberNames::VALUE_ID => $existingProductMediaGallery[MemberNames::VALUE_ID]));
 
                     // log a debug message that the image has been removed
-                    $this->getSubject()
-                         ->getSystemLogger()
-                         ->warning(
-                             $this->getSubject()->appendExceptionSuffix(
-                                 sprintf(
-                                     'Successfully removed image "%s" from media gallery for product with SKU "%s"',
-                                     $existingImageName,
-                                     $sku
+                    if ($this->getSubject()->isDebugMode()) {
+                        $this->getSubject()
+                             ->getSystemLogger()
+                             ->warning(
+                                 $this->getSubject()->appendExceptionSuffix(
+                                     sprintf(
+                                         'Successfully removed image "%s" from media gallery for product with SKU "%s"',
+                                         $existingImageName,
+                                         $sku
+                                     )
                                  )
-                             )
-                         );
+                             );
+                    }
 
                 } catch (\Exception $e) {
                     // log a warning if debug mode has been enabled and the file is NOT available
@@ -142,16 +144,18 @@ class ClearMediaGalleryObserver extends AbstractProductImportObserver
             }
 
             // log a message that the images has been cleaned-up
-            $this->getSubject()
-                 ->getSystemLogger()
-                 ->debug(
-                     $this->getSubject()->appendExceptionSuffix(
-                         sprintf(
-                             'Successfully cleaned-up media gallery for product with SKU "%s"',
-                             $sku
-                         )
-                     )
-                 );
+            if ($this->getSubject()->isDebugMode()) {
+                $this->getSubject()
+                    ->getSystemLogger()
+                    ->debug(
+                        $this->getSubject()->appendExceptionSuffix(
+                            sprintf(
+                                'Successfully cleaned-up media gallery for product with SKU "%s"',
+                                $sku
+                            )
+                        )
+                    );
+            }
         }
     }
 
