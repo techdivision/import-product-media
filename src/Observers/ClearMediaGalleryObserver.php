@@ -128,7 +128,6 @@ class ClearMediaGalleryObserver extends AbstractProductImportObserver
                                  )
                              )
                          );
-
                 } catch (\Exception $e) {
                     // log a warning if debug mode has been enabled and the file is NOT available
                     if ($this->getSubject()->isDebugMode()) {
