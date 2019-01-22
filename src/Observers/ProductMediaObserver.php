@@ -99,7 +99,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
 
                 // query whether or not a custom label text has been passed
                 if ($this->hasValue($labelColumnName)) {
-                    $this->getValue($labelColumnName);
+                    $labelText = $this->getValue($labelColumnName);
                 }
 
                 // prepare the new base image
