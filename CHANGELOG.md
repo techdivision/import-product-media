@@ -1,3 +1,13 @@
+# Version 5.0.1
+
+## Bugfixes
+
+* Fixed issue that image labels from CSV file will not be used to update database
+
+## Features
+
+* None
+
 # Version 5.0.0
 
 ## Bugfixes
