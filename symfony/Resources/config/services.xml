@@ -50,19 +50,19 @@
             <argument type="service" id="import_product_media.repository.sql.statement"/>
         </service>
 
-        <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction">
+        <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Actions\GenericIdentifierAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.update"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.delete"/>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueAction">
+        <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.update"/>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value.to.entity" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAction">
+        <service id="import_product_media.action.product.media.gallery.value.to.entity" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.to.entity.create"/>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value.video" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoAction">
+        <service id="import_product_media.action.product.media.gallery.value.video" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.video.create"/>
         </service>
 
