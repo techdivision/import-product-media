@@ -73,17 +73,15 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // query whether or not, the image changed
-        if ($this->isParentImage($imagePath = $this->getValue(ColumnKeys::IMAGE_PATH))) {
-            return;
-        }
+        // prepare the store view code
+        $this->prepareStoreViewCode($this->getRow());
 
         // initialize and persist the product media gallery value
         $productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareAttributes());
         $this->persistProductMediaGalleryValue($productMediaGalleryValue);
 
         // temporarily persist the image name
-        $this->setParentImage($imagePath);
+        $this->setParentImage($this->getValue(ColumnKeys::IMAGE_PATH));
     }
 
     /**
@@ -111,6 +109,9 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
         // load the image label
         $imageLabel = $this->getValue(ColumnKeys::IMAGE_LABEL);
 
+        // load the flag that decides whether or not an image should be hidden on product page
+        $hideFromProductPage = $this->getValue(ColumnKeys::HIDE_FROM_PRODUCT_PAGE);
+
         // prepare the media gallery value
         return $this->initializeEntity(
             array(
@@ -119,7 +120,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
                 MemberNames::ENTITY_ID   => $parentId,
                 MemberNames::LABEL       => $imageLabel,
                 MemberNames::POSITION    => $position,
-                MemberNames::DISABLED    => 0
+                MemberNames::DISABLED    => $hideFromProductPage
             )
         );
     }

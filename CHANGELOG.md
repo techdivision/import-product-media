@@ -1,3 +1,14 @@
+# Version 13.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Added techdivision/import-product-media#35
+* Switch to latest techdivision/import-product 13.* version as dependency
+
 # Version 12.0.0
 
 ## Bugfixes
