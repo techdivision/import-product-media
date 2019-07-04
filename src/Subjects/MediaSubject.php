@@ -47,13 +47,6 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     use FileUploadTrait;
 
     /**
-     * The name of the craeted image.
-     *
-     * @var integer
-     */
-    protected $parentImage;
-
-    /**
      * The ID of the parent product to relate the variant with.
      *
      * @var integer
@@ -137,28 +130,6 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     }
 
     /**
-     * Set's the name of the created image.
-     *
-     * @param string $parentImage The name of the created image
-     *
-     * @return void
-     */
-    public function setParentImage($parentImage)
-    {
-        $this->parentImage = $parentImage;
-    }
-
-    /**
-     * Return's the name of the created image.
-     *
-     * @return string The name of the created image
-     */
-    public function getParentImage()
-    {
-        return $this->parentImage;
-    }
-
-    /**
      * Set's the ID of the parent product to relate the variant with.
      *
      * @param integer $parentId The ID of the parent product
@@ -209,7 +180,7 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
      */
     public function resetPositionCounter()
     {
-        $this->positionCounter = 1;
+        $this->positionCounter = 0;
     }
 
     /**

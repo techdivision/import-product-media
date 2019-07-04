@@ -93,16 +93,18 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // query whether or not, the image changed
-        if ($this->isParentImage($this->getValue(ColumnKeys::IMAGE_PATH))) {
-            return;
-        }
-
-        // try to load the product SKU and map it the entity ID
+        // try to load the product SKU and map it the entity ID and
         $this->parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
 
-        // reset the position counter for the product media gallery value
-        $this->resetPositionCounter();
+        // reset the position counter, if either a new PK or store view code has been found
+        if (!$this->isParentStoreViewCode($this->getValue(ColumnKeys::STORE_VIEW_CODE, $this->getDefaultStoreViewCode())) ||
+            !$this->isParentId($this->parentId)
+        ) {
+            $this->resetPositionCounter();
+        }
+
+        // prepare the actual store view code
+        $this->prepareStoreViewCode($this->getRow());
 
         // initialize and persist the product media gallery
         $productMediaGallery = $this->initializeProductMediaGallery($this->prepareProductMediaGalleryAttributes());
@@ -200,28 +202,6 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     }
 
     /**
-     * Return's the name of the created image.
-     *
-     * @return string The name of the created image
-     */
-    protected function getParentImage()
-    {
-        return $this->getSubject()->getParentImage();
-    }
-
-    /**
-     * Return's TRUE if the passed image is the parent one.
-     *
-     * @param string $image The imageD to check
-     *
-     * @return boolean TRUE if the passed image is the parent one
-     */
-    protected function isParentImage($image)
-    {
-        return $this->getParentImage() === $image;
-    }
-
-    /**
      * Set's the value ID of the created media gallery entry.
      *
      * @param integer $parentValueId The ID of the created media gallery entry
@@ -256,6 +236,50 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     protected function setParentId($parentId)
     {
         $this->getSubject()->setParentId($parentId);
+    }
+
+    /**
+     * Return's the ID of the parent product to relate the variant with.
+     *
+     * @return integer The ID of the parent product
+     */
+    protected function getParentId()
+    {
+        return $this->getSubject()->getParentId();
+    }
+
+    /**
+     * Query whether or not this is the parent ID.
+     *
+     * @param integer $parentId The PK of the parent image
+     *
+     * @return boolean TRUE if the PK euqals, else FALSE
+     */
+    protected function isParentId($parentId)
+    {
+        return $this->getParentId() === $parentId;
+    }
+
+    /**
+     * Query whether or not this is the parent store view code.
+     *
+     * @param string $storeViewCode The actual store view code
+     *
+     * @return boolean TRUE if the store view code equals, else FALSE
+     */
+    protected function isParentStoreViewCode($storeViewCode)
+    {
+        return $this->getStoreViewCode() === $storeViewCode;
+    }
+
+    /**
+     * Return's the default store view code.
+     *
+     * @return array The default store view code
+     */
+    protected function getDefaultStoreViewCode()
+    {
+        return $this->getSubject()->getDefaultStoreViewCode();
     }
 
     /**

@@ -73,15 +73,9 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // prepare the store view code
-        $this->prepareStoreViewCode($this->getRow());
-
         // initialize and persist the product media gallery value
         $productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareAttributes());
         $this->persistProductMediaGalleryValue($productMediaGalleryValue);
-
-        // temporarily persist the image name
-        $this->setParentImage($this->getValue(ColumnKeys::IMAGE_PATH));
     }
 
     /**
@@ -174,40 +168,6 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     protected function mapSkuToEntityId($sku)
     {
         return $this->getSubject()->mapSkuToEntityId($sku);
-    }
-
-    /**
-     * Set's the name of the created image.
-     *
-     * @param string $parentImage The name of the created image
-     *
-     * @return void
-     */
-    protected function setParentImage($parentImage)
-    {
-        $this->getSubject()->setParentImage($parentImage);
-    }
-
-    /**
-     * Return's the name of the created image.
-     *
-     * @return string The name of the created image
-     */
-    protected function getParentImage()
-    {
-        return $this->getSubject()->getParentImage();
-    }
-
-    /**
-     * Return's TRUE if the passed image is the parent one.
-     *
-     * @param string $image The imageD to check
-     *
-     * @return boolean TRUE if the passed image is the parent one
-     */
-    protected function isParentImage($image)
-    {
-        return $this->getParentImage() === $image;
     }
 
     /**
