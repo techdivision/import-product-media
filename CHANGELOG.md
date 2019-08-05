@@ -1,3 +1,13 @@
+# Version 16.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 16.* version as dependency
+
 # Version 15.0.0
 
 ## Bugfixes
