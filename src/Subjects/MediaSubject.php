@@ -75,20 +75,6 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     protected $positionCounter = 1;
 
     /**
-     * The available stores.
-     *
-     * @var array
-     */
-    protected $stores = array();
-
-    /**
-     * The mapping for the SKUs to the created entity IDs.
-     *
-     * @var array
-     */
-    protected $skuEntityIdMapping = array();
-
-    /**
      * Intializes the previously loaded global data for exactly one variants.
      *
      * @param string $serial The serial of the actual import
@@ -107,7 +93,7 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         // load the status of the actual import process
         $status = $registryProcessor->getAttribute(RegistryKeys::STATUS);
 
-        // load the attribute set we've prepared intially
+        // load the SKU => entity ID mapping
         $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
 
         // initialize media directory => can be absolute or relative
@@ -191,45 +177,5 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     public function raisePositionCounter()
     {
         return $this->positionCounter++;
-    }
-
-    /**
-     * Return the entity ID for the passed SKU.
-     *
-     * @param string $sku The SKU to return the entity ID for
-     *
-     * @return integer The mapped entity ID
-     * @throws \TechDivision\Import\Product\Media\Exceptions\MapSkuToEntityIdException Is thrown if the SKU is not mapped yet
-     */
-    public function mapSkuToEntityId($sku)
-    {
-
-        // query weather or not the SKU has been mapped
-        if (isset($this->skuEntityIdMapping[$sku])) {
-            return $this->skuEntityIdMapping[$sku];
-        }
-
-        // throw an exception if the SKU has not been mapped yet
-        throw new MapSkuToEntityIdException(sprintf('Found not mapped entity ID for SKU %s', $sku));
-    }
-
-    /**
-     * Return's the store for the passed store code.
-     *
-     * @param string $storeCode The store code to return the store for
-     *
-     * @return array The requested store
-     * @throws \Exception Is thrown, if the requested store is not available
-     */
-    public function getStoreByStoreCode($storeCode)
-    {
-
-        // query whether or not the store with the passed store code exists
-        if (isset($this->stores[$storeCode])) {
-            return $this->stores[$storeCode];
-        }
-
-        // throw an exception, if not
-        throw new \Exception(sprintf('Found invalid store code %s', $storeCode));
     }
 }

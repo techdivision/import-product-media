@@ -1,3 +1,15 @@
+# Version 14.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 15.* version as dependency
+* Move library specific DI identifiers from techdivision/import-product to thhis library
+* Remove MediaSubject::mapSkuToEntityId() + MediaSubject::getStoreByStoreCode() methods because they have been moved to AbstractProductSubject
+
 # Version 13.0.0
 
 ## Bugfixes

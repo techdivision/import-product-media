@@ -94,6 +94,36 @@
             <argument type="service" id="import_product_media.processor.product.media"/>
         </service>
 
+        <!--
+         | The DI configuration for the composite observers of the replace operation.
+         |-->
+        <service id="import_product_media.observer.composite.replace" class="TechDivision\Import\Observers\GenericCompositeObserver">
+            <call method="addObserver">
+                <argument id="import.observer.attribute.set" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery.value" type="service"/>
+            </call>
+        </service>
+
+        <!--
+         | The DI configuration for the composite observers of the add-update operation.
+         |-->
+        <service id="import_product_media.observer.composite.add_update" class="TechDivision\Import\Observers\GenericCompositeObserver">
+            <call method="addObserver">
+                <argument id="import.observer.attribute.set" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery.update" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery.value.update" type="service"/>
+            </call>
+        </service>
+
         <service id="import_product_media.subject.media" class="TechDivision\Import\Product\Media\Subjects\MediaSubject" shared="false">
             <argument type="service" id="import.processor.registry"/>
             <argument type="service" id="import.generator.core.config.data.uid"/>
