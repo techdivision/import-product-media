@@ -1,3 +1,13 @@
+# Version 15.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Extract media subject functionality to a trait to allow usage in EE library also
+
 # Version 14.0.0
 
 ## Bugfixes

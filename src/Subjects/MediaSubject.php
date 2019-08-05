@@ -25,7 +25,6 @@ use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
-use TechDivision\Import\Product\Media\Exceptions\MapSkuToEntityIdException;
 
 /**
  * The subject implementation for the product media handling.
@@ -47,32 +46,11 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     use FileUploadTrait;
 
     /**
-     * The ID of the parent product to relate the variant with.
+     * The trait that provides media import functionality.
      *
-     * @var integer
+     * @var \TechDivision\Import\Media\Subjects\MediaSubjectTrait
      */
-    protected $parentId;
-
-    /**
-     * The value ID of the created media gallery entry.
-     *
-     * @var integer
-     */
-    protected $parentValueId;
-
-    /**
-     * The Magento installation directory.
-     *
-     * @var string
-     */
-    protected $installationDir;
-
-    /**
-     * The position counter, if no position for the product media gallery value has been specified.
-     *
-     * @var integer
-     */
-    protected $positionCounter = 1;
+    use MediaSubjectTrait;
 
     /**
      * Intializes the previously loaded global data for exactly one variants.
@@ -113,69 +91,5 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
                 )
             );
         }
-    }
-
-    /**
-     * Set's the ID of the parent product to relate the variant with.
-     *
-     * @param integer $parentId The ID of the parent product
-     *
-     * @return void
-     */
-    public function setParentId($parentId)
-    {
-        $this->parentId = $parentId;
-    }
-
-    /**
-     * Return's the ID of the parent product to relate the variant with.
-     *
-     * @return integer The ID of the parent product
-     */
-    public function getParentId()
-    {
-        return $this->parentId;
-    }
-
-    /**
-     * Set's the value ID of the created media gallery entry.
-     *
-     * @param integer $parentValueId The ID of the created media gallery entry
-     *
-     * @return void
-     */
-    public function setParentValueId($parentValueId)
-    {
-        $this->parentValueId  = $parentValueId;
-    }
-
-    /**
-     * Return's the value ID of the created media gallery entry.
-     *
-     * @return integer The ID of the created media gallery entry
-     */
-    public function getParentValueId()
-    {
-        return $this->parentValueId;
-    }
-
-    /**
-     * Reset the position counter to 1.
-     *
-     * @return void
-     */
-    public function resetPositionCounter()
-    {
-        $this->positionCounter = 0;
-    }
-
-    /**
-     * Returns the acutal value of the position counter and raise's it by one.
-     *
-     * @return integer The actual value of the position counter
-     */
-    public function raisePositionCounter()
-    {
-        return $this->positionCounter++;
     }
 }
