@@ -5,9 +5,9 @@
 
     <services>
 
-        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository"/>
-
-        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository"/>
+        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository">
+            <argument type="service" id="import.util.sql.compilers"/>
+        </service>
         <service id="import_product_media.repository.product.media.gallery" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
