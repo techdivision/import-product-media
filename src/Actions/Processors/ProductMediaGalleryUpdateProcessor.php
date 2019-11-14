@@ -20,7 +20,6 @@
 
 namespace TechDivision\Import\Product\Media\Actions\Processors;
 
-use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
 use TechDivision\Import\Actions\Processors\AbstractCreateProcessor;
 
@@ -54,14 +53,15 @@ class ProductMediaGalleryUpdateProcessor extends AbstractCreateProcessor
     /**
      * Persist's the passed row.
      *
-     * @param array       $row  The row to persist
-     * @param string|null $name The name of the prepared statement that has to be executed
+     * @param array       $row                  The row to persist
+     * @param string|null $name                 The name of the prepared statement that has to be executed
+     * @param string|null $primaryKeyMemberName The primary key member name of the entity to use
      *
-     * @return string The last inserted ID
+     * @return string The ID of the updated entity
      */
-    public function execute($row, $name = null)
+    public function execute($row, $name = null, $primaryKeyMemberName = null)
     {
         parent::execute($row, $name);
-        return $row[MemberNames::VALUE_ID];
+        return $row[$primaryKeyMemberName];
     }
 }

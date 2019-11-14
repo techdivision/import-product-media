@@ -21,9 +21,10 @@
 namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Utils\StoreViewCodes;
+use TechDivision\Import\Observers\StateDetectorInterface;
+use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
-use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 
 /**
@@ -49,10 +50,16 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      * Initialize the observer with the passed product media processor instance.
      *
      * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
+     * @param \TechDivision\Import\Observers\StateDetectorInterface|null                 $stateDetector         The state detector instance to use
      */
-    public function __construct(ProductMediaProcessorInterface $productMediaProcessor)
+    public function __construct(ProductMediaProcessorInterface $productMediaProcessor, StateDetectorInterface $stateDetector = null)
     {
+
+        // initialize the media processor instance
         $this->productMediaProcessor = $productMediaProcessor;
+
+        // pass the state detector to the parent method
+        parent::__construct($stateDetector);
     }
 
     /**
@@ -74,8 +81,9 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     {
 
         // initialize and persist the product media gallery value
-        $productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareAttributes());
-        $this->persistProductMediaGalleryValue($productMediaGalleryValue);
+        if ($this->hasChanges($productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareAttributes()))) {
+            $this->persistProductMediaGalleryValue($productMediaGalleryValue);
+        }
     }
 
     /**
@@ -88,7 +96,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
 
         try {
             // try to load the product SKU and map it the entity ID
-            $parentId= $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
+            $parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
         } catch (\Exception $e) {
             throw $this->wrapException(array(ColumnKeys::IMAGE_PARENT_SKU), $e);
         }

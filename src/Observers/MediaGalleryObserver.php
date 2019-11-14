@@ -22,8 +22,9 @@ namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
-use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Observers\StateDetectorInterface;
 
 /**
  * Observer that creates/updates the product's media gallery information.
@@ -69,10 +70,16 @@ class MediaGalleryObserver extends AbstractProductImportObserver
      * Initialize the observer with the passed product media processor instance.
      *
      * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
+     * @param \TechDivision\Import\Observers\StateDetectorInterface|null                 $stateDetector         The state detector instance to use
      */
-    public function __construct(ProductMediaProcessorInterface $productMediaProcessor)
+    public function __construct(ProductMediaProcessorInterface $productMediaProcessor, StateDetectorInterface $stateDetector = null)
     {
+
+        // initialize the media processor instance
         $this->productMediaProcessor = $productMediaProcessor;
+
+        // pass the state detector to the parent method
+        parent::__construct($stateDetector);
     }
 
     /**
@@ -107,17 +114,17 @@ class MediaGalleryObserver extends AbstractProductImportObserver
         $this->prepareStoreViewCode($this->getRow());
 
         // initialize and persist the product media gallery
-        $productMediaGallery = $this->initializeProductMediaGallery($this->prepareProductMediaGalleryAttributes());
-        $this->valueId = $this->persistProductMediaGallery($productMediaGallery);
-
-        // persist the product media gallery to entity data
-        if ($productMediaGalleryValueToEntity = $this->initializeProductMediaGalleryValueToEntity($this->prepareProductMediaGalleryValueToEntityAttributes())) {
-            $this->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
+        if ($this->hasChanges($productMediaGallery = $this->initializeProductMediaGallery($this->prepareProductMediaGalleryAttributes()))) {
+            // persist the media gallery data and temporarily persist value ID
+            $this->setParentValueId($this->valueId = $this->persistProductMediaGallery($productMediaGallery));
+            // persist the product media gallery to entity data
+            if ($productMediaGalleryValueToEntity = $this->initializeProductMediaGalleryValueToEntity($this->prepareProductMediaGalleryValueToEntityAttributes())) {
+                $this->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
+            }
         }
 
-        // temporarily persist parent/value ID
+        // temporarily persist parent ID
         $this->setParentId($this->parentId);
-        $this->setParentValueId($this->valueId);
     }
 
     /**

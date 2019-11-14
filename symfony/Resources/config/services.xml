@@ -54,6 +54,7 @@
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.update"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.delete"/>
+            <argument type="constant">TechDivision\Import\Product\Media\Utils\MemberNames::VALUE_ID</argument>
         </service>
         <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.create"/>
