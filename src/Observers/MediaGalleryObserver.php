@@ -141,7 +141,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
 
         // initialize the gallery data
         $disabled = 0;
-        $mediaType = $this->getValue(ColumnKeys::MEDIA_TYPE, 'image');
+        $mediaType = 'image';
         $image = $this->getValue(ColumnKeys::IMAGE_PATH_NEW);
 
         // initialize and return the entity

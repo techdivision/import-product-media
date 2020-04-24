@@ -115,11 +115,4 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
      * @var string
      */
     const HIDE_FROM_PRODUCT_PAGE = 'hide_from_product_page';
-
-    /**
-     * Name for the column 'media_type'.
-     *
-     * @var string
-     */
-    const MEDIA_TYPE = 'media_type';
 }

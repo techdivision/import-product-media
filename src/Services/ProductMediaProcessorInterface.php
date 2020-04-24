@@ -77,6 +77,13 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
     public function getProductMediaGalleryValueToEntityAction();
 
     /**
+     * Return's the action with the product media gallery value video CRUD methods.
+     *
+     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery value video CRUD methods
+     */
+    public function getProductMediaGalleryValueVideoAction();
+
+    /**
      * Load's the product media gallery with the passed attribute ID + value.
      *
      * @param integer $attributeId The attribute ID of the product media gallery to load
@@ -145,6 +152,16 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
      * @return void
      */
     public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity, $name = null);
+
+    /**
+     * Persist's the passed product media gallery value video data.
+     *
+     * @param array       $productMediaGalleryValueVideo The product media gallery value video data to persist
+     * @param string|null $name                          The name of the prepared statement that has to be executed
+     *
+     * @return void
+     */
+    public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo, $name = null);
 
     /**
      * Delete's the passed product media gallery data.
