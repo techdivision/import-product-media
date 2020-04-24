@@ -176,6 +176,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH             => $imagePath,
                         ColumnKeys::IMAGE_PATH_NEW         => $image,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => in_array($image, $this->imagesToHide) ? 1 : 0,
+                        ColumnKeys::MEDIA_TYPE             => 'image',
                         ColumnKeys::IMAGE_LABEL            => $labelText
                     ),
                     array(
@@ -185,6 +186,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH             => $imageColumnName,
                         ColumnKeys::IMAGE_PATH_NEW         => $imageColumnName,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => ColumnKeys::HIDE_FROM_PRODUCT_PAGE,
+                        ColumnKeys::MEDIA_TYPE             => null,
                         ColumnKeys::IMAGE_LABEL            => $labelColumnName
                     )
                 );
@@ -231,6 +233,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH             => $imagePath,
                         ColumnKeys::IMAGE_PATH_NEW         => $additionalImage,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => in_array($additionalImage, $this->imagesToHide) ? 1 : 0,
+                        ColumnKeys::MEDIA_TYPE             => 'image',
                         ColumnKeys::IMAGE_LABEL            => isset($additionalImageLabels[$key]) ?
                                                               $additionalImageLabels[$key] :
                                                               $this->getDefaultImageLabel()
@@ -242,6 +245,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH             => ColumnKeys::ADDITIONAL_IMAGES,
                         ColumnKeys::IMAGE_PATH_NEW         => ColumnKeys::ADDITIONAL_IMAGES,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => ColumnKeys::HIDE_FROM_PRODUCT_PAGE,
+                        ColumnKeys::MEDIA_TYPE             => null,
                         ColumnKeys::IMAGE_LABEL            => ColumnKeys::ADDITIONAL_IMAGE_LABELS
                     )
                 );

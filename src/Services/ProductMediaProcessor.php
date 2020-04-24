@@ -88,13 +88,6 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     protected $productMediaGalleryValueToEntityAction;
 
     /**
-     * The action with the product media gallery video CRUD methods.
-     *
-     * @var \TechDivision\Import\Actions\ActionInterface
-     */
-    protected $productMediaGalleryVideoAction;
-
-    /**
      * Initialize the processor with the necessary assembler and repository instances.
      *
      * @param \TechDivision\Import\Connection\ConnectionInterface                                                 $connection                                 The connection to use
@@ -104,7 +97,6 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryAction                  The product media gallery action to use
      * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueAction             The product media gallery value action to use
      * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueToEntityAction     The product media gallery value to entity action to use
-     * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueVideoAction        The product media gallery value video action to use
      */
     public function __construct(
         ConnectionInterface $connection,
@@ -113,8 +105,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
         ProductMediaGalleryValueToEntityRepositoryInterface $productMediaGalleryValueToEntityRepository,
         ActionInterface $productMediaGalleryAction,
         ActionInterface $productMediaGalleryValueAction,
-        ActionInterface $productMediaGalleryValueToEntityAction,
-        ActionInterface $productMediaGalleryValueVideoAction
+        ActionInterface $productMediaGalleryValueToEntityAction
     ) {
         $this->setConnection($connection);
         $this->setProductMediaGalleryRepository($productMediaGalleryRepository);
@@ -123,7 +114,6 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
         $this->setProductMediaGalleryAction($productMediaGalleryAction);
         $this->setProductMediaGalleryValueAction($productMediaGalleryValueAction);
         $this->setProductMediaGalleryValueToEntityAction($productMediaGalleryValueToEntityAction);
-        $this->setProductMediaGalleryValueVideoAction($productMediaGalleryValueVideoAction);
     }
 
     /**
@@ -325,28 +315,6 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     }
 
     /**
-     * Set's the action with the product media gallery value video CRUD methods.
-     *
-     * @param \TechDivision\Import\Actions\ActionInterface $productMediaGalleryValueVideoAction The action with the product media gallery value video CRUD methods
-     *
-     * @return void
-     */
-    public function setProductMediaGalleryValueVideoAction(ActionInterface $productMediaGalleryValueVideoAction)
-    {
-        $this->productMediaGalleryValueVideoAction = $productMediaGalleryValueVideoAction;
-    }
-
-    /**
-     * Return's the action with the product media gallery value video CRUD methods.
-     *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery value video CRUD methods
-     */
-    public function getProductMediaGalleryValueVideoAction()
-    {
-        return $this->productMediaGalleryValueVideoAction;
-    }
-
-    /**
      * Load's the product media gallery with the passed attribute ID + value.
      *
      * @param integer $attributeId The attribute ID of the product media gallery to load
@@ -435,19 +403,6 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity, $name = null)
     {
         $this->getProductMediaGalleryValueToEntityAction()->persist($productMediaGalleryValuetoEntity, $name);
-    }
-
-    /**
-     * Persist's the passed product media gallery value video data.
-     *
-     * @param array       $productMediaGalleryValueVideo The product media gallery value video data to persist
-     * @param string|null $name                          The name of the prepared statement that has to be executed
-     *
-     * @return void
-     */
-    public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo, $name = null)
-    {
-        $this->getProductMediaGalleryValueVideoAction()->persist($productMediaGalleryValueVideo, $name);
     }
 
     /**

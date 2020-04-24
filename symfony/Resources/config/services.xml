@@ -45,10 +45,6 @@
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
         </service>
-        <service id="import_product_media.action.processor.product.media.gallery.value.video.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueVideoCreateProcessor">
-            <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_media.repository.sql.statement"/>
-        </service>
 
         <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Actions\GenericIdentifierAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.create"/>
@@ -63,9 +59,6 @@
         <service id="import_product_media.action.product.media.gallery.value.to.entity" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.to.entity.create"/>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value.video" class="TechDivision\Import\Actions\GenericAction">
-            <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.video.create"/>
-        </service>
 
         <service id="import_product_media.processor.product.media" class="TechDivision\Import\Product\Media\Services\ProductMediaProcessor">
             <argument type="service" id="connection"/>
@@ -75,7 +68,6 @@
             <argument type="service" id="import_product_media.action.product.media.gallery"/>
             <argument type="service" id="import_product_media.action.product.media.gallery.value"/>
             <argument type="service" id="import_product_media.action.product.media.gallery.value.to.entity"/>
-            <argument type="service" id="import_product_media.action.product.media.gallery.value.video"/>
         </service>
 
         <service id="import_product_media.observer.product.media" class="TechDivision\Import\Product\Media\Observers\ProductMediaObserver"/>
