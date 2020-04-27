@@ -59,20 +59,11 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
         SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY =>
             'INSERT
                INTO ${table:catalog_product_entity_media_gallery}
-                    (attribute_id,
-                     value,
-                     media_type,
-                     disabled)
-             VALUES (:attribute_id,
-                     :value,
-                     :media_type,
-                     :disabled)',
+                    (${column-names:catalog_product_entity_media_gallery})
+             VALUES (${column-placeholders:catalog_product_entity_media_gallery})',
         SqlStatementKeys::UPDATE_PRODUCT_MEDIA_GALLERY =>
             'UPDATE ${table:catalog_product_entity_media_gallery}
-                SET attribute_id = :attribute_id,
-                    value = :value,
-                    media_type = :media_type,
-                    disabled = :disabled
+                SET ${column-values:catalog_product_entity_media_gallery}
               WHERE value_id = :value_id',
         SqlStatementKeys::DELETE_PRODUCT_MEDIA_GALLERY =>
             'DELETE
@@ -81,26 +72,11 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
         SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE =>
             'INSERT
                INTO ${table:catalog_product_entity_media_gallery_value}
-                    (value_id,
-                     store_id,
-                     entity_id,
-                     label,
-                     position,
-                     disabled)
-             VALUES (:value_id,
-                     :store_id,
-                     :entity_id,
-                     :label,
-                     :position,
-                     :disabled)',
+                    (${column-names:catalog_product_entity_media_gallery_value})
+             VALUES (${column-placeholders:catalog_product_entity_media_gallery_value})',
         SqlStatementKeys::UPDATE_PRODUCT_MEDIA_GALLERY_VALUE =>
             'UPDATE ${table:catalog_product_entity_media_gallery_value}
-                SET value_id = :value_id,
-                    store_id = :store_id,
-                    entity_id = :entity_id,
-                    label = :label,
-                    position = :position,
-                    disabled = :disabled
+                SET ${column-values:catalog_product_entity_media_gallery_value}
               WHERE record_id = :record_id',
         SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY =>
             'INSERT
@@ -112,20 +88,8 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
         SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_VIDEO =>
             'INSERT
                INTO ${table:catalog_product_entity_media_gallery_value_video}
-                    (value_id,
-                     store_id,
-                     provider,
-                     url,
-                     title,
-                     description,
-                     metadata)
-             VALUES (:value_id,
-                     :store_id,
-                     :provider,
-                     :url,
-                     :title,
-                     :description,
-                     :metadata)',
+                    (${column-names:catalog_product_entity_media_gallery_value_video})
+             VALUES (${column-placeholders:catalog_product_entity_media_gallery_value_video})',
         SqlStatementKeys::PRODUCT_MEDIA_GALLERIES_BY_SKU =>
             'SELECT t3.*
                FROM ${table:catalog_product_entity} t1,
