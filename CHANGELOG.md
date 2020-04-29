@@ -6,6 +6,7 @@
 
 ## Features
 
+* Add #PAC-34
 * Extract dev autoloading
 
 # Version 19.0.0
