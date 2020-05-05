@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Services;
 
+use TechDivision\Import\Loaders\LoaderInterface;
 use TechDivision\Import\Actions\ActionInterface;
 use TechDivision\Import\Connection\ConnectionInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepositoryInterface;
@@ -88,6 +89,13 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     protected $productMediaGalleryValueToEntityAction;
 
     /**
+     * The raw entity loader instance.
+     *
+     * @var \TechDivision\Import\Loaders\LoaderInterface
+     */
+    protected $rawEntityLoader;
+
+    /**
      * Initialize the processor with the necessary assembler and repository instances.
      *
      * @param \TechDivision\Import\Connection\ConnectionInterface                                                 $connection                                 The connection to use
@@ -97,6 +105,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryAction                  The product media gallery action to use
      * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueAction             The product media gallery value action to use
      * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueToEntityAction     The product media gallery value to entity action to use
+     * @param \TechDivision\Import\Loaders\LoaderInterface                                                        $rawEntityLoader                            The raw entity loader instance
      */
     public function __construct(
         ConnectionInterface $connection,
@@ -105,7 +114,8 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
         ProductMediaGalleryValueToEntityRepositoryInterface $productMediaGalleryValueToEntityRepository,
         ActionInterface $productMediaGalleryAction,
         ActionInterface $productMediaGalleryValueAction,
-        ActionInterface $productMediaGalleryValueToEntityAction
+        ActionInterface $productMediaGalleryValueToEntityAction,
+        LoaderInterface $rawEntityLoader
     ) {
         $this->setConnection($connection);
         $this->setProductMediaGalleryRepository($productMediaGalleryRepository);
@@ -114,6 +124,29 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
         $this->setProductMediaGalleryAction($productMediaGalleryAction);
         $this->setProductMediaGalleryValueAction($productMediaGalleryValueAction);
         $this->setProductMediaGalleryValueToEntityAction($productMediaGalleryValueToEntityAction);
+        $this->setRawEntityLoader($rawEntityLoader);
+    }
+
+    /**
+     * Set's the raw entity loader instance.
+     *
+     * @param \TechDivision\Import\Loaders\LoaderInterface $rawEntityLoader The raw entity loader instance to set
+     *
+     * @return void
+     */
+    public function setRawEntityLoader(LoaderInterface $rawEntityLoader)
+    {
+        $this->rawEntityLoader = $rawEntityLoader;
+    }
+
+    /**
+     * Return's the raw entity loader instance.
+     *
+     * @return \TechDivision\Import\Loaders\LoaderInterface The raw entity loader instance
+     */
+    public function getRawEntityLoader()
+    {
+        return $this->rawEntityLoader;
     }
 
     /**
@@ -312,6 +345,19 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     public function getProductMediaGalleryValueToEntityAction()
     {
         return $this->productMediaGalleryValueToEntityAction;
+    }
+
+    /**
+     * Load's and return's a raw entity without primary key but the mandatory members only and nulled values.
+     *
+     * @param string $entityTypeCode The entity type code to return the raw entity for
+     * @param array  $data           An array with data that will be used to initialize the raw entity with
+     *
+     * @return array The initialized entity
+     */
+    public function loadRawEntity($entityTypeCode, array $data = array())
+    {
+        return $this->getRawEntityLoader()->load($entityTypeCode, $data);
     }
 
     /**

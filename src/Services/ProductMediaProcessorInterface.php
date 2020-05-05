@@ -35,6 +35,13 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
 {
 
     /**
+     * Return's the raw entity loader instance.
+     *
+     * @return \TechDivision\Import\Loaders\LoaderInterface The raw entity loader instance
+     */
+    public function getRawEntityLoader();
+
+    /**
      * Return's the repository to load product media gallery data.
      *
      * @return \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepositoryInterface The repository instance
@@ -75,6 +82,16 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
      * @return \TechDivision\Import\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
      */
     public function getProductMediaGalleryValueToEntityAction();
+
+    /**
+     * Load's and return's a raw entity without primary key but the mandatory members only and nulled values.
+     *
+     * @param string $entityTypeCode The entity type code to return the raw entity for
+     * @param array  $data           An array with data that will be used to initialize the raw entity with
+     *
+     * @return array The initialized entity
+     */
+    public function loadRawEntity($entityTypeCode, array $data = array());
 
     /**
      * Load's the product media gallery with the passed attribute ID + value.
