@@ -48,7 +48,7 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
     /**
      * The trait that provides media import functionality.
      *
-     * @var \TechDivision\Import\Media\Subjects\MediaSubjectTrait
+     * @var \TechDivision\Import\Product\Media\Subjects\MediaSubjectTrait
      */
     use MediaSubjectTrait;
 
