@@ -1,3 +1,13 @@
+# Version 22.0.0
+
+## Bugfixes
+
+* TBA
+
+## Features
+
+* Add possibility to define image sort order
+
 # Version 21.0.0
 
 ## Bugfixes
@@ -7,7 +17,6 @@
 ## Features
 
 * Add dynamic attribute loader functionality for #PAC-34
-* Add possibility to define image sort order
 
 # Version 20.0.0
 
