@@ -22,9 +22,12 @@ namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
+use TechDivision\Import\Product\Media\Utils\EntityTypeCodes;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Observers\StateDetectorInterface;
+use TechDivision\Import\Observers\AttributeLoaderInterface;
+use TechDivision\Import\Observers\DynamicAttributeObserverInterface;
 
 /**
  * Observer that creates/updates the product's media gallery information.
@@ -35,7 +38,7 @@ use TechDivision\Import\Observers\StateDetectorInterface;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class MediaGalleryObserver extends AbstractProductImportObserver
+class MediaGalleryObserver extends AbstractProductImportObserver implements DynamicAttributeObserverInterface
 {
 
     /**
@@ -67,16 +70,28 @@ class MediaGalleryObserver extends AbstractProductImportObserver
     protected $productMediaProcessor;
 
     /**
+     * The attribute loader instance.
+     *
+     * @var \TechDivision\Import\Observers\AttributeLoaderInterface
+     */
+    protected $attributeLoader;
+
+    /**
      * Initialize the observer with the passed product media processor instance.
      *
      * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
+     * @param \TechDivision\Import\Observers\AttributeLoaderInterface                    $attributeLoader       The attribute loader instance
      * @param \TechDivision\Import\Observers\StateDetectorInterface|null                 $stateDetector         The state detector instance to use
      */
-    public function __construct(ProductMediaProcessorInterface $productMediaProcessor, StateDetectorInterface $stateDetector = null)
-    {
+    public function __construct(
+        ProductMediaProcessorInterface $productMediaProcessor,
+        AttributeLoaderInterface $attributeLoader = null,
+        StateDetectorInterface $stateDetector = null
+    ) {
 
-        // initialize the media processor instance
+        // initialize the media processor and the dynamic attribute loader instance
         $this->productMediaProcessor = $productMediaProcessor;
+        $this->attributeLoader = $attributeLoader;
 
         // pass the state detector to the parent method
         parent::__construct($stateDetector);
@@ -114,7 +129,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver
         $this->prepareStoreViewCode($this->getRow());
 
         // initialize and persist the product media gallery
-        if ($this->hasChanges($productMediaGallery = $this->initializeProductMediaGallery($this->prepareProductMediaGalleryAttributes()))) {
+        if ($this->hasChanges($productMediaGallery = $this->initializeProductMediaGallery($this->prepareDynamicMediaGalleryAttributes()))) {
             // persist the media gallery data and temporarily persist value ID
             $this->setParentValueId($this->valueId = $this->persistProductMediaGallery($productMediaGallery));
             // persist the product media gallery to entity data
@@ -125,6 +140,17 @@ class MediaGalleryObserver extends AbstractProductImportObserver
 
         // temporarily persist parent ID
         $this->setParentId($this->parentId);
+    }
+
+    /**
+     * Appends the dynamic to the static attributes for the media type
+     * gallery attributes and returns them.
+     *
+     * @return array The array with all available attributes
+     */
+    protected function prepareDynamicMediaGalleryAttributes()
+    {
+        return array_merge($this->prepareProductMediaGalleryAttributes(), $this->attributeLoader ? $this->attributeLoader->load($this, array()) : array());
     }
 
     /**
@@ -146,11 +172,13 @@ class MediaGalleryObserver extends AbstractProductImportObserver
 
         // initialize and return the entity
         return $this->initializeEntity(
-            array(
-                MemberNames::ATTRIBUTE_ID => $attributeId,
-                MemberNames::VALUE        => $image,
-                MemberNames::MEDIA_TYPE   => $mediaType,
-                MemberNames::DISABLED     => $disabled
+            $this->loadRawEntity(
+                array(
+                    MemberNames::ATTRIBUTE_ID => $attributeId,
+                    MemberNames::VALUE        => $image,
+                    MemberNames::MEDIA_TYPE   => $mediaType,
+                    MemberNames::DISABLED     => $disabled
+                )
             )
         );
     }
@@ -170,6 +198,18 @@ class MediaGalleryObserver extends AbstractProductImportObserver
                 MemberNames::ENTITY_ID => $this->parentId
             )
         );
+    }
+
+    /**
+     * Load's and return's a raw customer entity without primary key but the mandatory members only and nulled values.
+     *
+     * @param array $data An array with data that will be used to initialize the raw entity with
+     *
+     * @return array The initialized entity
+     */
+    protected function loadRawEntity(array $data = array())
+    {
+        return $this->getProductMediaProcessor()->loadRawEntity(EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY, $data);
     }
 
     /**

@@ -1,3 +1,23 @@
+# Version 21.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Add dynamic attribute loader functionality for #PAC-34
+
+# Version 20.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Configure insert and update statement bindings to be dynamic
+
 # Version 19.0.1
 
 ## Bugfixes

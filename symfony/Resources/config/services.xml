@@ -38,7 +38,6 @@
             <argument type="service" id="import_product_media.repository.sql.statement"/>
         </service>
 
-
         <service id="import_product_media.util.sql.sanitizers" class="\ArrayObject">
             <call method="append">
                 <argument id="import.util.sanitizer.column" type="service"/>
@@ -86,6 +85,12 @@
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.to.entity.create"/>
         </service>
 
+        <service id="import_product_media.loader.raw.entity" class="TechDivision\Import\Product\Media\Loaders\RawEntityLoader">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import.loader.column.metadata"/>
+            <argument type="service" id="import.loader.raw.entity"/>
+        </service>
+
         <service id="import_product_media.processor.product.media" class="TechDivision\Import\Product\Media\Services\ProductMediaProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.product.media.gallery"/>
@@ -94,6 +99,7 @@
             <argument type="service" id="import_product_media.action.product.media.gallery"/>
             <argument type="service" id="import_product_media.action.product.media.gallery.value"/>
             <argument type="service" id="import_product_media.action.product.media.gallery.value.to.entity"/>
+            <argument type="service" id="import_product_media.loader.raw.entity"/>
         </service>
 
         <service id="import_product_media.observer.product.media" class="TechDivision\Import\Product\Media\Observers\ProductMediaObserver"/>
