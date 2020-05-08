@@ -110,6 +110,13 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
     const ADDITIONAL_IMAGE_LABELS = 'additional_image_labels';
 
     /**
+     * Name for the column 'additional_image_positions'.
+     *
+     * @var string
+     */
+    const ADDITIONAL_IMAGE_POSITIONS = 'additional_image_positions';
+
+    /**
      * Name for the column 'hide_from_product_page'.
      *
      * @var string

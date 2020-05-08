@@ -50,6 +50,13 @@ class ProductMediaObserver extends AbstractProductImportObserver
     const DEFAULT_IMAGE_LABEL = 'Image';
 
     /**
+     * The default image position.
+     *
+     * @var string
+     */
+    const DEFAULT_IMAGE_POSITION = 0;
+
+    /**
      * The array with the image information of on row before they'll be converted into artefacts.
      *
      * @var array
@@ -147,13 +154,13 @@ class ProductMediaObserver extends AbstractProductImportObserver
         // load the parent SKU from the row
         $parentSku = $this->getValue(ColumnKeys::SKU);
 
-        // load the image types
-        $imageTypes = $this->getImageTypes();
+        // load the media roles
+        $mediaRoles = $this->getMediaRoles();
 
         // iterate over the available image fields
-        foreach ($imageTypes as $imageColumnName => $labelColumnName) {
+        foreach ($mediaRoles as $mediaAttrColumnNames) {
             // query whether or not the column contains an image name
-            if ($image = $this->getImageValue($imageColumnName)) {
+            if ($image = $this->getImageValue($imageColumnName = $mediaAttrColumnNames[ColumnKeys::IMAGE_PATH])) {
                 // load the original image path and query whether or not an image with the name already exists
                 if (isset($this->artefacts[$imagePath = $this->getInversedImageMapping($image)])) {
                     continue;
@@ -163,8 +170,16 @@ class ProductMediaObserver extends AbstractProductImportObserver
                 $labelText = $this->getDefaultImageLabel();
 
                 // query whether or not a custom label text has been passed
-                if ($this->hasValue($labelColumnName)) {
-                    $labelText = $this->getValue($labelColumnName);
+                if ($this->hasValue($labelColumnName = $mediaAttrColumnNames[ColumnKeys::IMAGE_LABEL])) {
+                    $labelText = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_LABEL]);
+                }
+
+                // initialize the default image position
+                $position = $this->getDefaultImagePosition();
+
+                // query and retrieve optional image position
+                if ($this->hasValue($mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION])) {
+                    $position = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION]);
                 }
 
                 // prepare the new base image
@@ -177,7 +192,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH_NEW         => $image,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => in_array($image, $this->imagesToHide) ? 1 : 0,
                         ColumnKeys::MEDIA_TYPE             => 'image',
-                        ColumnKeys::IMAGE_LABEL            => $labelText
+                        ColumnKeys::IMAGE_LABEL            => $labelText,
+                        ColumnKeys::IMAGE_POSITION         => $position
                     ),
                     array(
                         ColumnKeys::STORE_VIEW_CODE        => ColumnKeys::STORE_VIEW_CODE,
@@ -187,7 +203,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH_NEW         => $imageColumnName,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => ColumnKeys::HIDE_FROM_PRODUCT_PAGE,
                         ColumnKeys::MEDIA_TYPE             => null,
-                        ColumnKeys::IMAGE_LABEL            => $labelColumnName
+                        ColumnKeys::IMAGE_LABEL            => $labelColumnName,
+                        ColumnKeys::IMAGE_POSITION         => $position
                     )
                 );
 
@@ -216,6 +233,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
         if ($additionalImages = $this->getImageValue(ColumnKeys::ADDITIONAL_IMAGES, null, array($this, 'explode'))) {
             // expand the additional image labels, if available
             $additionalImageLabels = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_LABELS, array(), array($this, 'explode'));
+            // retrieve the additional image positions
+            $additionalImagePositions = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_POSITIONS, array(), array($this, 'explode'));
 
             // initialize the images with the found values
             foreach ($additionalImages as $key => $additionalImage) {
@@ -236,7 +255,10 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::MEDIA_TYPE             => 'image',
                         ColumnKeys::IMAGE_LABEL            => isset($additionalImageLabels[$key]) ?
                                                               $additionalImageLabels[$key] :
-                                                              $this->getDefaultImageLabel()
+                                                              $this->getDefaultImageLabel(),
+                        ColumnKeys::IMAGE_POSITION         => isset($additionalImagePositions[$key]) ?
+                                                              $additionalImagePositions[$key] :
+                                                              $this->getDefaultImagePosition()
                     ),
                     array(
                         ColumnKeys::STORE_VIEW_CODE        => ColumnKeys::STORE_VIEW_CODE,
@@ -246,7 +268,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH_NEW         => ColumnKeys::ADDITIONAL_IMAGES,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => ColumnKeys::HIDE_FROM_PRODUCT_PAGE,
                         ColumnKeys::MEDIA_TYPE             => null,
-                        ColumnKeys::IMAGE_LABEL            => ColumnKeys::ADDITIONAL_IMAGE_LABELS
+                        ColumnKeys::IMAGE_LABEL            => ColumnKeys::ADDITIONAL_IMAGE_LABELS,
+                        ColumnKeys::IMAGE_POSITION         => ColumnKeys::ADDITIONAL_IMAGE_POSITIONS
                     )
                 );
 
@@ -267,7 +290,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
         // load the array with the images that has to be hidden
         $hideFromProductPage = $this->getValue(ColumnKeys::HIDE_FROM_PRODUCT_PAGE, array(), array($this, 'explode'));
 
-        // map the image names, because probably they have been renamed by the upload functionlity
+        // map the image names, because probably they have been renamed by the upload functionality
         foreach ($hideFromProductPage as $filename) {
             $this->imagesToHide[] = $this->getImageMapping($filename);
         }
@@ -294,6 +317,16 @@ class ProductMediaObserver extends AbstractProductImportObserver
     }
 
     /**
+     * Returns the default image position.
+     *
+     * @return int|string
+     */
+    protected function getDefaultImagePosition()
+    {
+        return ProductMediaObserver::DEFAULT_IMAGE_POSITION;
+    }
+
+    /**
      * Returns the mapped filename (which is the new filename).
      *
      * @param string $filename The filename to map
@@ -315,6 +348,16 @@ class ProductMediaObserver extends AbstractProductImportObserver
     protected function getInversedImageMapping($newFilename)
     {
         return $this->getSubject()->getInversedImageMapping($newFilename);
+    }
+
+    /**
+     * Returns the media roles of the subject.
+     *
+     * @return mixed
+     */
+    protected function getMediaRoles()
+    {
+        return $this->getSubject()->getMediaRoles();
     }
 
     /**
