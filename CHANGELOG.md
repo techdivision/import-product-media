@@ -2,11 +2,12 @@
 
 ## Bugfixes
 
-* TBA
+* None
 
 ## Features
 
-* Add possibility to define image sort order
+* Add #PAC-73
+* Switch to latest techdivision/import-product 21.* version as dependency
 
 # Version 21.0.0
 

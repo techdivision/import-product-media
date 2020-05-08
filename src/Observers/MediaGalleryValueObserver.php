@@ -111,8 +111,10 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
         $imageLabel = $this->getValue(ColumnKeys::IMAGE_LABEL);
 
         // load the position
-        $position = $this->getValue(ColumnKeys::IMAGE_POSITION);
-        if ($position == 0) {
+        $position = (int) $this->getValue(ColumnKeys::IMAGE_POSITION, 0);
+
+        // query whether or not the image position is zero, raise the position counter then
+        if ($position === 0) {
             $position = $this->raisePositionCounter();
         }
 
