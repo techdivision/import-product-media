@@ -21,7 +21,7 @@
 namespace TechDivision\Import\Product\Media\Utils;
 
 /**
- * Utility class containing the CSV column names.
+ * Utility class containing the entity type codes.
  *
  * @author    Tim Wagner <t.wagner@techdivision.com>
  * @copyright 2020 TechDivision GmbH <info@techdivision.com>
@@ -35,7 +35,7 @@ class EntityTypeCodes extends \TechDivision\Import\Utils\EntityTypeCodes
     /**
      * Key for the product entity 'catalog_product_entity_media_gallery'.
      *
-     * @var integer
+     * @var string
      */
     const CATALOG_PRODUCT_MEDIA_GALLERY = 'catalog_product_entity_media_gallery';
 }

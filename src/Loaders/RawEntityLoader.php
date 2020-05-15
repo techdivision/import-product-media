@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TechDivision\Import\Loaders\RawEntityLoader
+ * TechDivision\Import\Product\Media\Loaders\RawEntityLoader
  *
  * NOTICE OF LICENSE
  *
