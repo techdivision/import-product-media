@@ -57,6 +57,7 @@ trait MediaSubjectTrait
      * The position counter, if no position for the product media gallery value has been specified.
      *
      * @var integer
+     * @deprecated Since 23.0.0
      */
     protected $positionCounter = 1;
 
@@ -108,6 +109,7 @@ trait MediaSubjectTrait
      * Reset the position counter to 1.
      *
      * @return void
+     * @deprecated Since 23.0.0
      */
     public function resetPositionCounter()
     {
@@ -118,6 +120,7 @@ trait MediaSubjectTrait
      * Returns the acutal value of the position counter and raise's it by one.
      *
      * @return integer The actual value of the position counter
+     * @deprecated Since 23.0.0
      */
     public function raisePositionCounter()
     {

@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Observers;
 
+use TechDivision\Import\Utils\BackendTypeKeys;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Media\Utils\EntityTypeCodes;
@@ -77,6 +78,28 @@ class MediaGalleryObserver extends AbstractProductImportObserver implements Dyna
     protected $attributeLoader;
 
     /**
+     * Initialize the "dymanmic" columns.
+     *
+     * @var array
+     */
+    protected $columns = array(
+        EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY => array(),
+        EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY => array(
+            MemberNames::DISABLED => array(ColumnKeys::IMAGE_DISABLED, BackendTypeKeys::BACKEND_TYPE_INT),
+            MemberNames::MEDIA_TYPE => array(ColumnKeys::MEDIA_TYPE, BackendTypeKeys::BACKEND_TYPE_VARCHAR)
+        )
+    );
+
+    /**
+     * Array with virtual column name mappings (this is a temporary
+     * solution till techdivision/import#179 as been implemented).
+     *
+     * @var array
+     * @todo https://github.com/techdivision/import/issues/179
+     */
+    protected $virtualMapping = array(MemberNames::DISABLED => ColumnKeys::IMAGE_DISABLED);
+
+    /**
      * Initialize the observer with the passed product media processor instance.
      *
      * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
@@ -108,6 +131,19 @@ class MediaGalleryObserver extends AbstractProductImportObserver implements Dyna
     }
 
     /**
+     * Query whether or not a value for the column with the passed name exists.
+     *
+     * @param string $name The column name to query for a valid value
+     *
+     * @return boolean TRUE if the value is set, else FALSE
+     * @todo https://github.com/techdivision/import/issues/179
+     */
+    public function hasValue($name)
+    {
+        return parent::hasValue(isset($this->virtualMapping[$name]) ? $this->virtualMapping[$name] : $name);
+    }
+
+    /**
      * Process the observer's business logic.
      *
      * @return array The processed row
@@ -118,22 +154,17 @@ class MediaGalleryObserver extends AbstractProductImportObserver implements Dyna
         // try to load the product SKU and map it the entity ID and
         $this->parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
 
-        // reset the position counter, if either a new PK or store view code has been found
-        if (!$this->isParentStoreViewCode($this->getValue(ColumnKeys::STORE_VIEW_CODE, $this->getDefaultStoreViewCode())) ||
-            !$this->isParentId($this->parentId)
-        ) {
-            $this->resetPositionCounter();
-        }
-
         // prepare the actual store view code
         $this->prepareStoreViewCode($this->getRow());
 
         // initialize and persist the product media gallery
-        if ($this->hasChanges($productMediaGallery = $this->initializeProductMediaGallery($this->prepareDynamicMediaGalleryAttributes()))) {
+        $attr = $this->prepareDynamicMediaGalleryAttributes(EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY, $this->prepareProductMediaGalleryAttributes());
+        if ($this->hasChanges($productMediaGallery = $this->initializeProductMediaGallery($attr))) {
             // persist the media gallery data and temporarily persist value ID
             $this->setParentValueId($this->valueId = $this->persistProductMediaGallery($productMediaGallery));
             // persist the product media gallery to entity data
-            if ($productMediaGalleryValueToEntity = $this->initializeProductMediaGalleryValueToEntity($this->prepareProductMediaGalleryValueToEntityAttributes())) {
+            $attr = $this->prepareDynamicMediaGalleryAttributes(EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY, $this->prepareProductMediaGalleryValueToEntityAttributes());
+            if ($productMediaGalleryValueToEntity = $this->initializeProductMediaGalleryValueToEntity($attr)) {
                 $this->persistProductMediaGalleryValueToEntity($productMediaGalleryValueToEntity);
             }
         }
@@ -143,14 +174,19 @@ class MediaGalleryObserver extends AbstractProductImportObserver implements Dyna
     }
 
     /**
-     * Appends the dynamic to the static attributes for the media type
-     * gallery attributes and returns them.
+     * Appends the dynamic attributes to the static ones and returns them.
+     *
+     * @param string $entityTypeCode   The entity type code load to append the dynamic attributes for
+     * @param array  $staticAttributes The array with the static attributes to append the dynamic to
      *
      * @return array The array with all available attributes
      */
-    protected function prepareDynamicMediaGalleryAttributes()
+    protected function prepareDynamicMediaGalleryAttributes(string $entityTypeCode, array $staticAttributes) : array
     {
-        return array_merge($this->prepareProductMediaGalleryAttributes(), $this->attributeLoader ? $this->attributeLoader->load($this, array()) : array());
+        return array_merge(
+            $staticAttributes,
+            $this->attributeLoader ? $this->attributeLoader->load($this, $this->columns[$entityTypeCode]) : array()
+        );
     }
 
     /**
@@ -166,18 +202,15 @@ class MediaGalleryObserver extends AbstractProductImportObserver implements Dyna
         $attributeId = $mediaGalleryAttribute[MemberNames::ATTRIBUTE_ID];
 
         // initialize the gallery data
-        $disabled = 0;
-        $mediaType = $this->getValue(ColumnKeys::MEDIA_TYPE, 'image');
         $image = $this->getValue(ColumnKeys::IMAGE_PATH_NEW);
 
         // initialize and return the entity
         return $this->initializeEntity(
             $this->loadRawEntity(
+                EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY,
                 array(
                     MemberNames::ATTRIBUTE_ID => $attributeId,
-                    MemberNames::VALUE        => $image,
-                    MemberNames::MEDIA_TYPE   => $mediaType,
-                    MemberNames::DISABLED     => $disabled
+                    MemberNames::VALUE        => $image
                 )
             )
         );
@@ -193,23 +226,27 @@ class MediaGalleryObserver extends AbstractProductImportObserver implements Dyna
 
         // initialize and return the entity
         return $this->initializeEntity(
-            array(
-                MemberNames::VALUE_ID  => $this->valueId,
-                MemberNames::ENTITY_ID => $this->parentId
+            $this->loadRawEntity(
+                EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY,
+                array(
+                    MemberNames::VALUE_ID  => $this->valueId,
+                    MemberNames::ENTITY_ID => $this->parentId
+                )
             )
         );
     }
 
     /**
-     * Load's and return's a raw customer entity without primary key but the mandatory members only and nulled values.
+     * Load's and return's a raw entity without primary key but the mandatory members only and nulled values.
      *
-     * @param array $data An array with data that will be used to initialize the raw entity with
+     * @param string $entityTypeCode The entity type code to return the raw entity for
+     * @param array  $data           An array with data that will be used to initialize the raw entity with
      *
      * @return array The initialized entity
      */
-    protected function loadRawEntity(array $data = array())
+    protected function loadRawEntity($entityTypeCode, array $data = array())
     {
-        return $this->getProductMediaProcessor()->loadRawEntity(EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY, $data);
+        return $this->getProductMediaProcessor()->loadRawEntity($entityTypeCode, $data);
     }
 
     /**
@@ -333,6 +370,7 @@ class MediaGalleryObserver extends AbstractProductImportObserver implements Dyna
      * Reset the position counter to 1.
      *
      * @return void
+     * @deprecated Since 23.0.0
      */
     protected function resetPositionCounter()
     {

@@ -82,25 +82,11 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
     const IMAGE_PARENT_SKU = 'image_parent_sku';
 
     /**
-     * Name for the column 'image_path'.
-     *
-     * @var string
-     */
-    const IMAGE_PATH = 'image_path';
-
-    /**
      * Name for the column 'image_path_new'.
      *
      * @var string
      */
     const IMAGE_PATH_NEW = 'image_path_new';
-
-    /**
-     * Name for the column 'image_label'.
-     *
-     * @var string
-     */
-    const IMAGE_LABEL = 'image_label';
 
     /**
      * Name for the column 'additional_image_labels'.
@@ -115,6 +101,13 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
      * @var string
      */
     const ADDITIONAL_IMAGE_POSITIONS = 'additional_image_positions';
+
+    /**
+     * Name for the column 'additional_image_disabled'.
+     *
+     * @var string
+     */
+    const ADDITIONAL_IMAGE_DISABLED = 'additional_image_disabled';
 
     /**
      * Name for the column 'hide_from_product_page'.

@@ -62,7 +62,11 @@ class RawEntityLoader implements LoaderInterface
      *
      * @var array
      */
-    protected $entityTypes = array(EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY);
+    protected $entityTypes = array(
+        EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY,
+        EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE,
+        EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY
+    );
 
     /**
      * Construct a new instance.

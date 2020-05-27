@@ -52,7 +52,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
     /**
      * The default image position.
      *
-     * @var string
+     * @var int
      */
     const DEFAULT_IMAGE_POSITION = 0;
 
@@ -167,19 +167,24 @@ class ProductMediaObserver extends AbstractProductImportObserver
                 }
 
                 // initialize the label text
-                $labelText = $this->getDefaultImageLabel();
-
+                $labelText = null;
                 // query whether or not a custom label text has been passed
                 if ($this->hasValue($labelColumnName = $mediaAttrColumnNames[ColumnKeys::IMAGE_LABEL])) {
                     $labelText = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_LABEL]);
                 }
 
                 // initialize the default image position
-                $position = $this->getDefaultImagePosition();
-
+                $position = null;
                 // query and retrieve optional image position
                 if ($this->hasValue($mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION])) {
                     $position = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION]);
+                }
+
+                // initialize the default disabled flag
+                $disabled = null;
+                // query and retrieve optional image position
+                if ($this->hasValue($mediaAttrColumnNames[ColumnKeys::IMAGE_DISABLED])) {
+                    $disabled = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_DISABLED]);
                 }
 
                 // prepare the new base image
@@ -193,7 +198,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => in_array($image, $this->imagesToHide) ? 1 : 0,
                         ColumnKeys::MEDIA_TYPE             => 'image',
                         ColumnKeys::IMAGE_LABEL            => $labelText,
-                        ColumnKeys::IMAGE_POSITION         => $position
+                        ColumnKeys::IMAGE_POSITION         => $position,
+                        ColumnKeys::IMAGE_DISABLED         => $disabled
                     ),
                     array(
                         ColumnKeys::STORE_VIEW_CODE        => ColumnKeys::STORE_VIEW_CODE,
@@ -204,7 +210,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => ColumnKeys::HIDE_FROM_PRODUCT_PAGE,
                         ColumnKeys::MEDIA_TYPE             => null,
                         ColumnKeys::IMAGE_LABEL            => $labelColumnName,
-                        ColumnKeys::IMAGE_POSITION         => $position
+                        ColumnKeys::IMAGE_POSITION         => $mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION],
+                        ColumnKeys::IMAGE_DISABLED         => $mediaAttrColumnNames[ColumnKeys::IMAGE_DISABLED]
                     )
                 );
 
@@ -235,6 +242,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
             $additionalImageLabels = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_LABELS, array(), array($this, 'explode'));
             // retrieve the additional image positions
             $additionalImagePositions = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_POSITIONS, array(), array($this, 'explode'));
+            // retrieve the additional image disabled flags
+            $additionalImageDisabled = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_DISABLED, array(), array($this, 'explode'));
 
             // initialize the images with the found values
             foreach ($additionalImages as $key => $additionalImage) {
@@ -253,12 +262,9 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::IMAGE_PATH_NEW         => $additionalImage,
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => in_array($additionalImage, $this->imagesToHide) ? 1 : 0,
                         ColumnKeys::MEDIA_TYPE             => 'image',
-                        ColumnKeys::IMAGE_LABEL            => isset($additionalImageLabels[$key]) ?
-                                                              $additionalImageLabels[$key] :
-                                                              $this->getDefaultImageLabel(),
-                        ColumnKeys::IMAGE_POSITION         => isset($additionalImagePositions[$key]) ?
-                                                              $additionalImagePositions[$key] :
-                                                              $this->getDefaultImagePosition()
+                        ColumnKeys::IMAGE_LABEL            => isset($additionalImageLabels[$key]) ? $additionalImageLabels[$key] : null,
+                        ColumnKeys::IMAGE_POSITION         => isset($additionalImagePositions[$key]) ? $additionalImagePositions[$key] : null,
+                        ColumnKeys::IMAGE_DISABLED         => isset($additionalImageDisabled[$key]) ? $additionalImageDisabled[$key] : null
                     ),
                     array(
                         ColumnKeys::STORE_VIEW_CODE        => ColumnKeys::STORE_VIEW_CODE,
@@ -269,7 +275,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::HIDE_FROM_PRODUCT_PAGE => ColumnKeys::HIDE_FROM_PRODUCT_PAGE,
                         ColumnKeys::MEDIA_TYPE             => null,
                         ColumnKeys::IMAGE_LABEL            => ColumnKeys::ADDITIONAL_IMAGE_LABELS,
-                        ColumnKeys::IMAGE_POSITION         => ColumnKeys::ADDITIONAL_IMAGE_POSITIONS
+                        ColumnKeys::IMAGE_POSITION         => ColumnKeys::ADDITIONAL_IMAGE_POSITIONS,
+                        ColumnKeys::IMAGE_DISABLED         => ColumnKeys::ADDITIONAL_IMAGE_DISABLED
                     )
                 );
 
@@ -310,6 +317,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
      * Return's the default image label.
      *
      * @return string|null The default image label
+     * @deprecated Since 23.0.0
      */
     protected function getDefaultImageLabel()
     {
@@ -319,7 +327,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
     /**
      * Returns the default image position.
      *
-     * @return int|string
+     * @return int The default image position
+     * @deprecated Since 23.0.0
      */
     protected function getDefaultImagePosition()
     {

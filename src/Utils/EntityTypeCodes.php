@@ -38,4 +38,18 @@ class EntityTypeCodes extends \TechDivision\Import\Utils\EntityTypeCodes
      * @var string
      */
     const CATALOG_PRODUCT_MEDIA_GALLERY = 'catalog_product_entity_media_gallery';
+
+    /**
+     * Key for the product entity 'catalog_product_entity_media_gallery_value'.
+     *
+     * @var string
+     */
+    const CATALOG_PRODUCT_MEDIA_GALLERY_VALUE = 'catalog_product_entity_media_gallery_value';
+
+    /**
+     * Key for the product entity 'catalog_product_entity_media_gallery_value_to_entity'.
+     *
+     * @var string
+     */
+    const CATALOG_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY = 'catalog_product_entity_media_gallery_value_to_entity';
 }

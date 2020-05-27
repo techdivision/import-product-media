@@ -21,10 +21,14 @@
 namespace TechDivision\Import\Product\Media\Observers;
 
 use TechDivision\Import\Utils\StoreViewCodes;
+use TechDivision\Import\Utils\BackendTypeKeys;
 use TechDivision\Import\Observers\StateDetectorInterface;
+use TechDivision\Import\Observers\AttributeLoaderInterface;
+use TechDivision\Import\Observers\DynamicAttributeObserverInterface;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
+use TechDivision\Import\Product\Media\Utils\EntityTypeCodes;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 
 /**
@@ -36,7 +40,7 @@ use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class MediaGalleryValueObserver extends AbstractProductImportObserver
+class MediaGalleryValueObserver extends AbstractProductImportObserver implements DynamicAttributeObserverInterface
 {
 
     /**
@@ -47,16 +51,50 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     protected $productMediaProcessor;
 
     /**
+     * The attribute loader instance.
+     *
+     * @var \TechDivision\Import\Observers\AttributeLoaderInterface
+     */
+    protected $attributeLoader;
+
+    /**
+     * Initialize the "dymanmic" columns.
+     *
+     * @var array
+     */
+    protected $columns = array(
+        MemberNames::DISABLED => array(ColumnKeys::HIDE_FROM_PRODUCT_PAGE, BackendTypeKeys::BACKEND_TYPE_INT)
+    );
+
+    /**
+     * Array with virtual column name mappings (this is a temporary
+     * solution till techdivision/import#179 as been implemented).
+     *
+     * @var array
+     * @todo https://github.com/techdivision/import/issues/179
+     */
+    protected $virtualMapping = array(
+        MemberNames::LABEL    => ColumnKeys::IMAGE_LABEL,
+        MemberNames::POSITION => ColumnKeys::IMAGE_POSITION,
+        MemberNames::DISABLED => ColumnKeys::HIDE_FROM_PRODUCT_PAGE
+    );
+
+    /**
      * Initialize the observer with the passed product media processor instance.
      *
      * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
+     * @param \TechDivision\Import\Observers\AttributeLoaderInterface                    $attributeLoader       The attribute loader instance
      * @param \TechDivision\Import\Observers\StateDetectorInterface|null                 $stateDetector         The state detector instance to use
      */
-    public function __construct(ProductMediaProcessorInterface $productMediaProcessor, StateDetectorInterface $stateDetector = null)
-    {
+    public function __construct(
+        ProductMediaProcessorInterface $productMediaProcessor,
+        AttributeLoaderInterface $attributeLoader = null,
+        StateDetectorInterface $stateDetector = null
+    ) {
 
-        // initialize the media processor instance
+        // initialize the media processor and the dynamic attribute loader instance
         $this->productMediaProcessor = $productMediaProcessor;
+        $this->attributeLoader = $attributeLoader;
 
         // pass the state detector to the parent method
         parent::__construct($stateDetector);
@@ -73,6 +111,19 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     }
 
     /**
+     * Query whether or not a value for the column with the passed name exists.
+     *
+     * @param string $name The column name to query for a valid value
+     *
+     * @return boolean TRUE if the value is set, else FALSE
+     * @todo https://github.com/techdivision/import/issues/179
+     */
+    public function hasValue($name)
+    {
+        return parent::hasValue(isset($this->virtualMapping[$name]) ? $this->virtualMapping[$name] : $name);
+    }
+
+    /**
      * Process the observer's business logic.
      *
      * @return array The processed row
@@ -81,9 +132,20 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     {
 
         // initialize and persist the product media gallery value
-        if ($this->hasChanges($productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareAttributes()))) {
+        if ($this->hasChanges($productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareDynamicAttributes()))) {
             $this->persistProductMediaGalleryValue($productMediaGalleryValue);
         }
+    }
+
+    /**
+     * Appends the dynamic to the static attributes for the media type
+     * gallery attributes and returns them.
+     *
+     * @return array The array with all available attributes
+     */
+    protected function prepareDynamicAttributes()
+    {
+        return array_merge($this->prepareAttributes(), $this->attributeLoader ? $this->attributeLoader->load($this, $this->columns) : array());
     }
 
     /**
@@ -113,25 +175,30 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
         // load the position
         $position = (int) $this->getValue(ColumnKeys::IMAGE_POSITION, 0);
 
-        // query whether or not the image position is zero, raise the position counter then
-        if ($position === 0) {
-            $position = $this->raisePositionCounter();
-        }
-
-        // load the flag that decides whether or not an image should be hidden on product page
-        $hideFromProductPage = $this->getValue(ColumnKeys::HIDE_FROM_PRODUCT_PAGE);
-
         // prepare the media gallery value
         return $this->initializeEntity(
-            array(
-                MemberNames::VALUE_ID    => $valueId,
-                MemberNames::STORE_ID    => $storeId,
-                MemberNames::ENTITY_ID   => $parentId,
-                MemberNames::LABEL       => $imageLabel,
-                MemberNames::POSITION    => $position,
-                MemberNames::DISABLED    => $hideFromProductPage
+            $this->loadRawEntity(
+                array(
+                    MemberNames::VALUE_ID    => $valueId,
+                    MemberNames::STORE_ID    => $storeId,
+                    MemberNames::ENTITY_ID   => $parentId,
+                    MemberNames::LABEL       => $imageLabel,
+                    MemberNames::POSITION    => $position
+                )
             )
         );
+    }
+
+    /**
+     * Load's and return's a raw customer entity without primary key but the mandatory members only and nulled values.
+     *
+     * @param array $data An array with data that will be used to initialize the raw entity with
+     *
+     * @return array The initialized entity
+     */
+    protected function loadRawEntity(array $data = array())
+    {
+        return $this->getProductMediaProcessor()->loadRawEntity(EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE, $data);
     }
 
     /**
@@ -212,6 +279,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      * Returns the acutal value of the position counter and raise's it by one.
      *
      * @return integer The actual value of the position counter
+     * @deprecated Since 23.0.0
      */
     protected function raisePositionCounter()
     {

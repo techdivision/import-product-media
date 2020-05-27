@@ -105,15 +105,19 @@
         <service id="import_product_media.observer.product.media" class="TechDivision\Import\Product\Media\Observers\ProductMediaObserver"/>
         <service id="import_product_media.observer.media.gallery" class="TechDivision\Import\Product\Media\Observers\MediaGalleryObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
         </service>
         <service id="import_product_media.observer.media.gallery.update" class="TechDivision\Import\Product\Media\Observers\MediaGalleryUpdateObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
         </service>
         <service id="import_product_media.observer.media.gallery.value" class="TechDivision\Import\Product\Media\Observers\MediaGalleryValueObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
         </service>
         <service id="import_product_media.observer.media.gallery.value.update" class="TechDivision\Import\Product\Media\Observers\MediaGalleryValueUpdateObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
         </service>
         <service id="import_product_media.observer.clear.media.gallery" class="TechDivision\Import\Product\Media\Observers\ClearMediaGalleryObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>

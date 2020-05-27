@@ -23,6 +23,7 @@ namespace TechDivision\Import\Product\Media\Subjects;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
+use TechDivision\Import\Subjects\CleanUpColumnsSubjectInterface;
 use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
 
@@ -35,7 +36,7 @@ use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class MediaSubject extends AbstractProductSubject implements FileUploadSubjectInterface
+class MediaSubject extends AbstractProductSubject implements FileUploadSubjectInterface, CleanUpColumnsSubjectInterface
 {
 
     /**
@@ -76,20 +77,41 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
 
         // initialize media directory => can be absolute or relative
         if ($this->getConfiguration()->hasParam(ConfigurationKeys::MEDIA_DIRECTORY)) {
-            $this->setMediaDir(
-                $this->resolvePath(
-                    $this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)
-                )
-            );
+            try {
+                $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)));
+            } catch (\InvalidArgumentException $iae) {
+                $this->getSystemLogger()->warning($iae);
+            }
         }
 
         // initialize images directory => can be absolute or relative
         if ($this->getConfiguration()->hasParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)) {
-            $this->setImagesFileDir(
-                $this->resolvePath(
-                    $this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)
-                )
-            );
+            try {
+                $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)));
+            } catch (\InvalidArgumentException $iae) {
+                $this->getSystemLogger()->warning($iae);
+            }
         }
+    }
+
+    /**
+     * Merge the columns from the configuration with all image type columns to define which
+     * columns should be cleaned-up.
+     *
+     * @return array The columns that has to be cleaned-up
+     */
+    public function getCleanUpColumns()
+    {
+
+        // initialize the array for the columns that has to be cleaned-up
+        $cleanUpColumns = array();
+
+        // query whether or not an array has been specified in the configuration
+        if ($this->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_EMPTY_COLUMNS)) {
+            $cleanUpColumns = $this->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_EMPTY_COLUMNS);
+        }
+
+        // return the array with the column names
+        return $cleanUpColumns;
     }
 }

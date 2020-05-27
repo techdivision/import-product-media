@@ -81,10 +81,8 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
         SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY =>
             'INSERT
                INTO ${table:catalog_product_entity_media_gallery_value_to_entity}
-                    (value_id,
-                     entity_id)
-             VALUES (:value_id,
-                     :entity_id)',
+                    (${column-names:catalog_product_entity_media_gallery_value_to_entity})
+             VALUES (${column-placeholders:catalog_product_entity_media_gallery_value_to_entity})',
         SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_VIDEO =>
             'INSERT
                INTO ${table:catalog_product_entity_media_gallery_value_video}
