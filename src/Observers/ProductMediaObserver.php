@@ -78,6 +78,13 @@ class ProductMediaObserver extends AbstractProductImportObserver
     protected $imagesToHide = array();
 
     /**
+     * The array with names of the images that has to be disabled.
+     *
+     * @var array
+     */
+    protected $disabledImages = array();
+
+    /**
      * Holds the image values of the main row.
      *
      * @var array
@@ -97,13 +104,17 @@ class ProductMediaObserver extends AbstractProductImportObserver
             $this->mainRow = array();
         }
 
-        // initialize the array for the artefacts and the hidden images
+        // initialize the arrays for the images, the artefacts,
+        // the hidden as well as the disabled images
         $this->images = array();
         $this->artefacts = array();
         $this->imagesToHide = array();
+        $this->disabledImages = array();
 
-        // load the images that has to be hidden on product detail page
+        // load the images that has to be hidden on product
+        // detail page or completely disabled
         $this->loadImagesToHide();
+        $this->loadImagesToDisable();
 
         // process the images/additional images
         $this->processImages();
@@ -180,13 +191,6 @@ class ProductMediaObserver extends AbstractProductImportObserver
                     $position = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION]);
                 }
 
-                // initialize the default disabled flag
-                $disabled = null;
-                // query and retrieve optional image position
-                if ($this->hasValue($mediaAttrColumnNames[ColumnKeys::IMAGE_DISABLED])) {
-                    $disabled = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_DISABLED]);
-                }
-
                 // prepare the new base image
                 $artefact = $this->newArtefact(
                     array(
@@ -199,7 +203,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::MEDIA_TYPE             => 'image',
                         ColumnKeys::IMAGE_LABEL            => $labelText,
                         ColumnKeys::IMAGE_POSITION         => $position,
-                        ColumnKeys::IMAGE_DISABLED         => $disabled
+                        ColumnKeys::IMAGE_DISABLED         => in_array($image, $this->disabledImages) ? 1 : 0,
                     ),
                     array(
                         ColumnKeys::STORE_VIEW_CODE        => ColumnKeys::STORE_VIEW_CODE,
@@ -211,7 +215,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::MEDIA_TYPE             => null,
                         ColumnKeys::IMAGE_LABEL            => $labelColumnName,
                         ColumnKeys::IMAGE_POSITION         => $mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION],
-                        ColumnKeys::IMAGE_DISABLED         => $mediaAttrColumnNames[ColumnKeys::IMAGE_DISABLED]
+                        ColumnKeys::IMAGE_DISABLED         => ColumnKeys::DISABLED_IMAGES
                     )
                 );
 
@@ -242,8 +246,6 @@ class ProductMediaObserver extends AbstractProductImportObserver
             $additionalImageLabels = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_LABELS, array(), array($this, 'explode'));
             // retrieve the additional image positions
             $additionalImagePositions = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_POSITIONS, array(), array($this, 'explode'));
-            // retrieve the additional image disabled flags
-            $additionalImageDisabled = $this->getValue(ColumnKeys::ADDITIONAL_IMAGE_DISABLED, array(), array($this, 'explode'));
 
             // initialize the images with the found values
             foreach ($additionalImages as $key => $additionalImage) {
@@ -264,7 +266,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::MEDIA_TYPE             => 'image',
                         ColumnKeys::IMAGE_LABEL            => isset($additionalImageLabels[$key]) ? $additionalImageLabels[$key] : null,
                         ColumnKeys::IMAGE_POSITION         => isset($additionalImagePositions[$key]) ? $additionalImagePositions[$key] : null,
-                        ColumnKeys::IMAGE_DISABLED         => isset($additionalImageDisabled[$key]) ? $additionalImageDisabled[$key] : null
+                        ColumnKeys::IMAGE_DISABLED         => in_array($additionalImage, $this->disabledImages) ? 1 : 0
                     ),
                     array(
                         ColumnKeys::STORE_VIEW_CODE        => ColumnKeys::STORE_VIEW_CODE,
@@ -276,7 +278,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                         ColumnKeys::MEDIA_TYPE             => null,
                         ColumnKeys::IMAGE_LABEL            => ColumnKeys::ADDITIONAL_IMAGE_LABELS,
                         ColumnKeys::IMAGE_POSITION         => ColumnKeys::ADDITIONAL_IMAGE_POSITIONS,
-                        ColumnKeys::IMAGE_DISABLED         => ColumnKeys::ADDITIONAL_IMAGE_DISABLED
+                        ColumnKeys::IMAGE_DISABLED         => ColumnKeys::DISABLED_IMAGES
                     )
                 );
 
@@ -300,6 +302,23 @@ class ProductMediaObserver extends AbstractProductImportObserver
         // map the image names, because probably they have been renamed by the upload functionality
         foreach ($hideFromProductPage as $filename) {
             $this->imagesToHide[] = $this->getImageMapping($filename);
+        }
+    }
+
+    /**
+     * Load the images that has to be disabled
+     *
+     * @return void
+     */
+    protected function loadImagesToDisable()
+    {
+
+        // load the array with the images that has to be disabled
+        $disabledImages = $this->getValue(ColumnKeys::DISABLED_IMAGES, array(), array($this, 'explode'));
+
+        // map the image names, because probably they have been renamed by the upload functionality
+        foreach ($disabledImages as $filename) {
+            $this->disabledImages[] = $this->getImageMapping($filename);
         }
     }
 

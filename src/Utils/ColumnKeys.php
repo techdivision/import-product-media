@@ -117,6 +117,13 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
     const HIDE_FROM_PRODUCT_PAGE = 'hide_from_product_page';
 
     /**
+     * Name for the column 'disabled_images'.
+     *
+     * @var string
+     */
+    const DISABLED_IMAGES = 'disabled_images';
+
+    /**
      * Name for the column 'media_type'.
      *
      * @var string

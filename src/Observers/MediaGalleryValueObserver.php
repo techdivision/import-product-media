@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Observers;
 
+use TechDivision\Import\Utils\EntityStatus;
 use TechDivision\Import\Utils\StoreViewCodes;
 use TechDivision\Import\Utils\BackendTypeKeys;
 use TechDivision\Import\Observers\StateDetectorInterface;
@@ -30,6 +31,7 @@ use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Media\Utils\EntityTypeCodes;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Observers\EntityMergers\EntityMergerInterface;
 
 /**
  * Observer that creates/updates the product's media gallery value information.
@@ -58,6 +60,13 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver implements
     protected $attributeLoader;
 
     /**
+     * The entity merger instance.
+     *
+     * @var \TechDivision\Import\Observers\EntityMergers\EntityMergerInterface
+     */
+    protected $entityMerger;
+
+    /**
      * Initialize the "dymanmic" columns.
      *
      * @var array
@@ -67,34 +76,24 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver implements
     );
 
     /**
-     * Array with virtual column name mappings (this is a temporary
-     * solution till techdivision/import#179 as been implemented).
-     *
-     * @var array
-     * @todo https://github.com/techdivision/import/issues/179
-     */
-    protected $virtualMapping = array(
-        MemberNames::LABEL    => ColumnKeys::IMAGE_LABEL,
-        MemberNames::POSITION => ColumnKeys::IMAGE_POSITION,
-        MemberNames::DISABLED => ColumnKeys::HIDE_FROM_PRODUCT_PAGE
-    );
-
-    /**
      * Initialize the observer with the passed product media processor instance.
      *
      * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
-     * @param \TechDivision\Import\Observers\AttributeLoaderInterface                    $attributeLoader       The attribute loader instance
+     * @param \TechDivision\Import\Observers\AttributeLoaderInterface|null               $attributeLoader       The attribute loader instance
+     * @param \TechDivision\Import\Observers\EntityMergers\EntityMergerInterface|null    $entityMerger          The entity merger instance
      * @param \TechDivision\Import\Observers\StateDetectorInterface|null                 $stateDetector         The state detector instance to use
      */
     public function __construct(
         ProductMediaProcessorInterface $productMediaProcessor,
         AttributeLoaderInterface $attributeLoader = null,
+        EntityMergerInterface $entityMerger = null,
         StateDetectorInterface $stateDetector = null
     ) {
 
         // initialize the media processor and the dynamic attribute loader instance
         $this->productMediaProcessor = $productMediaProcessor;
         $this->attributeLoader = $attributeLoader;
+        $this->entityMerger = $entityMerger;
 
         // pass the state detector to the parent method
         parent::__construct($stateDetector);
@@ -111,19 +110,6 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver implements
     }
 
     /**
-     * Query whether or not a value for the column with the passed name exists.
-     *
-     * @param string $name The column name to query for a valid value
-     *
-     * @return boolean TRUE if the value is set, else FALSE
-     * @todo https://github.com/techdivision/import/issues/179
-     */
-    public function hasValue($name)
-    {
-        return parent::hasValue(isset($this->virtualMapping[$name]) ? $this->virtualMapping[$name] : $name);
-    }
-
-    /**
      * Process the observer's business logic.
      *
      * @return array The processed row
@@ -135,6 +121,26 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver implements
         if ($this->hasChanges($productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareDynamicAttributes()))) {
             $this->persistProductMediaGalleryValue($productMediaGalleryValue);
         }
+    }
+
+    /**
+     * Merge's and return's the entity with the passed attributes and set's the
+     * passed status.
+     *
+     * @param array       $entity        The entity to merge the attributes into
+     * @param array       $attr          The attributes to be merged
+     * @param string|null $changeSetName The change set name to use
+     *
+     * @return array The merged entity
+     * @todo https://github.com/techdivision/import/issues/179
+     */
+    protected function mergeEntity(array $entity, array $attr, $changeSetName = null)
+    {
+        return array_merge(
+            $entity,
+            $this->entityMerger ? $this->entityMerger->merge($this, $entity, $attr) : $attr,
+            array(EntityStatus::MEMBER_NAME => $this->detectState($entity, $attr, $changeSetName))
+        );
     }
 
     /**
