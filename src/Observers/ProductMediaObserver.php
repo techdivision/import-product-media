@@ -57,14 +57,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
     const DEFAULT_IMAGE_POSITION = 0;
 
     /**
-     * The array with the image information of on row before they'll be converted into artefacts.
-     *
-     * @var array
-     */
-    protected $images = array();
-
-    /**
-     * The image artefacts that has to be exported.
+     * The image artefacts that have to be exported.
      *
      * @var array
      */
@@ -104,9 +97,8 @@ class ProductMediaObserver extends AbstractProductImportObserver
             $this->mainRow = array();
         }
 
-        // initialize the arrays for the images, the artefacts,
+        // initialize the arrays for the the artefacts,
         // the hidden as well as the disabled images
-        $this->images = array();
         $this->artefacts = array();
         $this->imagesToHide = array();
         $this->disabledImages = array();
@@ -179,6 +171,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
 
                 // initialize the label text
                 $labelText = null;
+
                 // query whether or not a custom label text has been passed
                 if ($this->hasValue($labelColumnName = $mediaAttrColumnNames[ColumnKeys::IMAGE_LABEL])) {
                     $labelText = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_LABEL]);
@@ -186,6 +179,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
 
                 // initialize the default image position
                 $position = null;
+
                 // query and retrieve optional image position
                 if ($this->hasValue($mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION])) {
                     $position = $this->getValue($mediaAttrColumnNames[ColumnKeys::IMAGE_POSITION]);
