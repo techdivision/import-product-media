@@ -46,6 +46,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
      * The the default image label.
      *
      * @var string
+     * @deprecated Since 23.0.0
      */
     const DEFAULT_IMAGE_LABEL = 'Image';
 
@@ -53,6 +54,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
      * The default image position.
      *
      * @var int
+     * @deprecated Since 23.0.0
      */
     const DEFAULT_IMAGE_POSITION = 0;
 
