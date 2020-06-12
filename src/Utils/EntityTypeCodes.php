@@ -29,7 +29,7 @@ namespace TechDivision\Import\Product\Media\Utils;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class EntityTypeCodes extends \TechDivision\Import\Utils\EntityTypeCodes
+class EntityTypeCodes extends \TechDivision\Import\Product\Utils\EntityTypeCodes
 {
 
     /**

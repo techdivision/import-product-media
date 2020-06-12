@@ -1,3 +1,14 @@
+# Version 24.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 23.* version as dependency
+* Add #PAC-102: Dedicated CLI command to import videos (professional + enterpries edition)
+
 # Version 23.0.0
 
 ## Bugfixes

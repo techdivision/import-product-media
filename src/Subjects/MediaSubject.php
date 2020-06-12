@@ -22,10 +22,12 @@ namespace TechDivision\Import\Product\Media\Subjects;
 
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\FileUploadTrait;
+use TechDivision\Import\Subjects\ExportableTrait;
 use TechDivision\Import\Subjects\FileUploadSubjectInterface;
+use TechDivision\Import\Subjects\ExportableSubjectInterface;
 use TechDivision\Import\Subjects\CleanUpColumnsSubjectInterface;
-use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
+use TechDivision\Import\Product\Subjects\AbstractProductSubject;
 
 /**
  * The subject implementation for the product media handling.
@@ -36,7 +38,7 @@ use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class MediaSubject extends AbstractProductSubject implements FileUploadSubjectInterface, CleanUpColumnsSubjectInterface
+class MediaSubject extends AbstractProductSubject implements FileUploadSubjectInterface, CleanUpColumnsSubjectInterface, ExportableSubjectInterface
 {
 
     /**
@@ -52,6 +54,13 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
      * @var \TechDivision\Import\Product\Media\Subjects\MediaSubjectTrait
      */
     use MediaSubjectTrait;
+
+    /**
+     * The trait with the exportable functionality.
+     *
+     * @var \TechDivision\Import\Subjects\ExportableTrait
+     */
+    use ExportableTrait;
 
     /**
      * Intializes the previously loaded global data for exactly one variants.
@@ -73,14 +82,14 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         $status = $registryProcessor->getAttribute(RegistryKeys::STATUS);
 
         // load the SKU => entity ID mapping
-        $this->skuEntityIdMapping = $status[RegistryKeys::SKU_ENTITY_ID_MAPPING];
+        $this->skuEntityIdMapping = isset($status[RegistryKeys::SKU_ENTITY_ID_MAPPING]) ? $status[RegistryKeys::SKU_ENTITY_ID_MAPPING] : array();
 
         // initialize media directory => can be absolute or relative
         if ($this->getConfiguration()->hasParam(ConfigurationKeys::MEDIA_DIRECTORY)) {
             try {
                 $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)));
             } catch (\InvalidArgumentException $iae) {
-                $this->getSystemLogger()->warning($iae);
+                $this->getSystemLogger()->warning($iae->getMessage());
             }
         }
 
@@ -89,7 +98,7 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
             try {
                 $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)));
             } catch (\InvalidArgumentException $iae) {
-                $this->getSystemLogger()->warning($iae);
+                $this->getSystemLogger()->warning($iae->getMessage());
             }
         }
     }
