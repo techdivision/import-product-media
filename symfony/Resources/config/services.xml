@@ -131,9 +131,15 @@
             <argument type="service" id="import.observer.dynamic.attribute.loader"/>
             <argument type="service" id="import_product_media.entity.merger.composite.media.gallery.value"/>
         </service>
-        <service id="import_product_media.observer.clear.media.gallery" class="TechDivision\Import\Product\Media\Observers\ClearMediaGalleryObserver">
+        <service id="import_product_media.observer.clean.up.media.gallery" class="TechDivision\Import\Product\Media\Observers\CleanUpMediaGalleryObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
         </service>
+
+        <!--
+         | ATTENTION: Alias for the old media gallery clean up observer, which has been renamed since 
+         |            version 25.0.0 and will be removed in one of the the next major relaeses
+         |-->
+        <service id="import_product_media.observer.clear.media.gallery" alias="import_product_media.observer.clean.up.media.gallery" />
 
         <!--
          | The DI configuration for the composite observers of the replace operation.
