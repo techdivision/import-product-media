@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
 
-        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository"/>
+        <!--
+         | The DI configuration for the entity mergers
+         |-->
+        <service id="import_product_media.loader.header.mapping.media.gallery" class="TechDivision\Import\Loaders\EntityTypeHeaderMappingLoader">
+            <argument type="service" id="import.loader.header.mapping"/>
+            <argument type="constant">TechDivision\Import\Product\Media\Utils\EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY</argument>
+        </service>
+        <service id="import_product_media.loader.header.mapping.media.gallery.value" class="TechDivision\Import\Loaders\EntityTypeHeaderMappingLoader">
+            <argument type="service" id="import.loader.header.mapping"/>
+            <argument type="constant">TechDivision\Import\Product\Media\Utils\EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE</argument>
+        </service>
+        <service id="import_product_media.entity.merger.empty.columns.media.gallery" class="TechDivision\Import\Observers\EntityMergers\CleanUpColumnsEntityMerger">
+            <argument type="service" id="import_product_media.loader.header.mapping.media.gallery"/>
+        </service>
+        <service id="import_product_media.entity.merger.empty.columns.media.gallery.value" class="TechDivision\Import\Observers\EntityMergers\CleanUpColumnsEntityMerger">
+            <argument type="service" id="import_product_media.loader.header.mapping.media.gallery.value"/>
+        </service>
+        <service id="import_product_media.entity.merger.composite.media.gallery" class="TechDivision\Import\Observers\EntityMergers\GenericCompositeEntityMerger">
+            <call method="append">
+                <argument type="service" id="import_product_media.entity.merger.empty.columns.media.gallery"/>
+            </call>
+        </service>
+        <service id="import_product_media.entity.merger.composite.media.gallery.value" class="TechDivision\Import\Observers\EntityMergers\GenericCompositeEntityMerger">
+            <call method="append">
+                <argument type="service" id="import_product_media.entity.merger.empty.columns.media.gallery.value"/>
+            </call>
+        </service>
 
-        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository"/>
+        <service id="import_product_media.repository.sql.statement" class="TechDivision\Import\Product\Media\Repositories\SqlStatementRepository">
+            <argument type="service" id="import.util.sql.compilers"/>
+        </service>
         <service id="import_product_media.repository.product.media.gallery" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
@@ -24,10 +52,12 @@
         <service id="import_product_media.action.processor.product.media.gallery.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryCreateProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.util.sql.sanitizers"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.update" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryUpdateProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.util.sql.sanitizers"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.delete" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryDeleteProcessor">
             <argument type="service" id="connection"/>
@@ -36,34 +66,37 @@
         <service id="import_product_media.action.processor.product.media.gallery.value.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueCreateProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.util.sql.sanitizers"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.value.update" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueUpdateProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.util.sql.sanitizers"/>
         </service>
         <service id="import_product_media.action.processor.product.media.gallery.value.to.entity.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueToEntityCreateProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
-        </service>
-        <service id="import_product_media.action.processor.product.media.gallery.value.video.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueVideoCreateProcessor">
-            <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.util.sql.sanitizers"/>
         </service>
 
-        <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryAction">
+        <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Actions\GenericIdentifierAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.update"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.delete"/>
+            <argument type="constant">TechDivision\Import\Product\Media\Utils\MemberNames::VALUE_ID</argument>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueAction">
+        <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.update"/>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value.to.entity" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityAction">
+        <service id="import_product_media.action.product.media.gallery.value.to.entity" class="TechDivision\Import\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.to.entity.create"/>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value.video" class="TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoAction">
-            <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.video.create"/>
+
+        <service id="import_product_media.loader.raw.entity" class="TechDivision\Import\Product\Media\Loaders\RawEntityLoader">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import.loader.column.metadata"/>
+            <argument type="service" id="import.loader.raw.entity"/>
         </service>
 
         <service id="import_product_media.processor.product.media" class="TechDivision\Import\Product\Media\Services\ProductMediaProcessor">
@@ -74,24 +107,68 @@
             <argument type="service" id="import_product_media.action.product.media.gallery"/>
             <argument type="service" id="import_product_media.action.product.media.gallery.value"/>
             <argument type="service" id="import_product_media.action.product.media.gallery.value.to.entity"/>
-            <argument type="service" id="import_product_media.action.product.media.gallery.value.video"/>
+            <argument type="service" id="import_product_media.loader.raw.entity"/>
         </service>
 
         <service id="import_product_media.observer.product.media" class="TechDivision\Import\Product\Media\Observers\ProductMediaObserver"/>
         <service id="import_product_media.observer.media.gallery" class="TechDivision\Import\Product\Media\Observers\MediaGalleryObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
+            <argument type="service" id="import_product_media.entity.merger.composite.media.gallery"/>
         </service>
         <service id="import_product_media.observer.media.gallery.update" class="TechDivision\Import\Product\Media\Observers\MediaGalleryUpdateObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
+            <argument type="service" id="import_product_media.entity.merger.composite.media.gallery"/>
         </service>
         <service id="import_product_media.observer.media.gallery.value" class="TechDivision\Import\Product\Media\Observers\MediaGalleryValueObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
+            <argument type="service" id="import_product_media.entity.merger.composite.media.gallery.value"/>
         </service>
         <service id="import_product_media.observer.media.gallery.value.update" class="TechDivision\Import\Product\Media\Observers\MediaGalleryValueUpdateObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+            <argument type="service" id="import.observer.dynamic.attribute.loader"/>
+            <argument type="service" id="import_product_media.entity.merger.composite.media.gallery.value"/>
         </service>
-        <service id="import_product_media.observer.clear.media.gallery" class="TechDivision\Import\Product\Media\Observers\ClearMediaGalleryObserver">
+        <service id="import_product_media.observer.clean.up.media.gallery" class="TechDivision\Import\Product\Media\Observers\CleanUpMediaGalleryObserver">
             <argument type="service" id="import_product_media.processor.product.media"/>
+        </service>
+
+        <!--
+         | ATTENTION: Alias for the old media gallery clean up observer, which has been renamed since 
+         |            version 25.0.0 and will be removed in one of the the next major relaeses
+         |-->
+        <service id="import_product_media.observer.clear.media.gallery" alias="import_product_media.observer.clean.up.media.gallery" />
+
+        <!--
+         | The DI configuration for the composite observers of the replace operation.
+         |-->
+        <service id="import_product_media.observer.composite.replace" class="TechDivision\Import\Observers\GenericCompositeObserver">
+            <call method="addObserver">
+                <argument id="import.observer.attribute.set" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery.value" type="service"/>
+            </call>
+        </service>
+
+        <!--
+         | The DI configuration for the composite observers of the add-update operation.
+         |-->
+        <service id="import_product_media.observer.composite.add_update" class="TechDivision\Import\Observers\GenericCompositeObserver">
+            <call method="addObserver">
+                <argument id="import.observer.attribute.set" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery.update" type="service"/>
+            </call>
+            <call method="addObserver">
+                <argument id="import_product_media.observer.media.gallery.value.update" type="service"/>
+            </call>
         </service>
 
         <service id="import_product_media.subject.media" class="TechDivision\Import\Product\Media\Subjects\MediaSubject" shared="false">

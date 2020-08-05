@@ -20,14 +20,12 @@
 
 namespace TechDivision\Import\Product\Media\Services;
 
+use TechDivision\Import\Loaders\LoaderInterface;
+use TechDivision\Import\Actions\ActionInterface;
 use TechDivision\Import\Connection\ConnectionInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepositoryInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepositoryInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepositoryInterface;
-use TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface;
-use TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueActionInterface;
-use TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoActionInterface;
-use TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityActionInterface;
 
 /**
  * The product media processor implementation.
@@ -72,30 +70,30 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * The action with the product media gallery CRUD methods.
      *
-     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface
+     * @var \TechDivision\Import\Actions\ActionInterface
      */
     protected $productMediaGalleryAction;
 
     /**
      * The action with the product media gallery value CRUD methods.
      *
-     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueActionInterface
+     * @var \TechDivision\Import\Actions\ActionInterface
      */
     protected $productMediaGalleryValueAction;
 
     /**
      * The action with the product media gallery value to entity CRUD methods.
      *
-     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityActionInterface
+     * @var \TechDivision\Import\Actions\ActionInterface
      */
     protected $productMediaGalleryValueToEntityAction;
 
     /**
-     * The action with the product media gallery video CRUD methods.
+     * The raw entity loader instance.
      *
-     * @var \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoActionInterface
+     * @var \TechDivision\Import\Loaders\LoaderInterface
      */
-    protected $productMediaGalleryVideoAction;
+    protected $rawEntityLoader;
 
     /**
      * Initialize the processor with the necessary assembler and repository instances.
@@ -104,20 +102,20 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepositoryInterface              $productMediaGalleryRepository              The product media gallery repository to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepositoryInterface         $productMediaGalleryValueRepository         The product media gallery value repository to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepositoryInterface $productMediaGalleryValueToEntityRepository The product media gallery value to entity repository to use
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface                       $productMediaGalleryAction                  The product media gallery action to use
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueActionInterface                  $productMediaGalleryValueAction             The product media gallery value action to use
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityActionInterface          $productMediaGalleryValueToEntityAction     The product media gallery value to entity action to use
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoActionInterface             $productMediaGalleryValueVideoAction        The product media gallery value video action to use
+     * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryAction                  The product media gallery action to use
+     * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueAction             The product media gallery value action to use
+     * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueToEntityAction     The product media gallery value to entity action to use
+     * @param \TechDivision\Import\Loaders\LoaderInterface                                                        $rawEntityLoader                            The raw entity loader instance
      */
     public function __construct(
         ConnectionInterface $connection,
         ProductMediaGalleryRepositoryInterface $productMediaGalleryRepository,
         ProductMediaGalleryValueRepositoryInterface $productMediaGalleryValueRepository,
         ProductMediaGalleryValueToEntityRepositoryInterface $productMediaGalleryValueToEntityRepository,
-        ProductMediaGalleryActionInterface $productMediaGalleryAction,
-        ProductMediaGalleryValueActionInterface $productMediaGalleryValueAction,
-        ProductMediaGalleryValueToEntityActionInterface $productMediaGalleryValueToEntityAction,
-        ProductMediaGalleryValueVideoActionInterface $productMediaGalleryValueVideoAction
+        ActionInterface $productMediaGalleryAction,
+        ActionInterface $productMediaGalleryValueAction,
+        ActionInterface $productMediaGalleryValueToEntityAction,
+        LoaderInterface $rawEntityLoader
     ) {
         $this->setConnection($connection);
         $this->setProductMediaGalleryRepository($productMediaGalleryRepository);
@@ -126,7 +124,29 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
         $this->setProductMediaGalleryAction($productMediaGalleryAction);
         $this->setProductMediaGalleryValueAction($productMediaGalleryValueAction);
         $this->setProductMediaGalleryValueToEntityAction($productMediaGalleryValueToEntityAction);
-        $this->setProductMediaGalleryValueVideoAction($productMediaGalleryValueVideoAction);
+        $this->setRawEntityLoader($rawEntityLoader);
+    }
+
+    /**
+     * Set's the raw entity loader instance.
+     *
+     * @param \TechDivision\Import\Loaders\LoaderInterface $rawEntityLoader The raw entity loader instance to set
+     *
+     * @return void
+     */
+    public function setRawEntityLoader(LoaderInterface $rawEntityLoader)
+    {
+        $this->rawEntityLoader = $rawEntityLoader;
+    }
+
+    /**
+     * Return's the raw entity loader instance.
+     *
+     * @return \TechDivision\Import\Loaders\LoaderInterface The raw entity loader instance
+     */
+    public function getRawEntityLoader()
+    {
+        return $this->rawEntityLoader;
     }
 
     /**
@@ -264,11 +284,11 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery CRUD methods.
      *
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface $productMediaGalleryAction The action with the product media gallery CRUD methods
+     * @param \TechDivision\Import\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery CRUD methods
      *
      * @return void
      */
-    public function setProductMediaGalleryAction(ProductMediaGalleryActionInterface $productMediaGalleryAction)
+    public function setProductMediaGalleryAction(ActionInterface $productMediaGalleryAction)
     {
         $this->productMediaGalleryAction = $productMediaGalleryAction;
     }
@@ -276,7 +296,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the action with the product media gallery CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryActionInterface The action with the product media gallery CRUD methods
+     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery CRUD methods
      */
     public function getProductMediaGalleryAction()
     {
@@ -286,11 +306,11 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery valueCRUD methods.
      *
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueActionInterface $productMediaGalleryValueAction The action with the product media gallery value CRUD methods
+     * @param \TechDivision\Import\Actions\ActionInterface $productMediaGalleryValueAction The action with the product media gallery value CRUD methods
      *
      * @return void
      */
-    public function setProductMediaGalleryValueAction(ProductMediaGalleryValueActionInterface $productMediaGalleryValueAction)
+    public function setProductMediaGalleryValueAction(ActionInterface $productMediaGalleryValueAction)
     {
         $this->productMediaGalleryValueAction = $productMediaGalleryValueAction;
     }
@@ -298,7 +318,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the action with the product media gallery valueCRUD methods.
      *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueActionInterface The action with the product media gallery value CRUD methods
+     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery value CRUD methods
      */
     public function getProductMediaGalleryValueAction()
     {
@@ -308,11 +328,11 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery value to entity CRUD methods.
      *
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityActionInterface $productMediaGalleryValueToEntityAction The action with the product media gallery value to entity CRUD methods
+     * @param \TechDivision\Import\Actions\ActionInterface $productMediaGalleryValueToEntityAction The action with the product media gallery value to entity CRUD methods
      *
      * @return void
      */
-    public function setProductMediaGalleryValueToEntityAction(ProductMediaGalleryValueToEntityActionInterface $productMediaGalleryValueToEntityAction)
+    public function setProductMediaGalleryValueToEntityAction(ActionInterface $productMediaGalleryValueToEntityAction)
     {
         $this->productMediaGalleryValueToEntityAction = $productMediaGalleryValueToEntityAction;
     }
@@ -320,7 +340,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the action with the product media gallery value to entity CRUD methods.
      *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueToEntityActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     * @return \TechDivision\Import\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
      */
     public function getProductMediaGalleryValueToEntityAction()
     {
@@ -328,25 +348,16 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     }
 
     /**
-     * Set's the action with the product media gallery value video CRUD methods.
+     * Load's and return's a raw entity without primary key but the mandatory members only and nulled values.
      *
-     * @param \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideoActionInterface $productMediaGalleryValueVideoAction The action with the product media gallery value video CRUD methods
+     * @param string $entityTypeCode The entity type code to return the raw entity for
+     * @param array  $data           An array with data that will be used to initialize the raw entity with
      *
-     * @return void
+     * @return array The initialized entity
      */
-    public function setProductMediaGalleryValueVideoAction(ProductMediaGalleryValueVideoActionInterface $productMediaGalleryValueVideoAction)
+    public function loadRawEntity($entityTypeCode, array $data = array())
     {
-        $this->productMediaGalleryValueVideoAction = $productMediaGalleryValueVideoAction;
-    }
-
-    /**
-     * Return's the action with the product media gallery value video CRUD methods.
-     *
-     * @return \TechDivision\Import\Product\Media\Actions\ProductMediaGalleryValueVideaActionInterface The action with the product media gallery value video CRUD methods
-     */
-    public function getProductMediaGalleryValueVideoAction()
-    {
-        return $this->productMediaGalleryValueVideoAction;
+        return $this->getRawEntityLoader()->load($entityTypeCode, $data);
     }
 
     /**
@@ -438,19 +449,6 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     public function persistProductMediaGalleryValueToEntity($productMediaGalleryValuetoEntity, $name = null)
     {
         $this->getProductMediaGalleryValueToEntityAction()->persist($productMediaGalleryValuetoEntity, $name);
-    }
-
-    /**
-     * Persist's the passed product media gallery value video data.
-     *
-     * @param array       $productMediaGalleryValueVideo The product media gallery value video data to persist
-     * @param string|null $name                          The name of the prepared statement that has to be executed
-     *
-     * @return void
-     */
-    public function persistProductMediaGalleryValueVideo($productMediaGalleryValueVideo, $name = null)
-    {
-        $this->getProductMediaGalleryValueVideoAction()->persist($productMediaGalleryValueVideo, $name);
     }
 
     /**

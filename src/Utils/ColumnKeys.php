@@ -82,13 +82,6 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
     const IMAGE_PARENT_SKU = 'image_parent_sku';
 
     /**
-     * Name for the column 'image_path'.
-     *
-     * @var string
-     */
-    const IMAGE_PATH = 'image_path';
-
-    /**
      * Name for the column 'image_path_new'.
      *
      * @var string
@@ -96,16 +89,44 @@ class ColumnKeys extends \TechDivision\Import\Product\Utils\ColumnKeys
     const IMAGE_PATH_NEW = 'image_path_new';
 
     /**
-     * Name for the column 'image_label'.
-     *
-     * @var string
-     */
-    const IMAGE_LABEL = 'image_label';
-
-    /**
      * Name for the column 'additional_image_labels'.
      *
      * @var string
      */
     const ADDITIONAL_IMAGE_LABELS = 'additional_image_labels';
+
+    /**
+     * Name for the column 'additional_image_positions'.
+     *
+     * @var string
+     */
+    const ADDITIONAL_IMAGE_POSITIONS = 'additional_image_positions';
+
+    /**
+     * Name for the column 'additional_image_disabled'.
+     *
+     * @var string
+     */
+    const ADDITIONAL_IMAGE_DISABLED = 'additional_image_disabled';
+
+    /**
+     * Name for the column 'hide_from_product_page'.
+     *
+     * @var string
+     */
+    const HIDE_FROM_PRODUCT_PAGE = 'hide_from_product_page';
+
+    /**
+     * Name for the column 'disabled_images'.
+     *
+     * @var string
+     */
+    const DISABLED_IMAGES = 'disabled_images';
+
+    /**
+     * Name for the column 'media_type'.
+     *
+     * @var string
+     */
+    const MEDIA_TYPE = 'media_type';
 }

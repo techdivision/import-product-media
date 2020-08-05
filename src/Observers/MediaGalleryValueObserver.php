@@ -20,11 +20,18 @@
 
 namespace TechDivision\Import\Product\Media\Observers;
 
+use TechDivision\Import\Utils\EntityStatus;
 use TechDivision\Import\Utils\StoreViewCodes;
+use TechDivision\Import\Utils\BackendTypeKeys;
+use TechDivision\Import\Observers\StateDetectorInterface;
+use TechDivision\Import\Observers\AttributeLoaderInterface;
+use TechDivision\Import\Observers\DynamicAttributeObserverInterface;
+use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
-use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
+use TechDivision\Import\Product\Media\Utils\EntityTypeCodes;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
+use TechDivision\Import\Observers\EntityMergers\EntityMergerInterface;
 
 /**
  * Observer that creates/updates the product's media gallery value information.
@@ -35,7 +42,7 @@ use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class MediaGalleryValueObserver extends AbstractProductImportObserver
+class MediaGalleryValueObserver extends AbstractProductImportObserver implements DynamicAttributeObserverInterface
 {
 
     /**
@@ -46,13 +53,50 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     protected $productMediaProcessor;
 
     /**
+     * The attribute loader instance.
+     *
+     * @var \TechDivision\Import\Observers\AttributeLoaderInterface
+     */
+    protected $attributeLoader;
+
+    /**
+     * The entity merger instance.
+     *
+     * @var \TechDivision\Import\Observers\EntityMergers\EntityMergerInterface
+     */
+    protected $entityMerger;
+
+    /**
+     * Initialize the "dymanmic" columns.
+     *
+     * @var array
+     */
+    protected $columns = array(
+        MemberNames::DISABLED => array(ColumnKeys::HIDE_FROM_PRODUCT_PAGE, BackendTypeKeys::BACKEND_TYPE_INT)
+    );
+
+    /**
      * Initialize the observer with the passed product media processor instance.
      *
      * @param \TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface $productMediaProcessor The product media processor instance
+     * @param \TechDivision\Import\Observers\AttributeLoaderInterface|null               $attributeLoader       The attribute loader instance
+     * @param \TechDivision\Import\Observers\EntityMergers\EntityMergerInterface|null    $entityMerger          The entity merger instance
+     * @param \TechDivision\Import\Observers\StateDetectorInterface|null                 $stateDetector         The state detector instance to use
      */
-    public function __construct(ProductMediaProcessorInterface $productMediaProcessor)
-    {
+    public function __construct(
+        ProductMediaProcessorInterface $productMediaProcessor,
+        AttributeLoaderInterface $attributeLoader = null,
+        EntityMergerInterface $entityMerger = null,
+        StateDetectorInterface $stateDetector = null
+    ) {
+
+        // initialize the media processor and the dynamic attribute loader instance
         $this->productMediaProcessor = $productMediaProcessor;
+        $this->attributeLoader = $attributeLoader;
+        $this->entityMerger = $entityMerger;
+
+        // pass the state detector to the parent method
+        parent::__construct($stateDetector);
     }
 
     /**
@@ -73,17 +117,41 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     protected function process()
     {
 
-        // query whether or not, the image changed
-        if ($this->isParentImage($imagePath = $this->getValue(ColumnKeys::IMAGE_PATH))) {
-            return;
-        }
-
         // initialize and persist the product media gallery value
-        $productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareAttributes());
-        $this->persistProductMediaGalleryValue($productMediaGalleryValue);
+        if ($this->hasChanges($productMediaGalleryValue = $this->initializeProductMediaGalleryValue($this->prepareDynamicAttributes()))) {
+            $this->persistProductMediaGalleryValue($productMediaGalleryValue);
+        }
+    }
 
-        // temporarily persist the image name
-        $this->setParentImage($imagePath);
+    /**
+     * Merge's and return's the entity with the passed attributes and set's the
+     * passed status.
+     *
+     * @param array       $entity        The entity to merge the attributes into
+     * @param array       $attr          The attributes to be merged
+     * @param string|null $changeSetName The change set name to use
+     *
+     * @return array The merged entity
+     * @todo https://github.com/techdivision/import/issues/179
+     */
+    protected function mergeEntity(array $entity, array $attr, $changeSetName = null)
+    {
+        return array_merge(
+            $entity,
+            $this->entityMerger ? $this->entityMerger->merge($this, $entity, $attr) : $attr,
+            array(EntityStatus::MEMBER_NAME => $this->detectState($entity, $attr, $changeSetName))
+        );
+    }
+
+    /**
+     * Appends the dynamic to the static attributes for the media type
+     * gallery attributes and returns them.
+     *
+     * @return array The array with all available attributes
+     */
+    protected function prepareDynamicAttributes()
+    {
+        return array_merge($this->prepareAttributes(), $this->attributeLoader ? $this->attributeLoader->load($this, $this->columns) : array());
     }
 
     /**
@@ -96,7 +164,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
 
         try {
             // try to load the product SKU and map it the entity ID
-            $parentId= $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
+            $parentId = $this->getValue(ColumnKeys::IMAGE_PARENT_SKU, null, array($this, 'mapParentSku'));
         } catch (\Exception $e) {
             throw $this->wrapException(array(ColumnKeys::IMAGE_PARENT_SKU), $e);
         }
@@ -104,24 +172,39 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
         // load the store ID
         $storeId = $this->getRowStoreId(StoreViewCodes::ADMIN);
 
-        // load the value ID and the position counter
+        // load the value ID
         $valueId = $this->getParentValueId();
-        $position = $this->raisePositionCounter();
 
         // load the image label
         $imageLabel = $this->getValue(ColumnKeys::IMAGE_LABEL);
 
+        // load the position
+        $position = (int) $this->getValue(ColumnKeys::IMAGE_POSITION, 0);
+
         // prepare the media gallery value
         return $this->initializeEntity(
-            array(
-                MemberNames::VALUE_ID    => $valueId,
-                MemberNames::STORE_ID    => $storeId,
-                MemberNames::ENTITY_ID   => $parentId,
-                MemberNames::LABEL       => $imageLabel,
-                MemberNames::POSITION    => $position,
-                MemberNames::DISABLED    => 0
+            $this->loadRawEntity(
+                array(
+                    MemberNames::VALUE_ID    => $valueId,
+                    MemberNames::STORE_ID    => $storeId,
+                    MemberNames::ENTITY_ID   => $parentId,
+                    MemberNames::LABEL       => $imageLabel,
+                    MemberNames::POSITION    => $position
+                )
             )
         );
+    }
+
+    /**
+     * Load's and return's a raw customer entity without primary key but the mandatory members only and nulled values.
+     *
+     * @param array $data An array with data that will be used to initialize the raw entity with
+     *
+     * @return array The initialized entity
+     */
+    protected function loadRawEntity(array $data = array())
+    {
+        return $this->getProductMediaProcessor()->loadRawEntity(EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE, $data);
     }
 
     /**
@@ -176,40 +259,6 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
     }
 
     /**
-     * Set's the name of the created image.
-     *
-     * @param string $parentImage The name of the created image
-     *
-     * @return void
-     */
-    protected function setParentImage($parentImage)
-    {
-        $this->getSubject()->setParentImage($parentImage);
-    }
-
-    /**
-     * Return's the name of the created image.
-     *
-     * @return string The name of the created image
-     */
-    protected function getParentImage()
-    {
-        return $this->getSubject()->getParentImage();
-    }
-
-    /**
-     * Return's TRUE if the passed image is the parent one.
-     *
-     * @param string $image The imageD to check
-     *
-     * @return boolean TRUE if the passed image is the parent one
-     */
-    protected function isParentImage($image)
-    {
-        return $this->getParentImage() === $image;
-    }
-
-    /**
      * Return's the value ID of the created media gallery entry.
      *
      * @return integer The ID of the created media gallery entry
@@ -236,6 +285,7 @@ class MediaGalleryValueObserver extends AbstractProductImportObserver
      * Returns the acutal value of the position counter and raise's it by one.
      *
      * @return integer The actual value of the position counter
+     * @deprecated Since 23.0.0
      */
     protected function raisePositionCounter()
     {

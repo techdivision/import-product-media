@@ -1,3 +1,284 @@
+# Version 26.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 24.* version as dependency
+
+# Version 25.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Add #PAC-72: Extend dedicated CLI command to delete existing videos (professional + enterprise edition)
+* Add #PAC-75: Extend dedicated CLI command to replace existing videos (professional + enterprise edition)
+
+# Version 24.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 23.* version as dependency
+* Add #PAC-102: Dedicated CLI command to import videos (professional + enterpries edition)
+
+# Version 23.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Add #PAC-47
+* Switch to latest techdivision/import-product 22.* version as dependency
+
+# Version 22.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Add #PAC-73
+* Switch to latest techdivision/import-product 21.* version as dependency
+
+# Version 21.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Add dynamic attribute loader functionality for #PAC-34
+
+# Version 20.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Configure insert and update statement bindings to be dynamic
+
+# Version 19.0.1
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Add #PAC-34
+* Extract dev autoloading
+
+# Version 19.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Remove deprecated classes and methods
+* Add techdivision/import-cli-simple#216
+* Switch to latest techdivision/import-product 19.* version as dependency
+
+# Version 18.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 18.* version as dependency
+
+# Version 17.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 17.* version as dependency
+
+# Version 16.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 16.* version as dependency
+
+# Version 15.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Extract media subject functionality to a trait to allow usage in EE library also
+
+# Version 14.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 15.* version as dependency
+* Move library specific DI identifiers from techdivision/import-product to thhis library
+* Remove MediaSubject::mapSkuToEntityId() + MediaSubject::getStoreByStoreCode() methods because they have been moved to AbstractProductSubject
+
+# Version 13.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Added techdivision/import-product-media#35
+* Switch to latest techdivision/import-product 13.* version as dependency
+
+# Version 12.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 12.* version as dependency
+
+# Version 11.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 11.0.* version as dependency
+
+# Version 10.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 10.0.* version as dependency
+
+# Version 9.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 9.0.* version as dependency
+
+# Version 8.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 8.0.* version as dependency
+* Make Actions and ActionInterfaces deprecated, replace DI configuration with GenericAction + GenericIdentifierAction
+
+# Version 7.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Added techdivision/import-cli-simple#198
+
+# Version 6.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 6.0.* version as dependency
+
+# Version 5.0.1
+
+## Bugfixes
+
+* Fixed issue that image labels from CSV file will not be used to update database
+
+## Features
+
+* None
+
+# Version 5.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import-product 5.0.* version as dependency
+
+# Version 4.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Switch to latest techdivision/import 5.0.* version as dependency
+
+# Version 3.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Compatibility for Magento 2.3.x
+
+# Version 2.0.0
+
+## Bugfixes
+
+* None
+
+## Features
+
+* Compatibility for Magento 2.2.x
+
 # Version 1.0.0
 
 ## Bugfixes

@@ -6,4 +6,7 @@
  [![Build Status](https://img.shields.io/travis/techdivision/import-product-media/master.svg?style=flat-square)](http://travis-ci.org/techdivision/import-product-media)
  [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/techdivision/import-product-media/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/techdivision/import-product-media/?branch=master) [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/techdivision/import-product-media/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/techdivision/import-product-media/?branch=master)
 
+This module provides the functionality to import the product media files. Actually only images
+are supported.
+
 Please visit the M2IF [website](https://m2if.com) for documentation and additional information
