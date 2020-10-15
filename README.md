@@ -1,4 +1,4 @@
-# M2IF - Product Media Import
+# Pacemaker - Product Media Import
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/techdivision/import-product-media.svg?style=flat-square)](https://packagist.org/packages/techdivision/import-product-media) 
  [![Total Downloads](https://img.shields.io/packagist/dt/techdivision/import-product-media.svg?style=flat-square)](https://packagist.org/packages/techdivision/import-product-media)
@@ -9,4 +9,4 @@
 This module provides the functionality to import the product media files. Actually only images
 are supported.
 
-Please visit the M2IF [website](https://m2if.com) for documentation and additional information
+Please visit the Pacemaker [website](https://pacemaker.techdivision.com) or our [documentation](https://docs.met.tdintern.de/pacemaker/1.3/) for additional information
