@@ -20,7 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Repositories;
 
-use TechDivision\Import\Repositories\RepositoryInterface;
+use TechDivision\Import\Dbal\Repositories\RepositoryInterface;
 
 /**
  * Repository implementation to load product media gallery value data.

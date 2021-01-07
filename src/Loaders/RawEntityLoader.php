@@ -20,7 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Loaders;
 
-use TechDivision\Import\Connection\ConnectionInterface;
+use TechDivision\Import\Dbal\Connection\ConnectionInterface;
 use TechDivision\Import\Product\Media\Utils\EntityTypeCodes;
 use TechDivision\Import\Loaders\LoaderInterface;
 
@@ -39,7 +39,7 @@ class RawEntityLoader implements LoaderInterface
     /**
      * The connection instance.
      *
-     * @var \TechDivision\Import\Connection\ConnectionInterface
+     * @var \TechDivision\Import\Dbal\Connection\ConnectionInterface
      */
     protected $connection;
 
@@ -71,9 +71,9 @@ class RawEntityLoader implements LoaderInterface
     /**
      * Construct a new instance.
      *
-     * @param \TechDivision\Import\Connection\ConnectionInterface $connection           The DB connection instance used to load the table metadata
-     * @param \TechDivision\Import\Loaders\LoaderInterface        $columnMetadataLoader The column metadata loader instance
-     * @param \TechDivision\Import\Loaders\LoaderInterface        $eavRawEntityLoader   The loader instance for the raw EAV entities
+     * @param \TechDivision\Import\Dbal\Connection\ConnectionInterface $connection           The DB connection instance used to load the table metadata
+     * @param \TechDivision\Import\Loaders\LoaderInterface             $columnMetadataLoader The column metadata loader instance
+     * @param \TechDivision\Import\Loaders\LoaderInterface             $eavRawEntityLoader   The loader instance for the raw EAV entities
      */
     public function __construct(
         ConnectionInterface $connection,
