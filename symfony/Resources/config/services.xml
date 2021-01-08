@@ -79,17 +79,17 @@
             <argument type="service" id="import.util.sql.sanitizers"/>
         </service>
 
-        <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Actions\GenericIdentifierAction">
+        <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Dbal\Actions\GenericIdentifierAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.update"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.delete"/>
             <argument type="constant">TechDivision\Import\Product\Media\Utils\MemberNames::VALUE_ID</argument>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Actions\GenericAction">
+        <service id="import_product_media.action.product.media.gallery.value" class="TechDivision\Import\Dbal\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.create"/>
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.update"/>
         </service>
-        <service id="import_product_media.action.product.media.gallery.value.to.entity" class="TechDivision\Import\Actions\GenericAction">
+        <service id="import_product_media.action.product.media.gallery.value.to.entity" class="TechDivision\Import\Dbal\Actions\GenericAction">
             <argument type="service" id="import_product_media.action.processor.product.media.gallery.value.to.entity.create"/>
         </service>
 
