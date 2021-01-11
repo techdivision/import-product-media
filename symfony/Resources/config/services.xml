@@ -49,34 +49,56 @@
             <argument type="service" id="import_product_media.repository.sql.statement"/>
         </service>
 
-        <service id="import_product_media.action.processor.product.media.gallery.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryCreateProcessor">
+        <!--
+         | The DI action processor configuration
+         |-->
+        <service id="import_product_media.action.processor.product.media.gallery.create" class="TechDivision\Import\Dbal\Collection\Actions\Processors\GenericIdentifierProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
             <argument type="service" id="import.util.sql.sanitizers"/>
+            <argument type="collection">
+                <argument type="constant">TechDivision\Import\Product\Media\Utils\SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY</argument>
+            </argument>
         </service>
-        <service id="import_product_media.action.processor.product.media.gallery.update" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryUpdateProcessor">
+        <service id="import_product_media.action.processor.product.media.gallery.update" class="TechDivision\Import\Dbal\Collection\Actions\Processors\GenericIdentifierProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
             <argument type="service" id="import.util.sql.sanitizers"/>
+            <argument type="collection">
+                <argument type="constant">TechDivision\Import\Product\Media\Utils\SqlStatementKeys::UPDATE_PRODUCT_MEDIA_GALLERY</argument>
+            </argument>
         </service>
-        <service id="import_product_media.action.processor.product.media.gallery.delete" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryDeleteProcessor">
-            <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_media.repository.sql.statement"/>
-        </service>
-        <service id="import_product_media.action.processor.product.media.gallery.value.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueCreateProcessor">
-            <argument type="service" id="connection"/>
-            <argument type="service" id="import_product_media.repository.sql.statement"/>
-            <argument type="service" id="import.util.sql.sanitizers"/>
-        </service>
-        <service id="import_product_media.action.processor.product.media.gallery.value.update" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueUpdateProcessor">
+        <service id="import_product_media.action.processor.product.media.gallery.delete" class="TechDivision\Import\Dbal\Collection\Actions\Processors\GenericProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
             <argument type="service" id="import.util.sql.sanitizers"/>
+            <argument type="collection">
+                <argument type="constant">TechDivision\Import\Product\Media\Utils\SqlStatementKeys::DELETE_PRODUCT_MEDIA_GALLERY</argument>
+            </argument>
         </service>
-        <service id="import_product_media.action.processor.product.media.gallery.value.to.entity.create" class="TechDivision\Import\Product\Media\Actions\Processors\ProductMediaGalleryValueToEntityCreateProcessor">
+        <service id="import_product_media.action.processor.product.media.gallery.value.create" class="TechDivision\Import\Dbal\Collection\Actions\Processors\GenericProcessor">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
             <argument type="service" id="import.util.sql.sanitizers"/>
+            <argument type="collection">
+                <argument type="constant">TechDivision\Import\Product\Media\Utils\SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE</argument>
+            </argument>
+        </service>
+        <service id="import_product_media.action.processor.product.media.gallery.value.update" class="TechDivision\Import\Dbal\Collection\Actions\Processors\GenericProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.util.sql.sanitizers"/>
+            <argument type="collection">
+                <argument type="constant">TechDivision\Import\Product\Media\Utils\SqlStatementKeys::UPDATE_PRODUCT_MEDIA_GALLERY_VALUE</argument>
+            </argument>
+        </service>
+        <service id="import_product_media.action.processor.product.media.gallery.value.to.entity.create" class="TechDivision\Import\Dbal\Collection\Actions\Processors\GenericProcessor">
+            <argument type="service" id="connection"/>
+            <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.util.sql.sanitizers"/>
+            <argument type="collection">
+                <argument type="constant">TechDivision\Import\Product\Media\Utils\SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY</argument>
+            </argument>
         </service>
 
         <service id="import_product_media.action.product.media.gallery" class="TechDivision\Import\Dbal\Collection\Actions\GenericIdentifierAction">
