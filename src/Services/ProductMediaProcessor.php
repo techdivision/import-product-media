@@ -21,8 +21,8 @@
 namespace TechDivision\Import\Product\Media\Services;
 
 use TechDivision\Import\Loaders\LoaderInterface;
-use TechDivision\Import\Actions\ActionInterface;
-use TechDivision\Import\Connection\ConnectionInterface;
+use TechDivision\Import\Dbal\Actions\ActionInterface;
+use TechDivision\Import\Dbal\Connection\ConnectionInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepositoryInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepositoryInterface;
 use TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepositoryInterface;
@@ -42,7 +42,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * A PDO connection initialized with the values from the Doctrine EntityManager.
      *
-     * @var \TechDivision\Import\Connection\ConnectionInterface
+     * @var \TechDivision\Import\Dbal\Connection\ConnectionInterface
      */
     protected $connection;
 
@@ -70,21 +70,21 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * The action with the product media gallery CRUD methods.
      *
-     * @var \TechDivision\Import\Actions\ActionInterface
+     * @var \TechDivision\Import\Dbal\Actions\ActionInterface
      */
     protected $productMediaGalleryAction;
 
     /**
      * The action with the product media gallery value CRUD methods.
      *
-     * @var \TechDivision\Import\Actions\ActionInterface
+     * @var \TechDivision\Import\Dbal\Actions\ActionInterface
      */
     protected $productMediaGalleryValueAction;
 
     /**
      * The action with the product media gallery value to entity CRUD methods.
      *
-     * @var \TechDivision\Import\Actions\ActionInterface
+     * @var \TechDivision\Import\Dbal\Actions\ActionInterface
      */
     protected $productMediaGalleryValueToEntityAction;
 
@@ -98,13 +98,13 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Initialize the processor with the necessary assembler and repository instances.
      *
-     * @param \TechDivision\Import\Connection\ConnectionInterface                                                 $connection                                 The connection to use
+     * @param \TechDivision\Import\Dbal\Connection\ConnectionInterface                                            $connection                                 The connection to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepositoryInterface              $productMediaGalleryRepository              The product media gallery repository to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepositoryInterface         $productMediaGalleryValueRepository         The product media gallery value repository to use
      * @param \TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepositoryInterface $productMediaGalleryValueToEntityRepository The product media gallery value to entity repository to use
-     * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryAction                  The product media gallery action to use
-     * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueAction             The product media gallery value action to use
-     * @param \TechDivision\Import\Actions\ActionInterface                                                        $productMediaGalleryValueToEntityAction     The product media gallery value to entity action to use
+     * @param \TechDivision\Import\Dbal\Actions\ActionInterface                                                   $productMediaGalleryAction                  The product media gallery action to use
+     * @param \TechDivision\Import\Dbal\Actions\ActionInterface                                                   $productMediaGalleryValueAction             The product media gallery value action to use
+     * @param \TechDivision\Import\Dbal\Actions\ActionInterface                                                   $productMediaGalleryValueToEntityAction     The product media gallery value to entity action to use
      * @param \TechDivision\Import\Loaders\LoaderInterface                                                        $rawEntityLoader                            The raw entity loader instance
      */
     public function __construct(
@@ -152,7 +152,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the passed connection.
      *
-     * @param \TechDivision\Import\Connection\ConnectionInterface $connection The connection to set
+     * @param \TechDivision\Import\Dbal\Connection\ConnectionInterface $connection The connection to set
      *
      * @return void
      */
@@ -164,7 +164,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the connection.
      *
-     * @return \TechDivision\Import\Connection\ConnectionInterface The connection instance
+     * @return \TechDivision\Import\Dbal\Connection\ConnectionInterface The connection instance
      */
     public function getConnection()
     {
@@ -284,7 +284,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery CRUD methods.
      *
-     * @param \TechDivision\Import\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery CRUD methods
+     * @param \TechDivision\Import\Dbal\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery CRUD methods
      *
      * @return void
      */
@@ -296,7 +296,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the action with the product media gallery CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product media gallery CRUD methods
      */
     public function getProductMediaGalleryAction()
     {
@@ -306,7 +306,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery valueCRUD methods.
      *
-     * @param \TechDivision\Import\Actions\ActionInterface $productMediaGalleryValueAction The action with the product media gallery value CRUD methods
+     * @param \TechDivision\Import\Dbal\Actions\ActionInterface $productMediaGalleryValueAction The action with the product media gallery value CRUD methods
      *
      * @return void
      */
@@ -318,7 +318,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the action with the product media gallery valueCRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery value CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product media gallery value CRUD methods
      */
     public function getProductMediaGalleryValueAction()
     {
@@ -328,7 +328,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Set's the action with the product media gallery value to entity CRUD methods.
      *
-     * @param \TechDivision\Import\Actions\ActionInterface $productMediaGalleryValueToEntityAction The action with the product media gallery value to entity CRUD methods
+     * @param \TechDivision\Import\Dbal\Actions\ActionInterface $productMediaGalleryValueToEntityAction The action with the product media gallery value to entity CRUD methods
      *
      * @return void
      */
@@ -340,7 +340,7 @@ class ProductMediaProcessor implements ProductMediaProcessorInterface
     /**
      * Return's the action with the product media gallery value to entity CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
      */
     public function getProductMediaGalleryValueToEntityAction()
     {

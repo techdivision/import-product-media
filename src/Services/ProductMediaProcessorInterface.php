@@ -65,21 +65,21 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
     /**
      * Return's the action with the product media gallery CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product media gallery CRUD methods
      */
     public function getProductMediaGalleryAction();
 
     /**
      * Return's the action with the product media gallery valueCRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface The action with the product media gallery value CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface The action with the product media gallery value CRUD methods
      */
     public function getProductMediaGalleryValueAction();
 
     /**
      * Return's the action with the product media gallery value to entity CRUD methods.
      *
-     * @return \TechDivision\Import\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
+     * @return \TechDivision\Import\Dbal\Actions\ActionInterface $productMediaGalleryAction The action with the product media gallery value to entity CRUD methods
      */
     public function getProductMediaGalleryValueToEntityAction();
 
