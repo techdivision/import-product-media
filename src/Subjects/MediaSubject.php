@@ -20,6 +20,7 @@
 
 namespace TechDivision\Import\Product\Media\Subjects;
 
+use TechDivision\Import\Utils\FileUploadConfigurationKeys;
 use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Subjects\FileUploadTrait;
 use TechDivision\Import\Subjects\ExportableTrait;
@@ -85,18 +86,18 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
         $this->skuEntityIdMapping = isset($status[RegistryKeys::SKU_ENTITY_ID_MAPPING]) ? $status[RegistryKeys::SKU_ENTITY_ID_MAPPING] : array();
 
         // initialize media directory => can be absolute or relative
-        if ($this->getConfiguration()->hasParam(ConfigurationKeys::MEDIA_DIRECTORY)) {
+        if ($this->getConfiguration()->hasParam(FileUploadConfigurationKeys::MEDIA_DIRECTORY)) {
             try {
-                $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::MEDIA_DIRECTORY)));
+                $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(FileUploadConfigurationKeys::MEDIA_DIRECTORY)));
             } catch (\InvalidArgumentException $iae) {
                 $this->getSystemLogger()->warning($iae->getMessage());
             }
         }
 
         // initialize images directory => can be absolute or relative
-        if ($this->getConfiguration()->hasParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)) {
+        if ($this->getConfiguration()->hasParam(FileUploadConfigurationKeys::IMAGES_FILE_DIRECTORY)) {
             try {
-                $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(ConfigurationKeys::IMAGES_FILE_DIRECTORY)));
+                $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(FileUploadConfigurationKeys::IMAGES_FILE_DIRECTORY)));
             } catch (\InvalidArgumentException $iae) {
                 $this->getSystemLogger()->warning($iae->getMessage());
             }
