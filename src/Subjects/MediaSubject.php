@@ -90,7 +90,10 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
             try {
                 $this->setMediaDir($this->resolvePath($this->getConfiguration()->getParam(FileUploadConfigurationKeys::MEDIA_DIRECTORY)));
             } catch (\InvalidArgumentException $iae) {
-                $this->getSystemLogger()->warning($iae->getMessage());
+                // only if we wanna copy images we need directories
+                if ($this->hasCopyImages()) {
+                    $this->getSystemLogger()->warning($iae->getMessage());
+                }
             }
         }
 
@@ -99,7 +102,10 @@ class MediaSubject extends AbstractProductSubject implements FileUploadSubjectIn
             try {
                 $this->setImagesFileDir($this->resolvePath($this->getConfiguration()->getParam(FileUploadConfigurationKeys::IMAGES_FILE_DIRECTORY)));
             } catch (\InvalidArgumentException $iae) {
-                $this->getSystemLogger()->warning($iae->getMessage());
+                // only if we wanna copy images we need directories
+                if ($this->hasCopyImages()) {
+                    $this->getSystemLogger()->warning($iae->getMessage());
+                }
             }
         }
     }
