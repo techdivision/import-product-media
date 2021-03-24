@@ -1,3 +1,9 @@
+# Version 26.0.1 
+
+## Improvement
+
+* PAC-96: Use new constands for FileUploadConfiguration
+
 # Version 26.0.0
 
 ## Bugfixes
