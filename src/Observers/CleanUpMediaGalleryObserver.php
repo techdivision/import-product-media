@@ -72,6 +72,9 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
      */
     protected function process()
     {
+        if ($this->getSubject()->getStoreViewCode(StoreViewCodes::ADMIN) !== StoreViewCodes::ADMIN) {
+            return;
+        }
 
         // query whether or not the media gallery has to be cleaned up
         if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY) &&
