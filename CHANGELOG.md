@@ -1,3 +1,9 @@
+# Version 26.0.2
+
+## Bugfixes
+
+* FIX: Clean up gallery images on multi store import
+
 # Version 26.0.1 
 
 ## Improvement
