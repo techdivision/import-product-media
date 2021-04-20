@@ -1,3 +1,9 @@
+# Version 26.0.3
+
+## Bugfixes
+
+* Fix crash for missing constant definition
+
 # Version 26.0.2
 
 ## Bugfixes
