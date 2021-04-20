@@ -7,6 +7,8 @@
 ## Features
 
 * Remove stack trace of exception for missing media directories > log a simple debug message instead
+* PAC-96: Use new constands for FileUploadConfiguration
+* FIX: Clean up gallery images on multi store import
 
 # Version 26.0.0
 
