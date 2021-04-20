@@ -25,6 +25,7 @@ use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
+use TechDivision\Import\Utils\StoreViewCodes;
 
 /**
  * Observer that cleaned up a product's media gallery information.
