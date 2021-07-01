@@ -138,7 +138,7 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
                         $this->getSubject()
                              ->getSystemLogger()
                              ->warning($this->getSubject()->appendExceptionSuffix($e->getMessage()));
-                    } else {
+                    } elseif ($this->getSubject()->isStrictMode()) {
                         throw $e;
                     }
                 }
