@@ -1,3 +1,13 @@
+# Version 26.0.4
+
+## Improvement
+
+* Prepare optimize performance cache
+
+## Bugfixes
+
+* None
+
 # Version 26.0.3
 
 ## Bugfixes

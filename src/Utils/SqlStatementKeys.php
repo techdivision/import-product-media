@@ -40,6 +40,13 @@ class SqlStatementKeys extends \TechDivision\Import\Product\Utils\SqlStatementKe
     const PRODUCT_MEDIA_GALLERY = 'product_media_gallery';
 
     /**
+     * The SQL statement to load all existing product media galleries
+     *
+     * @var string
+     */
+    const PRODUCT_MEDIA_GALLERIES = 'product_media_galleries';
+
+    /**
      * The SQL statement to load an existing product media gallery entities by their SKU.
      *
      * @var string
@@ -52,6 +59,13 @@ class SqlStatementKeys extends \TechDivision\Import\Product\Utils\SqlStatementKe
      * @var string
      */
     const PRODUCT_MEDIA_GALLERY_VALUE = 'product_media_gallery_value';
+
+    /**
+     * The SQL statement to load all existing product media gallery values.
+     *
+     * @var string
+     */
+    const PRODUCT_MEDIA_GALLERY_VALUES = 'product_media_gallery_values';
 
     /**
      * The SQL statement to load an existing product media gallery value to entity by value/entity ID.

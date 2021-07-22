@@ -40,11 +40,17 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
      * @var array
      */
     private $statements = array(
+        SqlStatementKeys::PRODUCT_MEDIA_GALLERIES =>
+            'SELECT *
+               FROM ${table:catalog_product_entity_media_gallery}',
         SqlStatementKeys::PRODUCT_MEDIA_GALLERY =>
             'SELECT *
                FROM ${table:catalog_product_entity_media_gallery}
               WHERE attribute_id = :attribute_id
                 AND value = :value',
+        SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUES =>
+            'SELECT *
+               FROM ${table:catalog_product_entity_media_gallery_value}',
         SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUE =>
             'SELECT *
                FROM ${table:catalog_product_entity_media_gallery_value}

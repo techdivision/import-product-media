@@ -20,9 +20,10 @@
 
 namespace TechDivision\Import\Product\Media\Repositories;
 
+use TechDivision\Import\Repositories\AbstractFinderRepository;
+use TechDivision\Import\Product\Media\Utils\EntityTypeCodes;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Media\Utils\SqlStatementKeys;
-use TechDivision\Import\Repositories\AbstractRepository;
 
 /**
  * Repository implementation to load product media gallery value data.
@@ -33,15 +34,8 @@ use TechDivision\Import\Repositories\AbstractRepository;
  * @link      https://github.com/techdivision/import-product-media
  * @link      http://www.techdivision.com
  */
-class ProductMediaGalleryValueRepository extends AbstractRepository implements ProductMediaGalleryValueRepositoryInterface
+class ProductMediaGalleryValueRepository extends AbstractFinderRepository implements ProductMediaGalleryValueRepositoryInterface
 {
-
-    /**
-     * The prepared statement to load an existing product media gallery value entity.
-     *
-     * @var \PDOStatement
-     */
-    protected $productMediaGalleryStmt;
 
     /**
      * Initializes the repository's prepared statements.
@@ -52,8 +46,8 @@ class ProductMediaGalleryValueRepository extends AbstractRepository implements P
     {
 
         // initialize the prepared statements
-        $this->productMediaGalleryValueStmt =
-            $this->getConnection()->prepare($this->loadStatement(SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUE));
+        $this->addFinder($this->finderFactory->createFinder($this, SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUE));
+        $this->addFinder($this->finderFactory->createFinder($this, SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUES));
     }
 
     /**
@@ -76,7 +70,36 @@ class ProductMediaGalleryValueRepository extends AbstractRepository implements P
         );
 
         // load and return the prodcut media gallery value with the passed value/store/parent ID
-        $this->productMediaGalleryValueStmt->execute($params);
-        return $this->productMediaGalleryValueStmt->fetch(\PDO::FETCH_ASSOC);
+        return $this->getFinder(SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUE)->find($params);
+    }
+
+    /**
+     * @return array|null The country region data
+     */
+    public function findAll()
+    {
+        foreach ($this->getFinder(SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUES)->find() as $result) {
+            yield $result;
+        }
+    }
+
+    /**
+     * Return's the primary key name of the entity.
+     *
+     * @return string The name of the entity's primary key
+     */
+    public function getPrimaryKeyName()
+    {
+        return MemberNames::VALUE_ID;
+    }
+
+    /**
+     * Return's the finder's entity name.
+     *
+     * @return string The finder's entity name
+     */
+    public function getEntityName()
+    {
+        return EntityTypeCodes::CATALOG_PRODUCT_MEDIA_GALLERY_VALUE;
     }
 }

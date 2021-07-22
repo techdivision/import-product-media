@@ -39,10 +39,12 @@
         <service id="import_product_media.repository.product.media.gallery" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryRepository">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.repository.finder.factory.configurable"/>
         </service>
         <service id="import_product_media.repository.product.media.gallery.value" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueRepository">
             <argument type="service" id="connection"/>
             <argument type="service" id="import_product_media.repository.sql.statement"/>
+            <argument type="service" id="import.repository.finder.factory.configurable"/>
         </service>
         <service id="import_product_media.repository.product.media.gallery.value.to.entity" class="TechDivision\Import\Product\Media\Repositories\ProductMediaGalleryValueToEntityRepository">
             <argument type="service" id="connection"/>
