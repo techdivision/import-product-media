@@ -14,7 +14,7 @@
 
 namespace TechDivision\Import\Product\Media\Observers;
 
-use TechDivision\Import\Utils\EntityStatus;
+use TechDivision\Import\Dbal\Utils\EntityStatus;
 use TechDivision\Import\Utils\BackendTypeKeys;
 use TechDivision\Import\Product\Media\Utils\ColumnKeys;
 use TechDivision\Import\Product\Media\Utils\MemberNames;
