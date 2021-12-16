@@ -1,0 +1,11 @@
+{
+  "finder-mappings": {
+    "product_media_gallery": {
+      "TechDivision\\Import\\Product\\Media\\Utils\\SqlStatementKeys::PRODUCT_MEDIA_GALLERIES": "import.repository.finder.factory.yielded",
+      "TechDivision\\Import\\Product\\Media\\Utils\\SqlStatementKeys::PRODUCT_MEDIA_GALLERY": "import.repository.finder.factory.unique",
+      "TechDivision\\Import\\Product\\Media\\Utils\\SqlStatementKeys::PRODUCT_MEDIA_GALLERIES_BY_SKU": "import.repository.finder.factory.yielded",
+      "TechDivision\\Import\\Product\\Media\\Utils\\SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUE": "import.repository.finder.factory.unique",
+      "TechDivision\\Import\\Product\\Media\\Utils\\SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUES": "import.repository.finder.factory.yielded"
+    }
+  }
+}

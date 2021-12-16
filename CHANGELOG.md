@@ -6,9 +6,11 @@
 
 ## Features
 
+* Refactoring deprecated classes. see https://github.com/techdivision/import-cli-simple/blob/master/UPGRADE-4.0.0.md
 * Remove stack trace of exception for missing media directories > log a simple debug message instead
 * PAC-96: Use new constands for FileUploadConfiguration
 * FIX: Clean up gallery images on multi store import
+* Prepare optimze performance cache
 
 # Version 26.0.0
 
