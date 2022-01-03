@@ -152,16 +152,15 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
 
             // log a message that the images has been cleaned-up
             $this->getSubject()
-                 ->getSystemLogger()
-                 ->debug(
-                     $this->getSubject()->appendExceptionSuffix(
-                         sprintf(
-                             'Successfully cleaned-up media gallery for product with SKU "%s"',
-                             $sku
-                         )
-                     )
-                 );
-            }
+                ->getSystemLogger()
+                ->debug(
+                    $this->getSubject()->appendExceptionSuffix(
+                        sprintf(
+                            'Successfully cleaned-up media gallery for product with SKU "%s"',
+                            $sku)
+                    )
+                );
+        }
     }
 
     /**
