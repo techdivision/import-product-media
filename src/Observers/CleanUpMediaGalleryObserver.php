@@ -73,7 +73,7 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
         }
 
         // query whether or not the media gallery has to be cleaned up
-            if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY) &&
+        if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY) &&
             $this->getSubject()->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY)
         ) {
             // initialize the array for the actual images
@@ -161,7 +161,7 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
                          )
                      )
                  );
-        }
+            }
     }
 
     /**
