@@ -19,6 +19,7 @@ use TechDivision\Import\Product\Media\Utils\MemberNames;
 use TechDivision\Import\Product\Observers\AbstractProductImportObserver;
 use TechDivision\Import\Product\Media\Services\ProductMediaProcessorInterface;
 use TechDivision\Import\Product\Media\Utils\ConfigurationKeys;
+use TechDivision\Import\Utils\RegistryKeys;
 use TechDivision\Import\Utils\StoreViewCodes;
 
 /**
@@ -72,7 +73,7 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
         }
 
         // query whether or not the media gallery has to be cleaned up
-        if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY) &&
+            if ($this->getSubject()->getConfiguration()->hasParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY) &&
             $this->getSubject()->getConfiguration()->getParam(ConfigurationKeys::CLEAN_UP_MEDIA_GALLERY)
         ) {
             // initialize the array for the actual images
@@ -128,10 +129,21 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
                          );
                 } catch (\Exception $e) {
                     // log a warning if debug mode has been enabled and the file is NOT available
-                    if ($this->getSubject()->isDebugMode()) {
+                    if (!$this->getSubject()->isStrictMode()) {
                         $this->getSubject()
                              ->getSystemLogger()
                              ->warning($this->getSubject()->appendExceptionSuffix($e->getMessage()));
+                        $this->mergeStatus(
+                            array(
+                                RegistryKeys::NO_STRICT_VALIDATIONS => array(
+                                    basename($this->getFilename()) => array(
+                                        $this->getLineNumber() => array(
+                                            MemberNames::VALUE_ID =>  $e->getMessage()
+                                        )
+                                    )
+                                )
+                            )
+                        );
                     } else {
                         throw $e;
                     }
