@@ -157,7 +157,8 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
                     $this->getSubject()->appendExceptionSuffix(
                         sprintf(
                             'Successfully cleaned-up media gallery for product with SKU "%s"',
-                            $sku)
+                            $sku
+                        )
                     )
                 );
         }
