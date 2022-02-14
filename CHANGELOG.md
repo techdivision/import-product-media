@@ -11,6 +11,7 @@
 * PAC-96: Use new constands for FileUploadConfiguration
 * FIX: Clean up gallery images on multi store import
 * Prepare optimze performance cache
+* PAC-294: Integration strict mode
 
 # Version 26.0.0
 
