@@ -144,9 +144,9 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
                                 )
                             )
                         );
-                    } else {
-                        throw $e;
+                        return;
                     }
+                    throw $e;
                 }
             }
 
