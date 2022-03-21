@@ -12,6 +12,7 @@
 * FIX: Clean up gallery images on multi store import
 * Prepare optimze performance cache
 * PAC-294: Integration strict mode
+* PAC-541: Update composer with php Version ">=^7.3"
 
 # Version 26.0.0
 
