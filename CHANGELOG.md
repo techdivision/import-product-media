@@ -1,3 +1,9 @@
+# Version 27.0.1
+
+## Bugfixes
+
+* Start fix php8.2 deprecated warnings
+
 # Version 27.0.0
 
 ## Bugfixes
