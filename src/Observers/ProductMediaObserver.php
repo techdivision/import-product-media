@@ -164,7 +164,10 @@ class ProductMediaObserver extends AbstractProductImportObserver
                 if (isset($this->artefacts[$imagePath = $this->getInversedImageMapping($image)])) {
                     continue;
                 }
-
+                // Skip empty images
+                if(empty($imagePath)) {
+                    continue;
+                }
                 // initialize the label text
                 $labelText = null;
 
@@ -241,6 +244,10 @@ class ProductMediaObserver extends AbstractProductImportObserver
             foreach ($additionalImages as $key => $additionalImage) {
                 // load the original image path and query whether or not an image with the name already exists
                 if (isset($this->artefacts[$imagePath = $this->getInversedImageMapping($additionalImage)])) {
+                    continue;
+                }
+                // Skip empty images
+                if(empty($imagePath)) {
                     continue;
                 }
 

@@ -1,3 +1,9 @@
+# Version 27.0.2
+
+## Bugfixes
+
+* Skip artefact generation for empty images
+
 # Version 27.0.1
 
 ## Bugfixes
