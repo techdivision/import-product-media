@@ -1,3 +1,9 @@
+# Version 27.0.3
+
+## Bugfixes
+
+* Fix code styles
+
 # Version 27.0.2
 
 ## Bugfixes

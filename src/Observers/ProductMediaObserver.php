@@ -165,7 +165,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                     continue;
                 }
                 // Skip empty images
-                if(empty($imagePath)) {
+                if (empty($imagePath)) {
                     continue;
                 }
                 // initialize the label text
@@ -247,7 +247,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
                     continue;
                 }
                 // Skip empty images
-                if(empty($imagePath)) {
+                if (empty($imagePath)) {
                     continue;
                 }
 
