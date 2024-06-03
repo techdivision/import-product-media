@@ -1,3 +1,10 @@
+# Version 27.0.4
+
+## Bugfixes
+
+* Deactivate chaching for media import:
+  * PRODUCT_MEDIA_GALLERIES_BY_SKU && PRODUCT_MEDIA_GALLERY_VALUE
+
 # Version 27.0.3
 
 ## Bugfixes
