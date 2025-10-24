@@ -124,7 +124,7 @@ class ProductMediaObserver extends AbstractProductImportObserver
      * @return mixed|null The, almost formatted, value
      * @see \TechDivision\Import\Observers\AbstractObserver::getValue()
      */
-    protected function getImageValue($name, $default = null, callable $callback = null)
+    protected function getImageValue($name, $default = null, ?callable $callback = null)
     {
 
         // query whether or not the a image value is available, return it if yes
