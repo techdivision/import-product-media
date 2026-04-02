@@ -3,7 +3,7 @@
     "description": "Pacemaker library providing basic Magento 2 product media import functionality",
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "techdivision/import-product": "^26.2"
     },
     "require-dev": {
