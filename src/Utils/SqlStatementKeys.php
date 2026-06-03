@@ -111,6 +111,20 @@ class SqlStatementKeys extends \TechDivision\Import\Product\Utils\SqlStatementKe
     const CREATE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY = 'create.product_media_gallery_value_to_entity';
 
     /**
+     * The SQL statement to delete an existing product media gallery value to entity entry by value/entity ID
+     *
+     * @var string
+     */
+    const DELETE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY = 'delete.product_media_gallery_value_to_entity';
+
+    /**
+     * The SQL statement to count the existing product media gallery value to entity entries by value ID
+     *
+     * @var string
+     */
+    const COUNT_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY = 'count.product_media_gallery_value_to_entity';
+
+    /**
      * The SQL statement to create a new product media gallery value vidoe entry.
      *
      * @var string
