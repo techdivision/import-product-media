@@ -111,9 +111,26 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
                 }
 
                 try {
-                    // remove the old image from the database
-                    $this->getProductMediaProcessor()
-                         ->deleteProductMediaGallery(array(MemberNames::VALUE_ID => $existingProductMediaGallery[MemberNames::VALUE_ID]));
+                    // load the value ID of the existing media gallery entry
+                    $valueId = $existingProductMediaGallery[MemberNames::VALUE_ID];
+
+                    // load the name of the member that holds the ID of the product the entry is assigned to
+                    $entityIdMemberName = $this->getProductEntityIdMemberName();
+
+                    // load the ID of the product the existing entry is actually assigned to
+                    $entityId = $existingProductMediaGallery[$entityIdMemberName];
+
+                    // remove ONLY the product specific assignment, NOT the shared gallery entry
+                    $this->getProductMediaProcessor()->deleteProductMediaGalleryValueToEntity(
+                        [MemberNames::VALUE_ID => $valueId, $entityIdMemberName => $entityId]
+                    );
+
+                    // remove the shared gallery entry only if no other product references it any more
+                    if ($this->getProductMediaProcessor()->countProductMediaGalleryValueToEntity($valueId) === 0) {
+                        $this->getProductMediaProcessor()->deleteProductMediaGallery(
+                            [MemberNames::VALUE_ID => $valueId]
+                        );
+                    }
 
                     // log a debug message that the image has been removed
                     $this->getSubject()
@@ -162,6 +179,17 @@ class CleanUpMediaGalleryObserver extends AbstractProductImportObserver
                     )
                 );
         }
+    }
+
+    /**
+     * Return's the name of the member that holds the ID of the product a media gallery entry is assigned to (e.g.
+     * entity_id for CE, row_id for EE)
+     *
+     * @return string The member name
+     */
+    protected function getProductEntityIdMemberName()
+    {
+        return MemberNames::ENTITY_ID;
     }
 
     /**

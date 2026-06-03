@@ -38,6 +38,13 @@ class ProductMediaGalleryValueToEntityRepository extends AbstractRepository impl
     protected $productMediaGalleryValueToEntityStmt;
 
     /**
+     * The prepared statement to count the existing product media gallery value to entity entities by value ID
+     *
+     * @var \PDOStatement
+     */
+    protected $countProductMediaGalleryValueToEntityStmt;
+
+    /**
      * Initializes the repository's prepared statements.
      *
      * @return void
@@ -48,6 +55,9 @@ class ProductMediaGalleryValueToEntityRepository extends AbstractRepository impl
         // initialize the prepared statements
         $this->productMediaGalleryValueToEntityStmt =
             $this->getConnection()->prepare($this->loadStatement(SqlStatementKeys::PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY));
+        $this->countProductMediaGalleryValueToEntityStmt = $this->getConnection()->prepare(
+            $this->loadStatement(SqlStatementKeys::COUNT_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY)
+        );
     }
 
     /**
@@ -70,5 +80,21 @@ class ProductMediaGalleryValueToEntityRepository extends AbstractRepository impl
         // load and return the prodcut media gallery value to entity with the passed value/entity ID
         $this->productMediaGalleryValueToEntityStmt->execute($params);
         return $this->productMediaGalleryValueToEntityStmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Count's the product media gallery value to entity entities for the passed value ID
+     *
+     * @param integer $valueId The value ID to count the product media gallery value to entity entities for
+     * @return integer The number of entities referencing the passed value ID
+     */
+    public function countByValueId($valueId)
+    {
+        // initialize the params
+        $params = [MemberNames::VALUE_ID => $valueId];
+
+        // count and return the number of product media gallery value to entity entities with the passed value ID
+        $this->countProductMediaGalleryValueToEntityStmt->execute($params);
+        return (int)$this->countProductMediaGalleryValueToEntityStmt->fetchColumn();
     }
 }
