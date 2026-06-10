@@ -83,13 +83,22 @@ class SqlStatementRepository extends \TechDivision\Import\Product\Repositories\S
                INTO ${table:catalog_product_entity_media_gallery_value_to_entity}
                     (${column-names:catalog_product_entity_media_gallery_value_to_entity})
              VALUES (${column-placeholders:catalog_product_entity_media_gallery_value_to_entity})',
+        SqlStatementKeys::DELETE_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY =>
+            'DELETE
+               FROM ${table:catalog_product_entity_media_gallery_value_to_entity}
+              WHERE value_id = :value_id
+                AND entity_id = :entity_id',
+        SqlStatementKeys::COUNT_PRODUCT_MEDIA_GALLERY_VALUE_TO_ENTITY =>
+            'SELECT COUNT(*)
+               FROM ${table:catalog_product_entity_media_gallery_value_to_entity}
+              WHERE value_id = :value_id',
         SqlStatementKeys::CREATE_PRODUCT_MEDIA_GALLERY_VALUE_VIDEO =>
             'INSERT
                INTO ${table:catalog_product_entity_media_gallery_value_video}
                     (${column-names:catalog_product_entity_media_gallery_value_video})
              VALUES (${column-placeholders:catalog_product_entity_media_gallery_value_video})',
         SqlStatementKeys::PRODUCT_MEDIA_GALLERIES_BY_SKU =>
-            'SELECT t3.*
+            'SELECT t3.*, t2.entity_id
                FROM ${table:catalog_product_entity} t1,
                     ${table:catalog_product_entity_media_gallery_value_to_entity} t2,
                     ${table:catalog_product_entity_media_gallery} t3

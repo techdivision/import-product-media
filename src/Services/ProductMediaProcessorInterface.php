@@ -166,4 +166,21 @@ interface ProductMediaProcessorInterface extends ProductProcessorInterface
      * @return string The ID of the persisted entity
      */
     public function deleteProductMediaGallery(array $row, $name = null);
+
+    /**
+     * Delete's the passed product media gallery value to entity data
+     *
+     * @param array $row The product media gallery value to entity data to be deleted
+     * @param string|null $name The name of the prepared statement that has to be executed
+     * @return void
+     */
+    public function deleteProductMediaGalleryValueToEntity(array $row, $name = null);
+
+    /**
+     * Count's the product media gallery value to entity entities for the passed value ID
+     *
+     * @param int $valueId The value ID to count the product media gallery value to entity entities for
+     * @return int The number of entities referencing the passed value ID
+     */
+    public function countProductMediaGalleryValueToEntity($valueId);
 }

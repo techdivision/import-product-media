@@ -37,4 +37,12 @@ interface ProductMediaGalleryValueToEntityRepositoryInterface extends Repository
      * @return array The product media gallery
      */
     public function findOneByValueIdAndEntityId($valueId, $entityId);
+
+    /**
+     * Count's the product media gallery value to entity entities for the passed value ID
+     *
+     * @param int $valueId The value ID to count the product media gallery value to entity entities for
+     * @return int The number of entities referencing the passed value ID
+     */
+    public function countByValueId($valueId);
 }
